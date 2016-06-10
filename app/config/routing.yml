@@ -1,3 +1,8 @@
+brain_strategist_kernel:
+    resource: "@BrainStrategistKernelBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 brain_strategist_calendar:
     resource: "@BrainStrategistCalendarBundle/Controller/"
     type:     annotation
