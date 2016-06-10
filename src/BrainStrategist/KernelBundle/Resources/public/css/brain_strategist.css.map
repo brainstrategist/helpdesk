@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAGC,sBAAkB;EACd,OAAO,EAAE,SAAS;EAClB,UAAU,EAAE,MAAM",
+"sources": ["../scss/brain_strategist_global.scss"],
+"names": [],
+"file": "brain_strategist.css"
+}

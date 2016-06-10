@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                     style: 'expanded'
                 },
                 files: {                         // Dictionary of files
-                    'src/BrainStrategist/KernelBundle/Resources/public/css/*.css': 'src/BrainStrategist/KernelBundle/Resources/public/scss/*.scss'      // 'destination': 'source'
+                    'src/BrainStrategist/KernelBundle/Resources/public/css/brain_strategist.css': 'src/BrainStrategist/KernelBundle/Resources/public/scss/*.scss'      // 'destination': 'source'
                 }
             }
         },
