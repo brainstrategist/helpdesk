@@ -1,0 +1,24 @@
+{
+  "name": "brainstrategist_fr",
+  "homepage": "https://github.com/sebbrunet334/brainstrategist",
+  "authors": [
+    "sebastienbrunet"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
