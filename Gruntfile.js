@@ -49,8 +49,8 @@ module.exports = function (grunt) {
             },
             css: {
                 src: [
-                    'web/assets/css/bootstrap.min.css',
-                    'web/assets/css/font-awesome.min.css',
+                    'web/assets/css/bootstrap.css',
+                    'web/assets/css/font-awesome.css',
                     'src/BrainStrategist/KernelBundle/Resources/public/css/*.css'
                 ],
                 dest: 'web/assets/css/brain_strategist_compiled.css'
