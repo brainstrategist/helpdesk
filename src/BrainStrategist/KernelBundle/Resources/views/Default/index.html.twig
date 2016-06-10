@@ -1,11 +1,8 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}
-  {% stylesheets '@BrainStrategistKernelBundle/Resources/public/css/*' filter='cssrewrite' %}
-      <link rel="stylesheet" href="{{ asset_url }}" />
-  {% endstylesheets %}
-{% endblock %}
 {% block title %}My cool blog posts{% endblock %}
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/brain_strategist_compiled.min.css') }}" />
+{% endblock %}
 {% block body %}
    
    <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -38,4 +35,8 @@
 
     </div><!-- /.container -->
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>
 {% endblock %}
