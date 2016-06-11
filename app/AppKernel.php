@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new BrainStrategist\CalendarBundle\BrainStrategistCalendarBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new BrainStrategist\KernelBundle\BrainStrategistKernelBundle(),
         ];
 

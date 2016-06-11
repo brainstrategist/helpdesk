@@ -8330,5 +8330,39 @@ body .starter-template {
   padding: 40px 15px;
   text-align: center;
 }
+body ul.main-navigation li {
+  position: relative;
+}
+body ul.main-navigation li ul {
+  display: none;
+  position: absolute;
+  background: #e9e9e9;
+  position: absolute;
+  width: 150px;
+  list-style-type: none;
+  padding: 20px;
+  margin-top: 1px;
+}
+body ul.main-navigation li ul:hover {
+  display: block;
+}
+body ul.main-navigation li ul li a {
+  color: #844f17;
+}
+body ul.main-navigation li:hover ul {
+  display: block;
+}
+
+/**
+   IMPORT RESPONSIVE DESIGN SCSS DIRECTIVES
+*/
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+  body ul.main-navigation li:hover ul {
+    display: none;
+  }
+  body ul.main-navigation li:hover ul:hover ul {
+    display: none;
+  }
+}
 
 /*# sourceMappingURL=brain_strategist.css.map */

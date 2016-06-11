@@ -1,0 +1,16 @@
+@media only screen and (min-width : 320px) and (max-width : 768px) {
+  body{
+    ul.main-navigation{
+      li:hover{
+        ul{
+          display: none;
+          &:hover{
+            ul{
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}

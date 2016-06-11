@@ -1,9 +1,41 @@
-
+@import "variables_colors";
 body{
-	
 	.starter-template {
 	    padding: 40px 15px;
 	    text-align: center;
 	}
+	ul.main-navigation{
+	  li{
+		position: relative;
+		ul{
+		  display: none;
+		  position: absolute;
+		  background: color('background');
+		  position: absolute;
+		  width: 150px;
+		  list-style-type: none;
+		  padding: 20px;
+		  margin-top: 1px;
+		  &:hover{
+			  display: block;
+		  }
+		  li{
+			a{
+			  color: hard_dark_color('link');
+			}
+		  }
+		}
+		&:hover{
+		  ul{
+			display: block;
+		  }
+		}
+	  }
+	}
 
 }
+
+/**
+   IMPORT RESPONSIVE DESIGN SCSS DIRECTIVES
+*/
+@import "responsive_mobile";

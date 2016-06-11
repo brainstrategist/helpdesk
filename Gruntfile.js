@@ -11,6 +11,15 @@ module.exports = function (grunt) {
                 }
             }
         },
+        watch: {
+            scripts: {
+                files: ['src/BrainStrategist/KernelBundle/Resources/public/scss/*.scss'],
+                tasks: ['default'],
+                options: {
+                    spawn: false,
+                },
+            },
+        },
         bowercopy: {
             options: {
                 srcPrefix: 'bower_components',
@@ -85,6 +94,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.registerTask('default', ['bowercopy','copy', 'sass','concat', 'cssmin', 'uglify']);
 };
