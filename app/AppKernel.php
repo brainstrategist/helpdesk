@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
             new BrainStrategist\CalendarBundle\BrainStrategistCalendarBundle(),
             new BrainStrategist\KernelBundle\BrainStrategistKernelBundle(),
         ];

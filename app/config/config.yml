@@ -103,11 +103,13 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+#USERS
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: BrainStrategist\KernelBundle\Entity\User
 
+#TRANSLATIONS
 stof_doctrine_extensions:
     default_locale: en_US
     orm:
@@ -121,12 +123,14 @@ stof_doctrine_extensions:
             softdeleteable: true
             uploadable: true
 
+#BREADCRUMBS
 white_october_breadcrumbs: 
     separator:  ''
     separatorClass:     'separator'
     listId:             'wo-breadcrumbs'
     listClass:          'breadcrumb'
 
+#PAGINATION
 knp_paginator:
     page_range: 5                      # default page range used in pagination control
     default_options:
@@ -137,3 +141,16 @@ knp_paginator:
     template:
         pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+#PICTURES
+liip_imagine:
+    resolvers:
+       default:
+          web_path: ~
+
+    filter_sets:
+        cache: ~
+        my_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [120, 90], mode: outbound }
