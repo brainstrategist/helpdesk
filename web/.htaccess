@@ -6,6 +6,9 @@
 DirectoryIndex app_dev.php
 
 ModPagespeed off
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
 
 # By default, Apache does not evaluate symbolic links if you did not enable this
 # feature in your server configuration. Uncomment the following line if you
