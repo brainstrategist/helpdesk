@@ -67,6 +67,12 @@
 
     </div><!-- /.container -->
 
+  {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+      Hello {{ app.user.username }}
+      <img src="{{ asset(app.user.getProfilePicture) }}" class="img-circle" alt="User Image" />
+  {% else %}
+      {{ render(url('hwi_oauth_connect')) }}
+  {% endif %}
 {% endblock %}
 
 {% block javascripts %}

@@ -126,28 +126,4 @@ class User extends BaseUser
     {
         return $this->twitter_id;
     }
-
-    /**
-     * Set profilePicture
-     *
-     * @param string $profilePicture
-     *
-     * @return User
-     */
-    public function setProfilePicture($profilePicture)
-    {
-        $this->profilePicture = $profilePicture;
-
-        return $this;
-    }
-
-    /**
-     * Get profilePicture
-     *
-     * @return string
-     */
-    public function getProfilePicture()
-    {
-        return $this->profilePicture;
-    }
 }
