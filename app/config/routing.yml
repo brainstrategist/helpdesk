@@ -3,24 +3,43 @@ brain_strategist_kernel:
     type:     annotation
     prefix:   /
 
+
 brain_strategist_calendar:
     resource: "@BrainStrategistCalendarBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /{_locale}/calendar
 
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+    prefix: /{_locale}
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /{_locale}/profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /{_locale}/register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /{_locale}/resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /{_locale}/change-password
+
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-    prefix:   /connect    
+    prefix:   /{_locale}/connect
 
 hwi_oauth_login:
   resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-  prefix: /login
+  prefix: /{_locale}/login
 
 facebook_login:
     path: /login/check-facebook

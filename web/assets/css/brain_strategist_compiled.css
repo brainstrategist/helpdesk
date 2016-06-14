@@ -8330,6 +8330,12 @@ body .starter-template {
   padding: 40px 15px;
   text-align: center;
 }
+body .navbar-right {
+  color: #fff;
+}
+body .navbar-right .connexion_box {
+  padding: 5px 0;
+}
 body ul.main-navigation li {
   position: relative;
 }
