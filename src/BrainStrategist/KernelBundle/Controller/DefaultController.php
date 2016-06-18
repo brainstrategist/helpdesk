@@ -9,16 +9,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="kernel")
+     * @Route("/{_locale}/", name="kernel")
+     * @Route("/", name="default")
      */
     public function indexAction(Request $request)
     {
 	    $breadcrumbs = $this->get("white_october_breadcrumbs");
 	    // Simple example
-	    $breadcrumbs->addItem("Home", $this->get("router")->generate("kernel"));
+	    $breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
 
 	    // Example without URL
-	    $breadcrumbs->addItem("Some text without link");
+	    $breadcrumbs->addItem($this->get('translator')->trans("Some text without link"));
 
         $array_sample_pagination =array(
                                     array(

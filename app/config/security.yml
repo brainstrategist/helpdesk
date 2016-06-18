@@ -50,8 +50,8 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
-                login_path: /login
-                check_path: /login_check
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
             oauth:
                 resource_owners:
                     facebook:   "/login/check-facebook"
@@ -60,7 +60,8 @@ security:
 
                 oauth_user_provider:
                     service: brain_strategist.kernel_bundle.oauth.user_provider
-            logout:       true
+            logout:
+                path:   fos_user_security_logout
             anonymous:    true
 
         login:
@@ -75,7 +76,7 @@ security:
 
 
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[^/]+/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[^/]+/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[^/]+/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }

@@ -16,8 +16,8 @@ assetic:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
-    translator: ~
+    translator:      { fallbacks: ["%locale%"] }
+    default_locale: en
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -171,3 +171,4 @@ liip_imagine:
             quality: 75
             filters:
                 thumbnail: { size: [120, 90], mode: outbound }
+
