@@ -3,7 +3,6 @@ brain_strategist_kernel:
     type:     annotation
     prefix:   /
 
-
 brain_strategist_calendar:
     resource: "@BrainStrategistCalendarBundle/Controller/"
     type:     annotation
