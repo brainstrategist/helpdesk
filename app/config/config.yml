@@ -16,8 +16,8 @@ assetic:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
-    translator: ~
+    translator:      { fallbacks: ["%locale%"] }
+    default_locale: en
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -108,6 +108,26 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: BrainStrategist\KernelBundle\Entity\User
+    registration:
+        form:
+            type: BrainStrategist\KernelBundle\Form\RegistrationType
+
+services:
+    fos_user.doctrine_registry:
+        alias: doctrine
+
+hwi_oauth:
+    firewall_names: [main]
+    resource_owners:
+        facebook:
+            type:          facebook
+            client_id:     "%oauth_facebook_id%"
+            client_secret: "%oauth_facebook_secret%"
+            scope:         "email"
+            infos_url:     "https://graph.facebook.com/me?fields=id,name,email,picture.type(square)"
+            paths:
+                email:          email
+                profilepicture: picture.data.url
 
 #TRANSLATIONS
 stof_doctrine_extensions:

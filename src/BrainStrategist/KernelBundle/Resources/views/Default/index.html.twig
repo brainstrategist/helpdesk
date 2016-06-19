@@ -1,72 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block title %}My cool blog posts{% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('assets/css/brain_strategist_compiled.min.css') }}" />
+
 {% endblock %}
 {% block body %}
-   
-   <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          {#<ul class="nav navbar-nav">#}
-            {#<li class="active"><a href="#">Home</a></li>#}
-            {#<li><a href="#about">About</a></li>#}
-            {#<li><a href="#contact">Contact</a></li>#}
-          {#</ul>#}
-            {{ knp_menu_render('BrainStrategistKernelBundle:Builder:mainMenu') }}
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    <div class="container">
-   
-      <div class="starter-template">
-
-       {{ wo_render_breadcrumbs() }}
-       <br/>
-       {# total items count #}
-        <div class="count">
-            {{ pagination.getTotalItemCount }}
-        </div>
-        <table>
-         {# <tr>
-            sorting of properties based on query components 
-            <th>{{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}</th>
-            <th{% if pagination.isSorted('a.Title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'a.title') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'Release', ['a.date', 'a.time']) }}</th>
-        </tr> #}
-
-        {# table body #}
-        {% for article in pagination %}
-        <tr {% if loop.index is odd %}class="color"{% endif %}>
-            <td>{{ article.id }}</td>
-            <td>{{ article.title }}</td>
-            <td>{{ article.date | date('Y-m-d') }}, {{ article.time | date('H:i:s') }}</td>
-        </tr>
-        {% endfor %}
-        </table>
-        {# display navigation #}
-        <div class="navigation">
-            {{ knp_pagination_render(pagination) }}
-        </div>
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-
-        {# liip_imagine thumbnail generator bundle sample #}
-        <img src="{{ asset('/bundles/brainstrategistkernel/images/civil-war.jpg') | imagine_filter('my_thumb') }}" />
-      </div>
-
-    </div><!-- /.container -->
-
+   home
 {% endblock %}
 
 {% block javascripts %}
