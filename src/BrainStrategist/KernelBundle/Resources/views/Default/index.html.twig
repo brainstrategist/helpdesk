@@ -4,37 +4,7 @@
 
 {% endblock %}
 {% block body %}
-
-    {# total items count #}
-    <div class="count">
-        {{ pagination.getTotalItemCount }}
-    </div>
-    <table>
-        {# <tr>
-           sorting of properties based on query components
-           <th>{{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}</th>
-           <th{% if pagination.isSorted('a.Title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'a.title') }}</th>
-           <th>{{ knp_pagination_sortable(pagination, 'Release', ['a.date', 'a.time']) }}</th>
-       </tr> #}
-
-        {# table body #}
-        {% for article in pagination %}
-            <tr {% if loop.index is odd %}class="color"{% endif %}>
-                <td>{{ article.id }}</td>
-                <td>{{ article.title }}</td>
-                <td>{{ article.date | date('Y-m-d') }}, {{ article.time | date('H:i:s') }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    {# display navigation #}
-    <div class="navigation">
-        {{ knp_pagination_render(pagination) }}
-    </div>
-    <h1>Bootstrap starter template</h1>
-    <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-
-    {# liip_imagine thumbnail generator bundle sample #}
-    <img src="{{ asset('/bundles/brainstrategistkernel/images/civil-war.jpg') | imagine_filter('my_thumb') }}" />
+   home
 {% endblock %}
 
 {% block javascripts %}

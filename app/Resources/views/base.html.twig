@@ -17,38 +17,41 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Project name</a>
+                <a class="navbar-brand" href="#">Cultiv.me</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 {{ knp_menu_render('BrainStrategistKernelBundle:Builder:mainMenu') }}
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <div class="connexion_box">
-
-                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            {% trans %}Hello{% endtrans %} {{ app.user.username }}
-                            {% if (app.user.getProfilePicture is not null) %}
-                                <img src="{{ asset(app.user.getProfilePicture) }}" class="img-circle" alt="User Image" />
-                            {% endif %}
-                            <a href="{{ path('fos_user_security_logout') }}">Disconect</a>
-
-                        {% else %}
-                            {{ render(url('hwi_oauth_connect')) }}  <a href="{{ path('fos_user_security_login') }}">Login</a>
+                    <div class="connexion_box">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% if (app.user.getProfilePicture is not null) %}
+                            {% set avatar=asset(app.user.getProfilePicture) %}
+                         {% else %}
+                            {% set avatar=asset('assets/images/user-icon.svg') %}
                         {% endif %}
-                        </div>
-                    </li>
-                </ul>
+                        {% set menu = knp_menu_get('BrainStrategistKernelBundle:Builder:userMenu', [], {'username': app.user.username,'avatar':avatar} ) %}
+                        {{ knp_menu_render(menu, {'allow_safe_labels': true}) }}
+                    {% else %}
+                        {{ render(url('hwi_oauth_connect')) }}  <a href="{{ path('fos_user_security_login') }}">Login</a>
+                    {% endif %}
+                    </div>
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-
+    {{ include('BrainStrategistKernelBundle:Default:carousel_home.html.twig') }}
     <div class="container">
         <div class="starter-template">
-            {{ wo_render_breadcrumbs() }}
-            <br/>
+            {% if app.request.attributes.get('_route') != "kernel" %}
+                {{ wo_render_breadcrumbs() }}
+            {% endif %}
+
             {% block body %}{% endblock %}
             {% block javascripts %}{% endblock %}
         </div>
     </div><!-- /.container -->
+    <div class="footer navbar-fixed-bottom">
+        <div class="container">
+            <p class="muted credit">Proudly proposed by <a href="http://martinbean.co.uk">BrainStrategist.fr</a> based upon an original idea by <a href="www.pwoua.com">Brunet S&eacute;bastien</a>.</p>
+        </div>
+    </div>
     </body>
 </html>

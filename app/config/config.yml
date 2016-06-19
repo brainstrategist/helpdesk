@@ -108,6 +108,9 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: BrainStrategist\KernelBundle\Entity\User
+    registration:
+        form:
+            type: BrainStrategist\KernelBundle\Form\RegistrationType
 
 services:
     fos_user.doctrine_registry:
