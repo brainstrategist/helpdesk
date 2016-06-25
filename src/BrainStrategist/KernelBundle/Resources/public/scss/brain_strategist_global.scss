@@ -1,7 +1,14 @@
 @import "variables_colors";
 body{
+  	a{
+	  color:color('primary');
+	}
+	.btn-primary{
+	  background:color('primary');
+	  border-color: color('secondary');
+	}
 	.navbar-inverse{
-		background: #3e88d6;
+		background:color('primary');
 	  	border-bottom: #91bef1;
 	  .connexion_box{
 		float: right;
@@ -38,7 +45,7 @@ body{
 	}
   #carousel-home{
 	margin-top: 50px;
-	height: 750px;
+	height: 500px;
 	overflow: hidden;
 	.carousel-caption {
 	  top: 15%;
@@ -56,10 +63,9 @@ body{
 	  pointer-events: none;
 	}
   }
-  .starter-template {
+  .template {
 	padding: 0px 15px;
-	margin-top: 30px;
-	text-align: center;
+	margin-top: 50px;
   }
   .footer.navbar-fixed-bottom{
 	height: 60px;

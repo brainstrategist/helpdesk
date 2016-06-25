@@ -3,12 +3,12 @@
 # mod_rewrite). Additionally, this reduces the matching process for the
 # start page (path "/") because otherwise Apache will apply the rewriting rules
 # to each configured DirectoryIndex file (e.g. index.php, index.html, index.pl).
-DirectoryIndex app.php
+DirectoryIndex app_dev.php
 
-ModPagespeed on
-php_flag display_startup_errors off
-php_flag display_errors off
-php_flag html_errors off
+ModPagespeed off
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
 
 # By default, Apache does not evaluate symbolic links if you did not enable this
 # feature in your server configuration. Uncomment the following line if you
@@ -51,8 +51,8 @@ php_flag html_errors off
     # - use Apache >= 2.3.9 and replace all L flags by END flags and remove the
     #   following RewriteCond (best solution)
     RewriteCond %{ENV:REDIRECT_STATUS} ^$
-    RewriteRule ^app\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]
-    #RewriteRule ^app_dev\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]
+    #RewriteRule ^app\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]
+    RewriteRule ^app_dev\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]
 
     # If the requested filename exists, simply serve it.
     # We only want to let Apache serve files and not directories.
@@ -60,8 +60,8 @@ php_flag html_errors off
     RewriteRule ^ - [L]
 
     # Rewrite all other queries to the front controller.
-    RewriteRule ^ %{ENV:BASE}/app.php [L]
-    #RewriteRule ^ %{ENV:BASE}/app_dev.php [L]
+    #RewriteRule ^ %{ENV:BASE}/app.php [L]
+    RewriteRule ^ %{ENV:BASE}/app_dev.php [L]
 </IfModule>
 
 <IfModule !mod_rewrite.c>
@@ -69,8 +69,8 @@ php_flag html_errors off
         # When mod_rewrite is not available, we instruct a temporary redirect of
         # the start page to the front controller explicitly so that the website
         # and the generated links can still be used.
-        RedirectMatch 302 ^/$ /app.php/
-       	# RedirectMatch 302 ^/$ /app_dev.php/
+        # RedirectMatch 302 ^/$ /app.php/
+        RedirectMatch 302 ^/$ /app_dev.php/
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
