@@ -8326,8 +8326,15 @@ button.close {
   content: "\f1e2";
 }
 
+body a {
+  color: #593590;
+}
+body .btn-primary {
+  background: #593590;
+  border-color: #593590;
+}
 body .navbar-inverse {
-  background: #3e88d6;
+  background: #593590;
   border-bottom: #91bef1;
 }
 body .navbar-inverse .connexion_box {
@@ -8347,14 +8354,14 @@ body .navbar-inverse ul.navbar-nav li a {
   color: #fff;
 }
 body .navbar-inverse ul.navbar-nav li ul li a {
-  color: #844f17;
+  color: #150838;
 }
 body .navbar-inverse ul.navbar-nav li:hover ul {
   display: block;
 }
 body #carousel-home {
   margin-top: 50px;
-  height: 750px;
+  height: 500px;
   overflow: hidden;
 }
 body #carousel-home .carousel-caption {
@@ -8372,10 +8379,9 @@ body #carousel-home .overlay {
   z-index: 10;
   pointer-events: none;
 }
-body .starter-template {
+body .template {
   padding: 0px 15px;
-  margin-top: 30px;
-  text-align: center;
+  margin-top: 50px;
 }
 body .footer.navbar-fixed-bottom {
   height: 60px;
