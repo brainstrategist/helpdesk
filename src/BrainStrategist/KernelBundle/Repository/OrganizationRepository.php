@@ -16,10 +16,15 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
 
         if (!is_null($userID)) {
 
-            $q = $this->createQueryBuilder('O')
-                ->where('O.isActive = 1')
+            $q = $this->createQueryBuilder('o')
+                ->leftJoin('o.usersOrganization', 'uo')
+                ->addSelect('uo')
+                ->where('o.isActive = 1')
+                ->andWhere('uo.id = :user')
+                ->setParameter('user',$userID)
                 ->setMaxResults($limit)
                 ->setFirstResult($offset);
+
 
             $query = $q->getQuery();
             return $query->getArrayResult();

@@ -13,10 +13,16 @@
             <p>Curently in progress.</p>
           </div>
          {% else %}
-         <div class="blog-post">
+         <div class="row">
+            <div class="col-md-8">
              <h2 class="blog-post-title">Welcome on your Dashboard</h2>
              <p>Please select an organization</p>
-             {{ dump(listOrganization) }}
+             {% if  listOrganization|length > 0 %}
+                 {{ dump(listOrganization) }}
+             {% else %}
+                 <p>You don't have created or being a member of any Organization(s).</p>
+             {% endif %}
+             <a href={{ path('organize_create') }} class="btn btn-primary" >Create a Organization</a>
          </div>
         {% endif %}
     </div>

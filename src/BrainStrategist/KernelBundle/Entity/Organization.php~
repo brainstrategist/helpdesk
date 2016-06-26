@@ -42,7 +42,7 @@ class Organization
      *
      * @ORM\Column(name="Is_active", type="boolean")
      */
-    private $isActive = true;
+    private $isActive;
 
     /**
      * @var \DateTime
@@ -169,7 +169,6 @@ class Organization
     public function __construct()
     {
         $this->userOrganization = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->dateCreation = new \DateTime();
     }
 
     /**

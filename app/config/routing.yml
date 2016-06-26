@@ -3,10 +3,6 @@ brain_strategist_kernel:
     type:     annotation
     prefix:   /
 
-brain_strategist_calendar:
-    resource: "@BrainStrategistCalendarBundle/Controller/"
-    type:     annotation
-    prefix:   /{_locale}/calendar
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

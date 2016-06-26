@@ -8333,12 +8333,20 @@ body .btn-primary {
   background: #593590;
   border-color: #593590;
 }
+body .btn-secondary {
+  border: 1px solid #593590;
+}
 body .navbar-inverse {
   background: #593590;
   border-bottom: #91bef1;
 }
 body .navbar-inverse .connexion_box {
   float: right;
+}
+body .navbar-inverse .navbar-brand {
+  background: url(/assets/images/brain-logo-small.png) no-repeat left center;
+  background-size: 25px auto;
+  padding-left: 30px;
 }
 body .navbar-inverse .navbar-right {
   color: #fff;
@@ -8361,7 +8369,7 @@ body .navbar-inverse ul.navbar-nav li:hover ul {
 }
 body #carousel-home {
   margin-top: 50px;
-  height: 500px;
+  height: 700px;
   overflow: hidden;
 }
 body #carousel-home .carousel-caption {
@@ -8387,6 +8395,12 @@ body .footer.navbar-fixed-bottom {
   height: 60px;
   padding-top: 20px;
   background-color: #f5f5f5;
+}
+body .brainstrategist_logo {
+  opacity: 0.1;
+  position: absolute;
+  top: -400px;
+  left: 0;
 }
 
 /**
