@@ -7,13 +7,18 @@
 
 
     <div class="col-sm-12 blog-main">
-
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class="blog-post">
             <h2 class="blog-post-title">Discover our services and philosophy</h2>
-            <p class="blog-post-meta">{{ "now"|date("m/d/Y") }}</p>
             <p>Curently in progress.</p>
           </div>
-
+         {% else %}
+         <div class="blog-post">
+             <h2 class="blog-post-title">Welcome on your Dashboard</h2>
+             <p>Please select an organization</p>
+             {{ dump(listOrganization) }}
+         </div>
+        {% endif %}
     </div>
 {% endblock %}
 

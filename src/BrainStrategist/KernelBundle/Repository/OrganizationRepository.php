@@ -10,4 +10,20 @@ namespace BrainStrategist\KernelBundle\Repository;
  */
 class OrganizationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findMyOrganizations($params=array('limit'=>100,'offset'=>0))
+    {
+        extract($params);
+
+        if (!is_null($userID)) {
+
+            $q = $this->createQueryBuilder('O')
+                ->where('O.isActive = 1')
+                ->setMaxResults($limit)
+                ->setFirstResult($offset);
+
+            $query = $q->getQuery();
+            return $query->getArrayResult();
+        }
+        return false;
+    }
 }
