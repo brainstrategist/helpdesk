@@ -1,0 +1,4 @@
+services:
+#    brain_strategist_project.example:
+#        class: BrainStrategist\ProjectBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
