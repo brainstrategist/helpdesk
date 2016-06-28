@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new BrainStrategist\KernelBundle\BrainStrategistKernelBundle(),
+            new BrainStrategist\ProjectBundle\BrainStrategistProjectBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

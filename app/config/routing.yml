@@ -1,3 +1,7 @@
+brain_strategist_project:
+    resource: "@BrainStrategistProjectBundle/Controller/"
+    prefix:   /
+
 brain_strategist_kernel:
     resource: "@BrainStrategistKernelBundle/Controller/"
     type:     annotation

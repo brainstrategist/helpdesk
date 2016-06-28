@@ -59,6 +59,12 @@ class Organization
     protected $usersOrganization;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
+     */
+    private $creator;
+
+    /**
      * Get id
      *
      * @return int
@@ -204,5 +210,63 @@ class Organization
     public function getUserOrganization()
     {
         return $this->userOrganization;
+    }
+
+    /**
+     * Add usersOrganization
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $usersOrganization
+     *
+     * @return Organization
+     */
+    public function addUsersOrganization(\BrainStrategist\KernelBundle\Entity\User $usersOrganization)
+    {
+        $this->usersOrganization[] = $usersOrganization;
+
+        return $this;
+    }
+
+    /**
+     * Remove usersOrganization
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $usersOrganization
+     */
+    public function removeUsersOrganization(\BrainStrategist\KernelBundle\Entity\User $usersOrganization)
+    {
+        $this->usersOrganization->removeElement($usersOrganization);
+    }
+
+    /**
+     * Get usersOrganization
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsersOrganization()
+    {
+        return $this->usersOrganization;
+    }
+
+    /**
+     * Set creator
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $creator
+     *
+     * @return Organization
+     */
+    public function setCreator(\BrainStrategist\KernelBundle\Entity\User $creator = null)
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get creator
+     *
+     * @return \BrainStrategist\KernelBundle\Entity\User
+     */
+    public function getCreator()
+    {
+        return $this->creator;
     }
 }

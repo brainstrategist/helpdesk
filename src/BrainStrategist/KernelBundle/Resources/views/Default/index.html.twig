@@ -4,8 +4,6 @@
 
 {% endblock %}
 {% block body %}
-
-
     <div class="col-sm-12 blog-main">
         {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class="blog-post">
@@ -14,15 +12,49 @@
           </div>
          {% else %}
          <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
              <h2 class="blog-post-title">Welcome on your Dashboard</h2>
              <p>Please select an organization</p>
              {% if  listOrganization|length > 0 %}
-                 {{ dump(listOrganization) }}
+                 <table class="table table-striped">
+                      <thead class="dark-head-thead">
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Slug</th>
+                          <th>Active</th>
+                          <th>Date creation</th>
+                          <th>Creator</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      {% for organization in listOrganization %}
+                      <tbody>
+                        <tr>
+                          <th scope="row">{{ organization.id }} </th>
+                          <td>{{ organization.name }}</td>
+                          <td>{{ organization.slug }}</td>
+                          <td>{{ organization.isActive }}</td>
+                          <td>{{ organization.dateCreation|date("m/d/Y")}}</td>
+                          <td>
+                          {% if organization.creator|length > 0 %}
+                            {{ organization.creator.username }}
+                          {% else %}
+                            -
+                          {% endif %}
+                          </td>
+                          <td>
+                              <a href={{ path('organize_edit', { 'id': organization.id }) }} class="btn btn-primary" >Edit</a>
+                              <a href={{ path('organize_access', { 'slug': organization.slug }) }} class="btn btn-primary" >Access</a>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
              {% else %}
                  <p>You don't have created or being a member of any Organization(s).</p>
              {% endif %}
-             <a href={{ path('organize_create') }} class="btn btn-primary" >Create a Organization</a>
+             <a href={{ path('organize_create') }} class="btn btn-primary" >Create an Organization</a>
          </div>
         {% endif %}
     </div>

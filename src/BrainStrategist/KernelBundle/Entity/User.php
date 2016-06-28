@@ -89,6 +89,17 @@ class User extends BaseUser
      */
     protected $organizations;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="BrainStrategist\ProjectBundle\Entity\Project", inversedBy="usersProject", cascade={"persist", "merge"})
+     * @ORM\JoinTable(name="Users_Project",
+     *   joinColumns={@ORM\JoinColumn(name="User_id", referencedColumnName="id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="Project_id", referencedColumnName="id")}
+     * )
+     */
+    protected $projects;
+
     public function __construct()
     {
         parent::__construct();
@@ -297,5 +308,41 @@ class User extends BaseUser
     public function getOrganizations()
     {
         return $this->organizations;
+    }
+
+
+
+    /**
+     * Add project
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Project $project
+     *
+     * @return User
+     */
+    public function addProject(\BrainStrategist\ProjectBundle\Entity\Project $project)
+    {
+        $this->projects[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Project $project
+     */
+    public function removeProject(\BrainStrategist\ProjectBundle\Entity\Project $project)
+    {
+        $this->projects->removeElement($project);
+    }
+
+    /**
+     * Get projects
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjects()
+    {
+        return $this->projects;
     }
 }

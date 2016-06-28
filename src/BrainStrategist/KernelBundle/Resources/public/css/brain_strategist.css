@@ -5,6 +5,10 @@ body .btn-primary {
   background: #593590;
   border-color: #593590;
 }
+body .btn-primary:hover {
+  background: #8b65c6;
+  border: 1px solid #593590;
+}
 body .btn-secondary {
   border: 1px solid #593590;
 }
@@ -61,7 +65,11 @@ body #carousel-home .overlay {
 }
 body .template {
   padding: 0px 15px;
-  margin-top: 50px;
+  margin-top: 70px;
+}
+body .dark-head-thead {
+  background: #593590;
+  color: #fff;
 }
 body .footer.navbar-fixed-bottom {
   height: 60px;

@@ -6,6 +6,10 @@ body{
 	.btn-primary{
 	  background:color('primary');
 	  border-color: color('secondary');
+	  &:hover{
+		background:light_color('primary');
+		border: 1px solid color('secondary');
+	  }
 	}
 	.btn-secondary{
 	  border: 1px solid color('secondary');
@@ -73,7 +77,11 @@ body{
   }
   .template {
 	padding: 0px 15px;
-	margin-top: 50px;
+	margin-top: 70px;
+  }
+  .dark-head-thead{
+	background:color('primary');
+	color: #fff;
   }
   .footer.navbar-fixed-bottom{
 	height: 60px;

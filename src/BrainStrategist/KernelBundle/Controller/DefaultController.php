@@ -17,6 +17,7 @@ class DefaultController extends Controller
     {
 	    $breadcrumbs = $this->get("white_october_breadcrumbs");
 	    $breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
+        $breadcrumbs->addItem( $this->get('translator')->trans("Organizations"), $this->get("router")->generate("kernel"));
 
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
         if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {

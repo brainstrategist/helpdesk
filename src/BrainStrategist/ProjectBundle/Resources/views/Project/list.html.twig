@@ -1,0 +1,42 @@
+
+
+<br/>
+{% if  listProjects|length > 0 %}
+    <table class="table table-striped">
+        <thead class="dark-head-thead">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Slug</th>
+            <th>Active</th>
+            <th>Date creation</th>
+            <th>Creator</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        {% for project in listProjects %}
+        <tbody>
+        <tr>
+            <th scope="row">{{ project.id }} </th>
+            <td>{{ project.name }}</td>
+            <td>{{ project.slug }}</td>
+            <td>{{ project.isActive }}</td>
+            <td>{{ project.dateCreation|date("m/d/Y")}}</td>
+            <td>
+                {% if project.creator|length > 0 %}
+                    {{ project.creator.username }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                <a href={{ path('project_edit', { 'id': project.id, 'slug':organization.slug }) }} class="btn btn-primary" >Edit</a>
+                <a href="#" class="btn btn-primary" >Access</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You don't have created or being a member of any Project(s).</p>
+{% endif %}
