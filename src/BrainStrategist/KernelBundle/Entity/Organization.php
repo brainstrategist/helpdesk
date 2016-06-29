@@ -4,6 +4,7 @@ namespace BrainStrategist\KernelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Organization
@@ -63,6 +64,14 @@ class Organization
      * @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      */
     private $creator;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Please, upload the profil picture as a JPEG file.")
+     * @Assert\File(mimeTypes={ "image/jpeg" })
+     */
+    private $picture;
 
     /**
      * Get id
@@ -268,5 +277,29 @@ class Organization
     public function getCreator()
     {
         return $this->creator;
+    }
+
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     *
+     * @return Organization
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
     }
 }

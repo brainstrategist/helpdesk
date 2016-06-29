@@ -20,6 +20,7 @@
                       <thead class="dark-head-thead">
                         <tr>
                           <th>#</th>
+                          <th></th>
                           <th>Name</th>
                           <th>Slug</th>
                           <th>Active</th>
@@ -32,6 +33,11 @@
                       <tbody>
                         <tr>
                           <th scope="row">{{ organization.id }} </th>
+                          <td>
+                          {% if file_exists(asset(full_organization_directory~'/'~organization.picture)) %}
+                            <img src="{{ asset(organization_directory~'/'~organization.picture)| imagine_filter('my_thumb') }}" />
+                          {% endif %}
+                          </td>
                           <td>{{ organization.name }}</td>
                           <td>{{ organization.slug }}</td>
                           <td>{{ organization.isActive }}</td>
