@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,7 +29,8 @@ class OrganizationForm extends AbstractType
                         'class' => 'form-control'
                     ),
                     'label' => 'Name of your organization'
-                ));
+                ))
+            ->add('picture', FileType::class, array('label' => 'Cover (Jpeg file)'));
 
     }
 
@@ -49,4 +51,6 @@ class OrganizationForm extends AbstractType
     {
         return 'BrainStrategistKernelBundle_Organization';
     }
+
+
 }

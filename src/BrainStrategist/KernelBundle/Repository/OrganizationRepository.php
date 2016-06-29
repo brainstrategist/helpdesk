@@ -16,13 +16,48 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
 
         if (!is_null($userID)) {
 
-            $q = $this->createQueryBuilder('O')
-                ->where('O.isActive = 1')
+            $q = $this->createQueryBuilder('o')
+                ->leftJoin('o.usersOrganization', 'uo')
+                ->leftJoin('o.creator', 'uc')
+                ->addSelect('uo')
+                ->addSelect('uc')
+                ->where('o.isActive = 1')
+                ->andWhere('uo.id = :user')
+                ->setParameter('user',$userID)
                 ->setMaxResults($limit)
                 ->setFirstResult($offset);
 
+
             $query = $q->getQuery();
             return $query->getArrayResult();
+        }
+        return false;
+    }
+
+    /* check if current shooting is mine */
+    public function isMyOrganization($obj=null,$currentUser=null){
+
+        $q= $this->createQueryBuilder('o')
+            ->leftJoin('o.usersOrganization', 'uo')
+            ->addSelect('uo');
+
+        if(is_numeric($obj)){
+            $q->where('o.id = :id')->setParameter('id', $obj);
+        }else{
+            $q->where('o.slug = :slug')->setParameter('slug', $obj);
+        }
+
+        $req =  $q->getQuery();
+        $res = $req->getArrayResult();
+
+        if(isset($currentUser)){
+            foreach($res[0]["usersOrganization"] as $r){
+
+                if($r['id']==$currentUser)
+                    return true;
+
+            }
+
         }
         return false;
     }

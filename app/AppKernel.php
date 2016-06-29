@@ -23,8 +23,8 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
-            new BrainStrategist\CalendarBundle\BrainStrategistCalendarBundle(),
             new BrainStrategist\KernelBundle\BrainStrategistKernelBundle(),
+            new BrainStrategist\ProjectBundle\BrainStrategistProjectBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

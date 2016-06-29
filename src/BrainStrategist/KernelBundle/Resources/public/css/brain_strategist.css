@@ -1,9 +1,28 @@
+body a {
+  color: #593590;
+}
+body .btn-primary {
+  background: #593590;
+  border-color: #593590;
+}
+body .btn-primary:hover {
+  background: #8b65c6;
+  border: 1px solid #593590;
+}
+body .btn-secondary {
+  border: 1px solid #593590;
+}
 body .navbar-inverse {
-  background: #3e88d6;
+  background: #593590;
   border-bottom: #91bef1;
 }
 body .navbar-inverse .connexion_box {
   float: right;
+}
+body .navbar-inverse .navbar-brand {
+  background: url(/assets/images/brain-logo-small.png) no-repeat left center;
+  background-size: 25px auto;
+  padding-left: 30px;
 }
 body .navbar-inverse .navbar-right {
   color: #fff;
@@ -19,14 +38,14 @@ body .navbar-inverse ul.navbar-nav li a {
   color: #fff;
 }
 body .navbar-inverse ul.navbar-nav li ul li a {
-  color: #844f17;
+  color: #150838;
 }
 body .navbar-inverse ul.navbar-nav li:hover ul {
   display: block;
 }
 body #carousel-home {
   margin-top: 50px;
-  height: 750px;
+  height: 700px;
   overflow: hidden;
 }
 body #carousel-home .carousel-caption {
@@ -44,15 +63,24 @@ body #carousel-home .overlay {
   z-index: 10;
   pointer-events: none;
 }
-body .starter-template {
+body .template {
   padding: 0px 15px;
-  margin-top: 30px;
-  text-align: center;
+  margin-top: 70px;
+}
+body .dark-head-thead {
+  background: #593590;
+  color: #fff;
 }
 body .footer.navbar-fixed-bottom {
   height: 60px;
   padding-top: 20px;
   background-color: #f5f5f5;
+}
+body .brainstrategist_logo {
+  opacity: 0.1;
+  position: absolute;
+  top: -400px;
+  left: 0;
 }
 
 /**

@@ -56,7 +56,25 @@ class OrganizationController extends Controller
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
 
+                    // $file stores the uploaded PDF file
+                    /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+                    $file = $organization->getPicture();
+
+                    // Generate a unique name for the file before saving it
+                    $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    $file->move(
+                        $this->container->getParameter('full_organization_directory'),
+                        $fileName
+                    );
+
+                    // Update the 'brochure' property to store the PDF file name
+                    // instead of its contents
+                    $organization->setPicture($fileName);
+
                     $response = $form->getData();
+                    $em->persist($organization);
                     $em->persist($response);
                     $em->flush();
 

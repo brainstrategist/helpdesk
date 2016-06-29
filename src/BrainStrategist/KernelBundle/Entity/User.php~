@@ -32,7 +32,22 @@ class User extends BaseUser
      *     groups={"Registration", "Profile"}
      * )
      */
-    protected $name;
+    protected $first_name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Please enter your name.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *     minMessage="The name is too short.",
+     *     maxMessage="The name is too long.",
+     *     groups={"Registration", "Profile"}
+     * )
+     */
+    protected $last_name;
+
 
     /**
      * @var string
@@ -48,20 +63,42 @@ class User extends BaseUser
      *
      */
     protected $profilePicture;
-        
+
     /**
      * @var string
      *
      * @ORM\Column(name="google_id", type="string", nullable=true)
      */
     protected $google_id;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="twitter_id", type="string", nullable=true)
      */
     protected $twitter_id;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Organization", inversedBy="usersOrganization", cascade={"persist", "merge"})
+     * @ORM\JoinTable(name="Users_Organization",
+     *   joinColumns={@ORM\JoinColumn(name="User_id", referencedColumnName="id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="Organization_id", referencedColumnName="id")}
+     * )
+     */
+    protected $organizations;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="BrainStrategist\ProjectBundle\Entity\Project", inversedBy="usersProject", cascade={"persist", "merge"})
+     * @ORM\JoinTable(name="Users_Project",
+     *   joinColumns={@ORM\JoinColumn(name="User_id", referencedColumnName="id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="Project_id", referencedColumnName="id")}
+     * )
+     */
+    protected $projects;
 
     public function __construct()
     {
@@ -165,27 +202,147 @@ class User extends BaseUser
         return $this->profilePicture;
     }
 
+
     /**
-     * Set nom
+     * Set firstName
      *
-     * @param string $nom
+     * @param string $firstName
      *
      * @return User
      */
-    public function setNom($nom)
+    public function setFirstName($firstName)
     {
-        $this->nom = $nom;
+        $this->first_name = $firstName;
 
         return $this;
     }
 
     /**
-     * Get nom
+     * Get firstName
      *
      * @return string
      */
-    public function getNom()
+    public function getFirstName()
     {
-        return $this->nom;
+        return $this->first_name;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     *
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->last_name = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->last_name;
+    }
+
+
+    /**
+     * Set organization
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Organization $organization
+     *
+     * @return User
+     */
+    public function setOrganization(\BrainStrategist\KernelBundle\Entity\Organization $organization = null)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Get organization
+     *
+     * @return \BrainStrategist\KernelBundle\Entity\Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * Add organization
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Organization $organization
+     *
+     * @return User
+     */
+    public function addOrganization(\BrainStrategist\KernelBundle\Entity\Organization $organization)
+    {
+        $this->organizations[] = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Remove organization
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Organization $organization
+     */
+    public function removeOrganization(\BrainStrategist\KernelBundle\Entity\Organization $organization)
+    {
+        $this->organizations->removeElement($organization);
+    }
+
+    /**
+     * Get organizations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrganizations()
+    {
+        return $this->organizations;
+    }
+
+
+
+    /**
+     * Add project
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Project $project
+     *
+     * @return User
+     */
+    public function addProject(\BrainStrategist\ProjectBundle\Entity\Project $project)
+    {
+        $this->projects[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Project $project
+     */
+    public function removeProject(\BrainStrategist\ProjectBundle\Entity\Project $project)
+    {
+        $this->projects->removeElement($project);
+    }
+
+    /**
+     * Get projects
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjects()
+    {
+        return $this->projects;
     }
 }
