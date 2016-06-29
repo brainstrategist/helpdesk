@@ -5,8 +5,32 @@
 {% endblock %}
 {% block body %}
     <div class="col-md-6">
+        {% if picture is defined %}
+            {% if file_exists(asset(full_organization_directory~'/'~picture)) %}
+               <div class="cover-picture-form">
+                   <img src="{{ asset(organization_directory~'/'~picture)| imagine_filter('my_thumb') }}" />
+               </div>
+            {% endif %}
+        {% endif %}
         {{ form_start(form, {'method': 'post'}) }}
-        {{ form_widget(form) }}
+        {#{{ form_widget(form) }}#}
+        {{ form_errors(form) }}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                <fieldset class="form-group">
+                    {% if  child.vars.name != "_token" and child.vars.name != "isActive" %}
+                        {{ form_label(child) }}
+                    {% endif %}
+                    {{ form_widget(child) }}
+                    {% if  child.vars.name == "isActive" %}
+                        <label for="{{ child.vars.id }}"></label>
+                        <span>Active / Inactive</span>
+                    {% endif %}
+                </fieldset>
+            {% endfor %}
+        </div>
+
+        <br/>
         <div>
             <a href={{ path('default') }} class="btn btn-secondary" >Cancel</a>  &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'submit'|trans }}" />
         </div>

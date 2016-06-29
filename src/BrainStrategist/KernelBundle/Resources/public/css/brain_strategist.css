@@ -5,9 +5,9 @@ body .btn-primary {
   background: #593590;
   border-color: #593590;
 }
-body .btn-primary:hover {
+body .btn-primary:hover, body .btn-primary:active {
   background: #8b65c6;
-  border: 1px solid #593590;
+  border: 1px solid #8b65c6;
 }
 body .btn-secondary {
   border: 1px solid #593590;
@@ -81,6 +81,9 @@ body .brainstrategist_logo {
   position: absolute;
   top: -400px;
   left: 0;
+}
+body .cover-picture-form {
+  margin-bottom: 10px;
 }
 
 /**

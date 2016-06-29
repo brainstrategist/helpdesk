@@ -10,7 +10,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use Symfony\Component\HttpFoundation\File\File;
 
 
 class OrganizationController extends Controller
@@ -34,6 +34,8 @@ class OrganizationController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
 
             if(isset($id)){
+
+
                 $breadcrumbs->addItem( $this->get('translator')->trans("Edit"));
                 // check if it is an edition screen to
                 // retrive my shooting only if it is mine.
@@ -42,6 +44,15 @@ class OrganizationController extends Controller
                 if($organizationEntity->isMyOrganization($id,$currentUser->getId())){
                     $organization = $organizationEntity->find($id);
                     $form = $this->createForm(OrganizationForm::class,$organization);
+
+                    if(!is_null($organization->getPicture()) &&$organization->getPicture()!="" ){
+                        $params['picture'] = $organization->getPicture();
+                        $organization->setPicture(
+                            new File($this->getParameter('full_organization_directory').'/'.$organization->getPicture())
+                        );
+                    }
+
+
                 }else{
                     return $this->redirectToRoute("default");
                 }
@@ -56,23 +67,23 @@ class OrganizationController extends Controller
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
 
-                    // $file stores the uploaded PDF file
                     /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
                     $file = $organization->getPicture();
 
-                    // Generate a unique name for the file before saving it
-                    $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                    if(!is_null($organization->getPicture()) &&$organization->getPicture()!="" ){
 
-                    // Move the file to the directory where brochures are stored
-                    $file->move(
-                        $this->container->getParameter('full_organization_directory'),
-                        $fileName
-                    );
+                       // Generate a unique name for the file before saving it
+                       $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-                    // Update the 'brochure' property to store the PDF file name
-                    // instead of its contents
-                    $organization->setPicture($fileName);
-
+                       // Move the file to the directory where brochures are stored
+                       $file->move(
+                           $this->container->getParameter('full_organization_directory'),
+                           $fileName
+                       );
+                       // Update the 'brochure' property to store the PDF file name
+                       // instead of its contents
+                       $organization->setPicture($fileName);
+                    }
                     $response = $form->getData();
                     $em->persist($organization);
                     $em->persist($response);

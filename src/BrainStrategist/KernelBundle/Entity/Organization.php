@@ -66,9 +66,8 @@ class Organization
     private $creator;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
-     * @Assert\NotBlank(message="Please, upload the profil picture as a JPEG file.")
      * @Assert\File(mimeTypes={ "image/jpeg" })
      */
     private $picture;
@@ -288,9 +287,12 @@ class Organization
      */
     public function setPicture($picture)
     {
-        $this->picture = $picture;
+        if($picture !== null) {
+            $this->picture = $picture;
 
-        return $this;
+            return $this;
+        }
+
     }
 
     /**
