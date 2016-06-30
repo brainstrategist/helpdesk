@@ -21,7 +21,6 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
                 ->leftJoin('o.creator', 'uc')
                 ->addSelect('uo')
                 ->addSelect('uc')
-                ->where('o.isActive = 1')
                 ->andWhere('uo.id = :user')
                 ->setParameter('user',$userID)
                 ->setMaxResults($limit)
