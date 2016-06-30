@@ -10,13 +10,17 @@ parameters:
     web_path: '%kernel.root_dir%/../web'
     organization_directory: '/uploads/organization'
     full_organization_directory: '%kernel.root_dir%/../web%organization_directory%'
-
+    project_directory: '/uploads/project'
+    full_project_directory: '%kernel.root_dir%/../web%project_directory%'
 
 twig:
     globals:
         web_path: '%web_path%'
         organization_directory: '%organization_directory%'
         full_organization_directory: '%full_organization_directory%'
+        project_directory: '%project_directory%'
+        full_project_directory: '%full_project_directory%'
+
 
 assetic:
     debug:          '%kernel.debug%'

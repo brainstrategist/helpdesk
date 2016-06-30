@@ -9,6 +9,7 @@ use BrainStrategist\KernelBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
 use BrainStrategist\KernelBundle\Entity;
 
 class DefaultController extends Controller
@@ -42,6 +43,14 @@ class DefaultController extends Controller
                 if($organizationEntity->isMyOrganization($id,$currentUser->getId())){
                     $project = $projectEntity->find($id);
                     $form = $this->createForm(ProjectForm::class,$project);
+
+                    if(!is_null($project->getPicture()) &&$project->getPicture()!="" ){
+                        $params['picture'] = $project->getPicture();
+                        $project->setPicture(
+                            new File($this->getParameter('full_project_directory').'/'.$project->getPicture())
+                        );
+                    }
+
                 }else{
                     return $this->redirectToRoute("default");
                 }
@@ -56,7 +65,24 @@ class DefaultController extends Controller
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
 
+                    /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+                    $file = $project->getPicture();
+
+                    if(!is_null($project->getPicture()) && $project->getPicture()!="" ){
+                        // Generate a unique name for the file before saving it
+                        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+                        // Move the file to the directory where brochures are stored
+                        $file->move(
+                            $this->container->getParameter('full_project_directory'),
+                            $fileName
+                        );
+                        // Update the 'brochure' property to store the PDF file name
+                        // instead of its contents
+                        $project->setPicture($fileName);
+                    }
                     $response = $form->getData();
+                    $em->persist($project);
                     $em->persist($response);
                     $em->flush();
 
@@ -87,5 +113,15 @@ class DefaultController extends Controller
             return $this->redirectToRoute("fos_user_security_login",array("type"=>"all"));
         }
 
+    }
+
+    /**
+     * @Route("/{_locale}/project/{slug}/dashboard",name="project_access")
+     */
+    public function accessAction(Request $request,$slug=null){
+        return $this->render(
+            'BrainStrategistProjectBundle:Project:access.html.twig',
+            $params
+        );
     }
 }

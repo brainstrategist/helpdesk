@@ -45,7 +45,7 @@ class OrganizationController extends Controller
                     $organization = $organizationEntity->find($id);
                     $form = $this->createForm(OrganizationForm::class,$organization);
 
-                    if(!is_null($organization->getPicture()) &&$organization->getPicture()!="" ){
+                    if(!is_null($organization->getPicture()) && $organization->getPicture()!="" ){
                         $params['picture'] = $organization->getPicture();
                         $organization->setPicture(
                             new File($this->getParameter('full_organization_directory').'/'.$organization->getPicture())
@@ -70,7 +70,7 @@ class OrganizationController extends Controller
                     /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
                     $file = $organization->getPicture();
 
-                    if(!is_null($organization->getPicture()) &&$organization->getPicture()!="" ){
+                    if(!is_null($organization->getPicture()) && $organization->getPicture()!="" ){
 
                        // Generate a unique name for the file before saving it
                        $fileName = md5(uniqid()).'.'.$file->guessExtension();

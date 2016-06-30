@@ -4,6 +4,7 @@ namespace BrainStrategist\ProjectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Project
@@ -69,6 +70,13 @@ class Project
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
      */
     private $organization;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Assert\File(mimeTypes={ "image/jpeg" })
+     */
+    private $picture;
 
     /**
      * Constructor
@@ -183,5 +191,86 @@ class Project
     {
         return $this->dateCreation;
     }
-}
 
+    /**
+     * Add usersProject
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $usersProject
+     *
+     * @return Project
+     */
+    public function addUsersProject(\BrainStrategist\KernelBundle\Entity\User $usersProject)
+    {
+        $this->usersProject[] = $usersProject;
+
+        return $this;
+    }
+
+    /**
+     * Remove usersProject
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $usersProject
+     */
+    public function removeUsersProject(\BrainStrategist\KernelBundle\Entity\User $usersProject)
+    {
+        $this->usersProject->removeElement($usersProject);
+    }
+
+    /**
+     * Get usersProject
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsersProject()
+    {
+        return $this->usersProject;
+    }
+
+    /**
+     * Set creator
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $creator
+     *
+     * @return Project
+     */
+    public function setCreator(\BrainStrategist\KernelBundle\Entity\User $creator = null)
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get creator
+     *
+     * @return \BrainStrategist\KernelBundle\Entity\User
+     */
+    public function getCreator()
+    {
+        return $this->creator;
+    }
+
+    /**
+     * Set organization
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Organization $organization
+     *
+     * @return Project
+     */
+    public function setOrganization(\BrainStrategist\KernelBundle\Entity\Organization $organization = null)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Get organization
+     *
+     * @return \BrainStrategist\KernelBundle\Entity\Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+}
