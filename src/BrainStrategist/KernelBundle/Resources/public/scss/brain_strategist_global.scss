@@ -6,9 +6,9 @@ body{
 	.btn-primary{
 	  background:color('primary');
 	  border-color: color('secondary');
-	  &:hover{
+	  &:hover,&:active{
 		background:light_color('primary');
-		border: 1px solid color('secondary');
+		border: 1px solid light_color('secondary');
 	  }
 	}
 	.btn-secondary{
@@ -93,6 +93,9 @@ body{
 	position: absolute;
 	top: -400px;
 	left: 0;
+  }
+  .cover-picture-form{
+	margin-bottom: 10px;
   }
 }
 

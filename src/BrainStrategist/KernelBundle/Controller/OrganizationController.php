@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\File\File;
 
 
+
 class OrganizationController extends Controller
 {
     /**
@@ -34,8 +35,6 @@ class OrganizationController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
 
             if(isset($id)){
-
-
                 $breadcrumbs->addItem( $this->get('translator')->trans("Edit"));
                 // check if it is an edition screen to
                 // retrive my shooting only if it is mine.
@@ -45,7 +44,7 @@ class OrganizationController extends Controller
                     $organization = $organizationEntity->find($id);
                     $form = $this->createForm(OrganizationForm::class,$organization);
 
-                    if(!is_null($organization->getPicture()) &&$organization->getPicture()!="" ){
+                    if(!is_null($organization->getPicture()) && $organization->getPicture()!="" ){
                         $params['picture'] = $organization->getPicture();
                         $organization->setPicture(
                             new File($this->getParameter('full_organization_directory').'/'.$organization->getPicture())
@@ -67,10 +66,11 @@ class OrganizationController extends Controller
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
 
+                    // $file stores the uploaded PDF file
                     /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
                     $file = $organization->getPicture();
 
-                    if(!is_null($organization->getPicture()) &&$organization->getPicture()!="" ){
+                    if(!is_null($organization->getPicture()) && $organization->getPicture()!="" ){
 
                        // Generate a unique name for the file before saving it
                        $fileName = md5(uniqid()).'.'.$file->guessExtension();
