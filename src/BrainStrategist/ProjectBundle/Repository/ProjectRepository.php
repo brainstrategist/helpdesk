@@ -21,7 +21,6 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
                 ->leftJoin('p.creator', 'pc')
                 ->addSelect('up')
                 ->addSelect('pc')
-                ->where('p.isActive = 1')
                 ->andWhere('up.id = :user')
                 ->setParameter('user',$userID)
                 ->setMaxResults($limit)
@@ -44,7 +43,6 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
                 ->leftJoin('p.creator', 'pc')
                 ->addSelect('up')
                 ->addSelect('pc')
-                ->where('p.isActive = 1')
                 ->andWhere('up.id = :user')
                 ->andWhere('p.organization = :organization')
                 ->setParameter('user',$userID)
@@ -60,16 +58,23 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /* check if current shooting is mine */
-    public function isMyProject($id=null,$currentUser=null){
+    public function isMyProject($obj=null,$currentUser=null){
 
         $q= $this->createQueryBuilder('p')
-            ->leftJoin('o.usersProject', 'up')
+            ->leftJoin('p.usersProject', 'up')
+            ->leftJoin('p.organization', 'o')
             ->addSelect('up')
-            ->where('p.id = :id')->setParameter('id', $id);
+            ->addSelect('o');
+
+        if(is_numeric($obj)){
+            $q->where('p.id = :id')->setParameter('id', $obj);
+        }else{
+            $q->where('p.slug = :slug')->setParameter('slug', $obj);
+        }
         $req =  $q->getQuery();
         $res = $req->getArrayResult();
 
-        if(isset($currentUser)){
+        if(isset($currentUser) && sizeof($res)>0){
             foreach($res[0]["usersProject"] as $r){
 
                 if($r['id']==$currentUser)

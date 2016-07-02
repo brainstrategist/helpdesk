@@ -2,17 +2,19 @@
 
 namespace BrainStrategist\ProjectBundle\Controller;
 
+use BrainStrategist\KernelBundle\Entity\Organization;
 use BrainStrategist\ProjectBundle\Entity\Project;
+use BrainStrategist\ProjectBundle\Entity\Ticket;
 use BrainStrategist\ProjectBundle\Form\ProjectForm;
 use BrainStrategist\KernelBundle\Entity\User;
 
+use BrainStrategist\ProjectBundle\Form\TicketForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\File\File;
-use BrainStrategist\KernelBundle\Entity;
 
-class DefaultController extends Controller
+class ProjectController extends Controller
 {
     /**
      * @Route("/{_locale}/organization/{slug}/project/create",name="project_create")
@@ -32,8 +34,9 @@ class DefaultController extends Controller
             $params=array();
             $request = $this->container->get('request_stack')->getCurrentRequest();
             $em = $this->getDoctrine()->getEntityManager();
-            $organizationEntity= $em->getRepository("BrainStrategistKernelBundle:Organization");
-            $projectEntity= $em->getRepository("BrainStrategistProjectBundle:Project");
+
+            $organizationEntity = $em->getRepository("BrainStrategistKernelBundle:Organization");
+            $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
 
             if(isset($id) && isset($slug)){
                 $breadcrumbs->addItem( $this->get('translator')->trans("Edit"));
@@ -41,10 +44,11 @@ class DefaultController extends Controller
                 // retrive my shooting only if it is mine.
 
                 if($organizationEntity->isMyOrganization($id,$currentUser->getId())){
+
                     $project = $projectEntity->find($id);
                     $form = $this->createForm(ProjectForm::class,$project);
 
-                    if(!is_null($project->getPicture()) &&$project->getPicture()!="" ){
+                    if(!is_null($project->getPicture()) && $project->getPicture()!="" ){
                         $params['picture'] = $project->getPicture();
                         $project->setPicture(
                             new File($this->getParameter('full_project_directory').'/'.$project->getPicture())
@@ -92,8 +96,11 @@ class DefaultController extends Controller
                         $project->addUsersProject($currentUser);
                         $project->setCreator($currentUser);
                         $project->setOrganization($organization);
+                        $organization->addProjectsOrganization($project);
                         $currentUser->addProject($project);
+
                         $em->persist($project);
+                        $em->persist($organization);
                         $em->persist($currentUser);
                         $em->flush();
                     }
@@ -119,6 +126,41 @@ class DefaultController extends Controller
      * @Route("/{_locale}/project/{slug}/dashboard",name="project_access")
      */
     public function accessAction(Request $request,$slug=null){
+
+        $breadcrumbs = $this->get("white_october_breadcrumbs");
+        $breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
+        $breadcrumbs->addItem( $this->get('translator')->trans("Organizations"), $this->get("router")->generate("kernel"));
+        $breadcrumbs->addItem( $this->get('translator')->trans("Projects"), $this->get("router")->generate("organize_access",array("slug"=>$slug)));
+
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+        if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
+
+            $params=array();
+            $request = $this->container->get('request_stack')->getCurrentRequest();
+            $em = $this->getDoctrine()->getEntityManager();
+
+            $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+
+
+            if(isset($slug)) {
+
+                if ($projectEntity->isMyProject($slug, $currentUser->getId())) {
+                    $project = $projectEntity->findOneBySlug($slug);
+                    $params['project'] = $project;
+                    $organizationEntity = $em->getRepository("BrainStrategistKernelBundle:Organization");
+                    $organization = $organizationEntity->find($project->getOrganization()->getId());
+                    $params['organization'] = $organization;
+
+                    $ticket= new Ticket();
+                    $form = $this->createForm(TicketForm::class,$ticket);
+                    $params = array_merge($params,
+                        array(
+                            "form" => $form->createView(),
+                        ));
+                }
+            }
+        }
+
         return $this->render(
             'BrainStrategistProjectBundle:Project:access.html.twig',
             $params

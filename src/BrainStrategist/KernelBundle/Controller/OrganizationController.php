@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\File\File;
 
 
+
 class OrganizationController extends Controller
 {
     /**
@@ -34,11 +35,8 @@ class OrganizationController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
 
             if(isset($id)){
-
-
                 $breadcrumbs->addItem( $this->get('translator')->trans("Edit"));
-                // check if it is an edition screen to
-                // retrive my shooting only if it is mine.
+
                 $organizationEntity= $em->getRepository("BrainStrategistKernelBundle:Organization");
 
                 if($organizationEntity->isMyOrganization($id,$currentUser->getId())){
@@ -67,6 +65,7 @@ class OrganizationController extends Controller
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
 
+                    // $file stores the uploaded PDF file
                     /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
                     $file = $organization->getPicture();
 
@@ -75,13 +74,11 @@ class OrganizationController extends Controller
                        // Generate a unique name for the file before saving it
                        $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-                       // Move the file to the directory where brochures are stored
                        $file->move(
                            $this->container->getParameter('full_organization_directory'),
                            $fileName
                        );
-                       // Update the 'brochure' property to store the PDF file name
-                       // instead of its contents
+
                        $organization->setPicture($fileName);
                     }
                     $response = $form->getData();

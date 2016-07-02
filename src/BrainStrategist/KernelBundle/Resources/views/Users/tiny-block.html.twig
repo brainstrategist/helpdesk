@@ -1,0 +1,8 @@
+<div class="user_tiny_block">
+    {% if file_exists(asset(full_project_directory~'/'~user.profilePicture)) %}
+        <div class="picture-cover"><img src="{{ asset(project_directory~'/'~user.profilePicture)| imagine_filter('my_thumb') }}" /></div>
+    {% else %}
+        <div class="picture-cover bg-grey" style="background-image: url({{ asset('assets/images/brain-logo-small.png')| imagine_filter('my_thumb') }});"></div>
+    {% endif %}
+    <b><a href="mailto:{{ user.email }}">@{{ user.username }}</a> </b>
+</div>
