@@ -36,7 +36,12 @@ class OrganizationController extends Controller
 
             if(isset($id)){
                 $breadcrumbs->addItem( $this->get('translator')->trans("Edit"));
+<<<<<<< HEAD
 
+=======
+                // check if it is an edition screen to
+                // retrive my shooting only if it is mine.
+>>>>>>> 9744836f48e01aed85810e566a68da6d13645931
                 $organizationEntity= $em->getRepository("BrainStrategistKernelBundle:Organization");
 
                 if($organizationEntity->isMyOrganization($id,$currentUser->getId())){
@@ -74,11 +79,20 @@ class OrganizationController extends Controller
                        // Generate a unique name for the file before saving it
                        $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
+<<<<<<< HEAD
+=======
+                       // Move the file to the directory where brochures are stored
+>>>>>>> 9744836f48e01aed85810e566a68da6d13645931
                        $file->move(
                            $this->container->getParameter('full_organization_directory'),
                            $fileName
                        );
+<<<<<<< HEAD
 
+=======
+                       // Update the 'brochure' property to store the PDF file name
+                       // instead of its contents
+>>>>>>> 9744836f48e01aed85810e566a68da6d13645931
                        $organization->setPicture($fileName);
                     }
                     $response = $form->getData();

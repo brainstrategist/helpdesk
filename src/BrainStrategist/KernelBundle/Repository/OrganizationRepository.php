@@ -49,7 +49,11 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
         $req =  $q->getQuery();
         $res = $req->getArrayResult();
 
+<<<<<<< HEAD
         if(isset($currentUser) && sizeof($res)>0){
+=======
+        if(isset($currentUser)){
+>>>>>>> 9744836f48e01aed85810e566a68da6d13645931
             foreach($res[0]["usersOrganization"] as $r){
 
                 if($r['id']==$currentUser)
