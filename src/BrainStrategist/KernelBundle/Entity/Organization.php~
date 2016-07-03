@@ -60,15 +60,21 @@ class Organization
     protected $usersOrganization;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="BrainStrategist\ProjectBundle\Entity\Project", mappedBy="organization", cascade={"persist", "merge"})
+     */
+    protected $projectsOrganization;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      */
     private $creator;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
-     * @Assert\NotBlank(message="Please, upload the profil picture as a JPEG file.")
      * @Assert\File(mimeTypes={ "image/jpeg" })
      */
     private $picture;
@@ -277,5 +283,43 @@ class Organization
     public function getCreator()
     {
         return $this->creator;
+    }
+
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     *
+     * @return Organization
+     */
+    public function setPicture($picture)
+    {
+        if($picture !== null) {
+            $this->picture = $picture;
+
+            return $this;
+        }
+
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+
+    /**
+     * Get projectsOrganization
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjectsOrganization()
+    {
+        return $this->projectsOrganization;
     }
 }

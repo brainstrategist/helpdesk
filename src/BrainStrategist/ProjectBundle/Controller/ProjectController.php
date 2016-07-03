@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\File\File;
+use BrainStrategist\KernelBundle\Entity;
 
 class ProjectController extends Controller
 {
@@ -34,9 +35,8 @@ class ProjectController extends Controller
             $params=array();
             $request = $this->container->get('request_stack')->getCurrentRequest();
             $em = $this->getDoctrine()->getEntityManager();
-
-            $organizationEntity = $em->getRepository("BrainStrategistKernelBundle:Organization");
-            $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+            $organizationEntity= $em->getRepository("BrainStrategistKernelBundle:Organization");
+            $projectEntity= $em->getRepository("BrainStrategistProjectBundle:Project");
 
             if(isset($id) && isset($slug)){
                 $breadcrumbs->addItem( $this->get('translator')->trans("Edit"));
