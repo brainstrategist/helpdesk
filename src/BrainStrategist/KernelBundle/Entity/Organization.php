@@ -60,6 +60,13 @@ class Organization
     protected $usersOrganization;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="BrainStrategist\ProjectBundle\Entity\Project", mappedBy="organization", cascade={"persist", "merge"})
+     */
+    protected $projectsOrganization;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      */
@@ -303,5 +310,40 @@ class Organization
     public function getPicture()
     {
         return $this->picture;
+    }
+
+
+    /**
+     * Get projectsOrganization
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjectsOrganization()
+    {
+        return $this->projectsOrganization;
+    }
+
+    /**
+     * Add projectsOrganization
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Project $projectsOrganization
+     *
+     * @return Organization
+     */
+    public function addProjectsOrganization(\BrainStrategist\ProjectBundle\Entity\Project $projectsOrganization)
+    {
+        $this->projectsOrganization[] = $projectsOrganization;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectsOrganization
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Project $projectsOrganization
+     */
+    public function removeProjectsOrganization(\BrainStrategist\ProjectBundle\Entity\Project $projectsOrganization)
+    {
+        $this->projectsOrganization->removeElement($projectsOrganization);
     }
 }

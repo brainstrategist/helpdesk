@@ -29,7 +29,7 @@
                           <td>
                           <div class="col-md-2">
                           {% if file_exists(asset(full_organization_directory~'/'~organization.picture)) %}
-                            <img src="{{ asset(organization_directory~'/'~organization.picture)| imagine_filter('my_thumb') }}" /><br/>
+                             <div class="picture-cover"><img src="{{ asset(organization_directory~'/'~organization.picture)| imagine_filter('my_thumb') }}" /></div><br/>
                           {% endif %}
                           </div>
                           <div class="col-md-10">

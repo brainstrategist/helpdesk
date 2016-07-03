@@ -59,14 +59,20 @@ class Project
     protected $usersProject;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\oneToMany(targetEntity="Ticket", mappedBy="projet", cascade={"persist", "merge"})
+     */
+    private $projectTickets;
+
+    /**
      * @ORM\ManyToOne(targetEntity="BrainStrategist\KernelBundle\Entity\User")
      * @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      */
     private $creator;
 
-
     /**
-     * @ORM\ManyToOne(targetEntity="BrainStrategist\KernelBundle\Entity\Organization")
+     * @ORM\ManyToOne(targetEntity="BrainStrategist\KernelBundle\Entity\Organization", inversedBy="projectsOrganization")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
      */
     private $organization;
@@ -283,9 +289,11 @@ class Project
      */
     public function setPicture($picture)
     {
-        $this->picture = $picture;
+        if($picture !== null) {
+            $this->picture = $picture;
 
-        return $this;
+            return $this;
+        }
     }
 
     /**
@@ -296,5 +304,39 @@ class Project
     public function getPicture()
     {
         return $this->picture;
+    }
+
+    /**
+     * Add projectTicket
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket $projectTicket
+     *
+     * @return Project
+     */
+    public function addProjectTicket(\BrainStrategist\ProjectBundle\Entity\Ticket $projectTicket)
+    {
+        $this->projectTickets[] = $projectTicket;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectTicket
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket $projectTicket
+     */
+    public function removeProjectTicket(\BrainStrategist\ProjectBundle\Entity\Ticket $projectTicket)
+    {
+        $this->projectTickets->removeElement($projectTicket);
+    }
+
+    /**
+     * Get projectTickets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjectTickets()
+    {
+        return $this->projectTickets;
     }
 }

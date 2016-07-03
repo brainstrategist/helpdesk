@@ -36,8 +36,7 @@ class OrganizationController extends Controller
 
             if(isset($id)){
                 $breadcrumbs->addItem( $this->get('translator')->trans("Edit"));
-                // check if it is an edition screen to
-                // retrive my shooting only if it is mine.
+
                 $organizationEntity= $em->getRepository("BrainStrategistKernelBundle:Organization");
 
                 if($organizationEntity->isMyOrganization($id,$currentUser->getId())){
