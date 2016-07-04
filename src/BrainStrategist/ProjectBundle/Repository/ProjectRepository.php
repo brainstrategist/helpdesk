@@ -32,7 +32,7 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
         }
         return false;
     }
-
+    
     public function getProjectsByOrganization($params=array('limit'=>100,'offset'=>0)){
         extract($params);
 

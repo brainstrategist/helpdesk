@@ -9,8 +9,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="BrainStrategist\KernelBundle\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
+ *
  */
 class User extends BaseUser
 {
