@@ -4,6 +4,7 @@ namespace BrainStrategist\ProjectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Project
@@ -69,6 +70,13 @@ class Project
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
      */
     private $organization;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Assert\File(mimeTypes={ "image/jpeg" })
+     */
+    private $picture;
 
     /**
      * Constructor
@@ -264,5 +272,29 @@ class Project
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     *
+     * @return Project
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
     }
 }

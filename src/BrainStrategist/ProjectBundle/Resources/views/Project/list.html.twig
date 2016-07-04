@@ -5,33 +5,37 @@
     <table class="table table-striped">
         <thead class="dark-head-thead">
         <tr>
-            <th>#</th>
             <th>Name</th>
-            <th>Slug</th>
             <th>Active</th>
-            <th>Date creation</th>
-            <th>Creator</th>
-            <th>Action</th>
         </tr>
         </thead>
         {% for project in listProjects %}
         <tbody>
         <tr>
-            <th scope="row">{{ project.id }} </th>
-            <td>{{ project.name }}</td>
-            <td>{{ project.slug }}</td>
-            <td>{{ project.isActive }}</td>
-            <td>{{ project.dateCreation|date("m/d/Y")}}</td>
             <td>
-                {% if project.creator|length > 0 %}
-                    {{ project.creator.username }}
-                {% else %}
-                    -
-                {% endif %}
+                <div class="col-md-2">
+                    {% if file_exists(asset(full_project_directory~'/'~project.picture)) %}
+                        <img src="{{ asset(project_directory~'/'~project.picture)| imagine_filter('my_thumb') }}" /><br/>
+                    {% endif %}
+                </div>
+                <div class="col-md-10">
+                    <b><a href={{ path('project_access', { 'slug': project.slug }) }}>{{ project.name }}</a></b>
+                    <br/>
+                    <small>Created the {{ project.dateCreation|date("m/d/Y")}}
+                        {% if project.creator|length > 0 %}
+                            by {{ project.creator.username }}
+                        {% endif %}
+                    </small>
+                    <br>
+                    <small>{{ project.usersOrganization|length }} member(s) in this project</small>
+                    <br/>
+                    <a href={{ path('project_edit', { 'id': project.id, 'slug':organization.slug }) }} class="btn btn-primary btn-sm" >Edit</a>
             </td>
             <td>
-                <a href={{ path('project_edit', { 'id': project.id, 'slug':organization.slug }) }} class="btn btn-primary" >Edit</a>
-                <a href="#" class="btn btn-primary" >Access</a>
+                <div class="switch">
+                    <input id="cmn-toggle-{{ project.id}}" class="cmn-toggle cmn-toggle-round" type="checkbox" {% if project.isActive == 1 %} checked="checked"{% endif %} disabled />
+                    <label for="cmn-toggle-{{ project.id}}"></label>
+                </div>
             </td>
         </tr>
         {% endfor %}
