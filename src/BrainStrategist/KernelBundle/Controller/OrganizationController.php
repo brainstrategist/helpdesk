@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\File\File;
 
 
+
 class OrganizationController extends Controller
 {
     /**
@@ -37,8 +38,7 @@ class OrganizationController extends Controller
 
 
                 $breadcrumbs->addItem( $this->get('translator')->trans("Edit"));
-                // check if it is an edition screen to
-                // retrive my shooting only if it is mine.
+
                 $organizationEntity= $em->getRepository("BrainStrategistKernelBundle:Organization");
 
                 if($organizationEntity->isMyOrganization($id,$currentUser->getId())){
@@ -67,6 +67,7 @@ class OrganizationController extends Controller
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
 
+                    // $file stores the uploaded PDF file
                     /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
                     $file = $organization->getPicture();
 

@@ -8413,6 +8413,50 @@ body .brainstrategist_logo {
 body .cover-picture-form {
   margin-bottom: 10px;
 }
+body .picture-cover {
+  width: 90px;
+  height: 90px;
+  border-radius: 90px;
+  -webkit-border-radius: 90px;
+  -moz-border-radius: 90px;
+  overflow: hidden;
+}
+body .picture-cover.bg-grey {
+  background: #bdbdbd;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 40%;
+}
+body.project_access h1 {
+  margin: 0;
+  font-size: 22px;
+}
+body.project_access table tr td .picture-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 60px;
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+}
+body.project_access table tr td .picture-cover img {
+  width: auto;
+  height: 60px;
+}
+body.project_access .left-bar h5 {
+  text-align: center;
+}
+body.project_access .left-bar .users_projects {
+  list-style-type: none;
+}
+body.project_access .left-bar .users_projects li {
+  display: inline-block;
+  max-width: 100px;
+}
+body.project_access .left-bar .users_projects li b {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
 
 /**
    IMPORT RESPONSIVE DESIGN SCSS DIRECTIVES

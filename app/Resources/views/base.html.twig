@@ -4,10 +4,11 @@
         <meta charset="UTF-8" />
         <title>{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+        {% block additionnalScripts %}{% endblock %}
         <link rel="stylesheet" href="{{ asset('assets/css/brain_strategist_compiled.min.css') }}" />
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body>
+    <body class="{{ app.request.attributes.get('_route')}}">
     {{ include('::header.html.twig') }}
     {% if app.request.attributes.get('_route') == "default" and not is_granted('IS_AUTHENTICATED_FULLY') %}
         {{ include('BrainStrategistKernelBundle:Default:carousel_home.html.twig') }}

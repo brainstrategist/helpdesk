@@ -1,12 +1,15 @@
-
-
 <br/>
 {% if  listProjects|length > 0 %}
     <table class="table table-striped">
         <thead class="dark-head-thead">
         <tr>
+            <th>#</th>
             <th>Name</th>
+            <th>Slug</th>
             <th>Active</th>
+            <th>Date creation</th>
+            <th>Creator</th>
+            <th>Action</th>
         </tr>
         </thead>
         {% for project in listProjects %}
@@ -15,7 +18,7 @@
             <td>
                 <div class="col-md-2">
                     {% if file_exists(asset(full_project_directory~'/'~project.picture)) %}
-                        <img src="{{ asset(project_directory~'/'~project.picture)| imagine_filter('my_thumb') }}" /><br/>
+                        <div class="picture-cover"><a href={{ path('project_access', { 'slug': project.slug }) }}><img src="{{ asset(project_directory~'/'~project.picture)| imagine_filter('my_thumb') }}" /></a></div><br/>
                     {% endif %}
                 </div>
                 <div class="col-md-10">

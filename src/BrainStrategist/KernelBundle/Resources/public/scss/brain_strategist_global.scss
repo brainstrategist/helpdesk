@@ -97,6 +97,65 @@ body{
   .cover-picture-form{
 	margin-bottom: 10px;
   }
+
+  .picture-cover{
+	width: 90px;
+	height: 90px;
+	border-radius: 90px;
+	-webkit-border-radius: 90px;
+	-moz-border-radius: 90px;
+	overflow: hidden;
+
+	&.bg-grey{
+	  background: #bdbdbd;
+	  background-repeat: no-repeat;
+	  background-position: center center;
+	  background-size: 40%;
+	}
+  }
+  &.project_access{
+
+	h1{
+	  margin:0;
+	  font-size: 22px;
+	}
+	table{
+	  tr{
+		td{
+		  .picture-cover{
+			width: 60px;
+			height: 60px;
+			border-radius: 60px;
+			-webkit-border-radius: 60px;
+			-moz-border-radius: 60px;
+
+			img{
+			  width: auto;
+			  height: 60px;
+			}
+		  }
+		}
+	  }
+	}
+	.left-bar{
+	  h5{
+		text-align: center;
+	  }
+	  .users_projects{
+		list-style-type: none;
+		li{
+		  display: inline-block;
+		  max-width: 100px;
+		  b{
+			display: block;
+			width: 100%;
+			text-align: center;
+		  }
+		}
+	  }
+
+	}
+  }
 }
 
 /**
