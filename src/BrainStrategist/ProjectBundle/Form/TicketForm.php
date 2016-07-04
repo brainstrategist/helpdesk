@@ -76,6 +76,18 @@ class TicketForm extends AbstractType
                     return $er->findAllByProjectId($this->option_id);
                 },
             ))
+            ->add('assigned_users', EntityType::class, array(
+                'class' => 'BrainStrategistKernelBundle:User',
+                'multiple'=>true,
+                'expanded'=>true,
+                'choice_label' => function ($user) {
+                    return $user;
+                },
+                'query_builder' => function (EntityRepository $er)
+                {
+                    return $er->getUsersByProjects(array('projectID' => $this->option_id, 'limit' =>  100));
+                },
+            ))
             ->add('category', EntityType::class, array(
                 'class' => 'BrainStrategistProjectBundle:Ticket_Category',
                 'choice_label' => function ($category) {
