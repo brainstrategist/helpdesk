@@ -78,6 +78,11 @@ class Project
     private $organization;
 
     /**
+     * @ORM\OneToMany(targetEntity="Severity", mappedBy="project")
+     */
+    private $severity_level;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\File(mimeTypes={ "image/jpeg" })
@@ -338,5 +343,39 @@ class Project
     public function getProjectTickets()
     {
         return $this->projectTickets;
+    }
+
+    /**
+     * Add severityLevel
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Severity $severityLevel
+     *
+     * @return Project
+     */
+    public function addSeverityLevel(\BrainStrategist\ProjectBundle\Entity\Severity $severityLevel)
+    {
+        $this->severity_level[] = $severityLevel;
+
+        return $this;
+    }
+
+    /**
+     * Remove severityLevel
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Severity $severityLevel
+     */
+    public function removeSeverityLevel(\BrainStrategist\ProjectBundle\Entity\Severity $severityLevel)
+    {
+        $this->severity_level->removeElement($severityLevel);
+    }
+
+    /**
+     * Get severityLevel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSeverityLevel()
+    {
+        return $this->severity_level;
     }
 }

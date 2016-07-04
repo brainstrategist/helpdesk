@@ -36,6 +36,21 @@ class Ticket_Comment
     private $dateComment;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Ticket", inversedBy="comments")
+     * @ORM\JoinColumn(name="ticket_id", referencedColumnName="id")
+     */
+    private $ticket;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="BrainStrategist\KernelBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user_comment;
+
+
+
+
+    /**
      * Get id
      *
      * @return int
@@ -91,5 +106,53 @@ class Ticket_Comment
     public function getDateComment()
     {
         return $this->dateComment;
+    }
+
+    /**
+     * Set ticket
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket $ticket
+     *
+     * @return Ticket_Comment
+     */
+    public function setTicket(\BrainStrategist\ProjectBundle\Entity\Ticket $ticket = null)
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Get ticket
+     *
+     * @return \BrainStrategist\ProjectBundle\Entity\Ticket
+     */
+    public function getTicket()
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Set userComment
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $userComment
+     *
+     * @return Ticket_Comment
+     */
+    public function setUserComment(\BrainStrategist\KernelBundle\Entity\User $userComment = null)
+    {
+        $this->user_comment = $userComment;
+
+        return $this;
+    }
+
+    /**
+     * Get userComment
+     *
+     * @return \BrainStrategist\KernelBundle\Entity\User
+     */
+    public function getUserComment()
+    {
+        return $this->user_comment;
     }
 }

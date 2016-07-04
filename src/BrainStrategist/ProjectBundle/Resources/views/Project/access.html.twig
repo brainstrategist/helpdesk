@@ -1,9 +1,21 @@
 {% extends 'base.html.twig' %}
 {% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}
+{% block additionnalScripts %}
+    <script src="{{ asset('extensions/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '.tinymce',
+            min_height: 400,
+            plugins: 'code codesample',
+            toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code codesample',
+        });
+    </script>
+{% endblock %}
 {% block stylesheets %}
 
 {% endblock %}
 {% block body %}
+
     <div class="col-md-12">
         <table>
             <tr>
@@ -53,4 +65,5 @@
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>
+
 {% endblock %}

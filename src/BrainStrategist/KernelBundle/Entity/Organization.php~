@@ -322,4 +322,28 @@ class Organization
     {
         return $this->projectsOrganization;
     }
+
+    /**
+     * Add projectsOrganization
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Project $projectsOrganization
+     *
+     * @return Organization
+     */
+    public function addProjectsOrganization(\BrainStrategist\ProjectBundle\Entity\Project $projectsOrganization)
+    {
+        $this->projectsOrganization[] = $projectsOrganization;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectsOrganization
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Project $projectsOrganization
+     */
+    public function removeProjectsOrganization(\BrainStrategist\ProjectBundle\Entity\Project $projectsOrganization)
+    {
+        $this->projectsOrganization->removeElement($projectsOrganization);
+    }
 }
