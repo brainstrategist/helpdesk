@@ -82,7 +82,7 @@ class User extends BaseUser
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Organization", inversedBy="usersOrganization", cascade={"persist", "merge"})
-     * @ORM\JoinTable(name="Users_Organization",
+     * @ORM\JoinTable(name="users_organization",
      *   joinColumns={@ORM\JoinColumn(name="User_id", referencedColumnName="id")},
      *   inverseJoinColumns={@ORM\JoinColumn(name="Organization_id", referencedColumnName="id")}
      * )
@@ -93,17 +93,24 @@ class User extends BaseUser
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="BrainStrategist\ProjectBundle\Entity\Project", inversedBy="usersProject", cascade={"persist", "merge"})
-     * @ORM\JoinTable(name="Users_Project",
+     * @ORM\JoinTable(name="users_project",
      *   joinColumns={@ORM\JoinColumn(name="User_id", referencedColumnName="id")},
      *   inverseJoinColumns={@ORM\JoinColumn(name="Project_id", referencedColumnName="id")}
      * )
      */
     protected $projects;
 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="BrainStrategist\ProjectBundle\Entity\Ticket", mappedBy="assigned_users")
+     */
+    private $user_tickets;
+
     public function __construct()
     {
         parent::__construct();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->user_tickets = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -344,5 +351,39 @@ class User extends BaseUser
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    /**
+     * Add userTicket
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket $userTicket
+     *
+     * @return User
+     */
+    public function addUserTicket(\BrainStrategist\ProjectBundle\Entity\Ticket $userTicket)
+    {
+        $this->user_tickets[] = $userTicket;
+
+        return $this;
+    }
+
+    /**
+     * Remove userTicket
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket $userTicket
+     */
+    public function removeUserTicket(\BrainStrategist\ProjectBundle\Entity\Ticket $userTicket)
+    {
+        $this->user_tickets->removeElement($userTicket);
+    }
+
+    /**
+     * Get userTickets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserTickets()
+    {
+        return $this->user_tickets;
     }
 }

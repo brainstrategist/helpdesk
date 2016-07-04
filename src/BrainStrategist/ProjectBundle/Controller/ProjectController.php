@@ -152,7 +152,7 @@ class ProjectController extends Controller
                     $params['organization'] = $organization;
 
                     $ticket= new Ticket();
-                    $form = $this->createForm(TicketForm::class,$ticket);
+                    $form = $this->createForm(TicketForm::class,$ticket,  array('attr'=> array('project_id' => $project->getId())));
                     $params = array_merge($params,
                         array(
                             "form" => $form->createView(),

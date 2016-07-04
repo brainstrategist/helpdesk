@@ -28,6 +28,12 @@ class Ticket_Category
      */
     private $name;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\oneToMany(targetEntity="Ticket", mappedBy="category", cascade={"persist", "merge"})
+     */
+    private $ticketsCategory;
 
     /**
      * Get id
@@ -61,5 +67,46 @@ class Ticket_Category
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ticketsCategory = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add ticketsCategory
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket $ticketsCategory
+     *
+     * @return Ticket_Category
+     */
+    public function addTicketsCategory(\BrainStrategist\ProjectBundle\Entity\Ticket $ticketsCategory)
+    {
+        $this->ticketsCategory[] = $ticketsCategory;
+
+        return $this;
+    }
+
+    /**
+     * Remove ticketsCategory
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket $ticketsCategory
+     */
+    public function removeTicketsCategory(\BrainStrategist\ProjectBundle\Entity\Ticket $ticketsCategory)
+    {
+        $this->ticketsCategory->removeElement($ticketsCategory);
+    }
+
+    /**
+     * Get ticketsCategory
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTicketsCategory()
+    {
+        return $this->ticketsCategory;
     }
 }

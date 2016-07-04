@@ -2,12 +2,15 @@
 
 namespace BrainStrategist\ProjectBundle\Form;
 
+use BrainStrategist\ProjectBundle\Repository\SeverityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -18,12 +21,16 @@ use BrainStrategist\KernelBundle\Entity\Ticket;
 
 class TicketForm extends AbstractType
 {
+
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->option_id = $options['attr']['project_id'];
+
         $builder
             ->add('summary',TextType::class,
                 array(
@@ -35,7 +42,7 @@ class TicketForm extends AbstractType
             ->add('description',TextareaType::class,
                 array(
                     'attr' => array(
-                        'class' => 'form-control'
+                        'class' => 'form-control tinymce'
                     ),
                     'label' => 'Description'
                 ))
@@ -50,29 +57,30 @@ class TicketForm extends AbstractType
                 ),
                 'label' => 'Browser'
             ))
-            ->add('severity', ChoiceType::class, array(
-                'choices'  => array(
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
-                    '5' => '5',
-                    '6' => '6',
-                    '7' => '7',
-                    '8' => '8',
-                    '9' => '9',
-                    '10' => '10'
-                ),
-                'label' => 'Severity'
-            ))
             ->add('priority', ChoiceType::class, array(
                 'choices'  => array(
-                    'Low' => '1',
-                    'Medium' => '2',
-                    'Urgent' => '3',
-                    'Critical' => '4'
+                    'TODO' => '1',
+                    'This week' => '2',
+                    'ASAP' => '3',
+                    'Now' => '4'
                 ),
                 'label' => 'Priority'
+            ))
+            ->add('severity', EntityType::class, array(
+                'class' => 'BrainStrategistProjectBundle:Severity',
+                'choice_label' => function ($severity) {
+                    return $severity->getLevel().' - '.$severity->getName();
+                },
+                'query_builder' => function (EntityRepository $er)
+                {
+                    return $er->findAllByProjectId($this->option_id);
+                },
+            ))
+            ->add('category', EntityType::class, array(
+                'class' => 'BrainStrategistProjectBundle:Ticket_Category',
+                'choice_label' => function ($category) {
+                    return $category->getName();
+                }
             ))
             ->add('picture', FileType::class,
                 array(
