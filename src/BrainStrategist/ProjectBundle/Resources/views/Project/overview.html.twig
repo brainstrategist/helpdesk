@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}
+{% block additionnalScripts %}
+    <script src="{{ asset('extensions/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '.tinymce',
+            min_height: 400,
+            plugins: 'code codesample',
+            toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code codesample',
+        });
+    </script>
+{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block body %}
+        <table>
+            <tr>
+                <td width="100">
+                    {% if file_exists(asset(full_project_directory~'/'~project.picture)) %}
+                        <div class="picture-cover"><img src="{{ asset(project_directory~'/'~project.picture)| imagine_filter('my_thumb') }}" /></div><br/>
+                    {% endif %}
+                </td>
+                <td>
+                    <h3>{{ project.organization.name }}/{{ project.name }}</h3>
+                </td>
+            </tr>
+        </table>
+        <div class="clearfix"></div>
+        <hr/>
+        {% if notice is defined %}
+            {% if type_notice is defined and type_notice == 'alert' %}
+                <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        {{ notice }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+        {{ include('BrainStrategistProjectBundle:Project:nav.html.twig') }}
+        {% if view is defined %}
+             {{ view|raw }}
+        {% else %}
+            {{ include('BrainStrategistProjectBundle:Project:parts/default.html.twig') }}
+        {% endif %}
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>
+
+{% endblock %}

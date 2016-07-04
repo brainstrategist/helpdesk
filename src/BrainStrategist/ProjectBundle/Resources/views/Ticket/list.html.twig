@@ -1,0 +1,68 @@
+
+    {% if  tickets|length > 0 %}
+        <table class="table table-striped">
+            <thead class="dark-head-thead">
+            <tr>
+                <th>Name</th>
+                <th>Users</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Severity</th>
+                <th>Time to answer</th>
+                <th>Time to resolve</th>
+            </tr>
+            </thead>
+            {% for ticket in tickets %}
+            <tbody>
+            <tr>
+                <td>
+                    <div class="col-md-12">
+                        <b>{{ ticket.summary }}</b>
+                        <br/>
+                        <small>Created the
+                            {{ ticket.dateCreation|date("m/d/Y")}}
+                            {% if ticket.creator|length > 0 %}
+                                by @{{ ticket.creator.username }}
+                            {% endif %}
+                        </small>
+                    </div>
+                </td>
+                <td>
+                    {#{{ dump(ticket) }}#}
+                    {% if ticket.assigned_users %}
+                        <ul>
+                            {% for user in ticket.assigned_users %}
+                                <li>
+                                    {{ user.username }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ ticket.category.name }}
+                </td>
+                <td>
+                    {{ ticket.priority }}
+                </td>
+                <td>
+                    {{ ticket.severity.name }}
+                </td>
+                <td>
+                    {{ ticket.severity.responseTimeDays }} day(s)
+                    {{ ticket.severity.responseTime|date("H:i") }} h
+
+                </td>
+                <td>
+                    {{ ticket.severity.resolutionTimeDays }} day(s)
+                    {{ ticket.severity.resolutionTime|date("H:i") }} h
+
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You don't create any issues for this project.</p>
+    {% endif %}
+

@@ -124,8 +124,9 @@ class ProjectController extends Controller
 
     /**
      * @Route("/{_locale}/project/{slug}/dashboard",name="project_access")
+     * @Route("/{_locale}/project/{slug}/view/{view}",name="project_view")
      */
-    public function accessAction(Request $request,$slug=null){
+    public function accessAction(Request $request,$slug=null,$view=null){
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
         $breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
@@ -141,7 +142,6 @@ class ProjectController extends Controller
 
             $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
 
-
             if(isset($slug)) {
 
                 if ($projectEntity->isMyProject($slug, $currentUser->getId())) {
@@ -151,18 +151,25 @@ class ProjectController extends Controller
                     $organization = $organizationEntity->find($project->getOrganization()->getId());
                     $params['organization'] = $organization;
 
-                    $ticket= new Ticket();
-                    $form = $this->createForm(TicketForm::class,$ticket,  array('attr'=> array('project_id' => $project->getId())));
-                    $params = array_merge($params,
-                        array(
-                            "form" => $form->createView(),
-                        ));
+                    $notice = $request->attributes->get('notice');
+                    $type_notice = $request->attributes->get('type_notice');
+                    if(isset($notice)){
+                        $params['notice']=$notice;
+                        $params['type_notice']=$type_notice;
+                    }
+
+                    if(isset($view)){
+                        $params['view'] =  $this->renderView(
+                            'BrainStrategistProjectBundle:Project:parts/'.$view.'.html.twig',
+                            $params
+                        );
+                    }
                 }
             }
         }
 
         return $this->render(
-            'BrainStrategistProjectBundle:Project:access.html.twig',
+            'BrainStrategistProjectBundle:Project:overview.html.twig',
             $params
         );
     }

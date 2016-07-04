@@ -35,4 +35,21 @@ class Builder implements ContainerAwareInterface
             ->setAttribute('icon', 'fa fa-edit');
         return $menu;
     }
+
+    public function ProjectDashboardMenu(FactoryInterface $factory, array $options)
+    {
+        $menu = $factory->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
+
+        $menu->addChild('Overview', array('route' => 'project_access','routeParameters' => array('slug' => $options['project_slug'])))
+            ->setAttribute('icon', 'fa fa-edit');
+
+        $menu->addChild('Users', array('route' => 'project_view','routeParameters' => array('slug' => $options['project_slug'], 'view' => 'users-list')))
+            ->setAttribute('icon', 'fa fa-edit');
+
+        $menu->addChild('Create issue', array('route' => 'project_view','routeParameters' => array('slug' => $options['project_slug'], 'view' => 'ticket-create')))
+            ->setAttribute('icon', 'fa fa-edit');
+
+        return $menu;
+    }
 }

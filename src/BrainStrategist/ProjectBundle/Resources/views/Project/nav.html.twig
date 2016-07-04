@@ -1,0 +1,4 @@
+<div class="col-md-2 left-bar">
+    {% set menu = knp_menu_get('BrainStrategistKernelBundle:Builder:ProjectDashboardMenu', [], {'project_slug': project.slug} ) %}
+    {{ knp_menu_render(menu, {'allow_safe_labels': true}) }}
+</div>
