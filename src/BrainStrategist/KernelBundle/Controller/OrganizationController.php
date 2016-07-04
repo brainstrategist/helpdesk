@@ -35,6 +35,8 @@ class OrganizationController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
 
             if(isset($id)){
+
+
                 $breadcrumbs->addItem( $this->get('translator')->trans("Edit"));
 
                 $organizationEntity= $em->getRepository("BrainStrategistKernelBundle:Organization");
