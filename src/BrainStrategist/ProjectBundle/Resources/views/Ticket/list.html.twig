@@ -8,8 +8,8 @@
                 <th>Category</th>
                 <th>Priority</th>
                 <th>Severity</th>
-                <th>Time to answer</th>
-                <th>Time to resolve</th>
+                <th>Time left <br/>answer before</th>
+                <th>Time left <br/>resolve before</th>
             </tr>
             </thead>
             {% for ticket in tickets %}
@@ -49,14 +49,12 @@
                     {{ ticket.severity.name }}
                 </td>
                 <td>
-                    {{ ticket.severity.responseTimeDays }} day(s)
-                    {{ ticket.severity.responseTime|date("H:i") }} h
-
+                    {% set timeToAnswer = ticket.dateCreation|date_modify("+"~ticket.severity.responseTimeDays~" day")|date_modify(ticket.severity.responseTime|date("H:i:s"))   %}
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToAnswer|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
                 </td>
                 <td>
-                    {{ ticket.severity.resolutionTimeDays }} day(s)
-                    {{ ticket.severity.resolutionTime|date("H:i") }} h
-
+                    {%  set timeToResolve =  ticket.dateCreation|date_modify("+"~ticket.severity.resolutionTimeDays~" day")|date_modify(ticket.severity.resolutionTime|date("H:i:s")) %}
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>{{ sub_date(timeToResolve|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
                 </td>
             </tr>
             {% endfor %}
