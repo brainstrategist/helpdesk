@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <br/>
 {% if  listProjects|length > 0 %}
     <table class="table table-striped">
@@ -42,49 +41,4 @@
     </table>
 {% else %}
     <p>You don't have created or being a member of any Project(s).</p>
-=======
-<br/>
-{% if  listProjects|length > 0 %}
-    <table class="table table-striped">
-        <thead class="dark-head-thead">
-        <tr>
-            <th></th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        {% for project in listProjects %}
-        <tbody>
-        <tr>
-            <td>
-                <div class="col-md-2">
-                    {% if file_exists(asset(full_project_directory~'/'~project.picture)) %}
-                        <div class="picture-cover"><a href={{ path('project_access', { 'slug': project.slug }) }}><img src="{{ asset(project_directory~'/'~project.picture)| imagine_filter('my_thumb') }}" /></a></div><br/>
-                    {% endif %}
-                </div>
-                <div class="col-md-10">
-                    <b><a href={{ path('project_access', { 'slug': project.slug }) }}>{{ project.name }}</a></b>
-                    <br/>
-                    <small>Created the {{ project.dateCreation|date("m/d/Y")}}
-                        {% if project.creator|length > 0 %}
-                            by {{ project.creator.username }}
-                        {% endif %}
-                    </small>
-                    <br>
-                    <small>{{ project.usersProject|length }} member(s) in this project</small>
-                    <br/>
-                    <a href={{ path('project_edit', { 'id': project.id, 'slug':organization.slug }) }} class="btn btn-primary btn-sm" >Edit</a>
-            </td>
-            <td>
-                <div class="switch">
-                    <input id="cmn-toggle-{{ project.id}}" class="cmn-toggle cmn-toggle-round" type="checkbox" {% if project.isActive == 1 %} checked="checked"{% endif %} disabled />
-                    <label for="cmn-toggle-{{ project.id}}"></label>
-                </div>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p>You don't have created or being a member of any Project(s).</p>
->>>>>>> 001f67bbc45d26abf82c92127ab54b3791b990ea
 {% endif %}

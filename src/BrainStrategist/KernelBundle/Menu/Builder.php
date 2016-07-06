@@ -13,9 +13,9 @@ class Builder implements ContainerAwareInterface
     {
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');
-        $menu->addChild('Login', array('route' => 'fos_user_security_login','label' => '<i class="fa fa-user"></i> Connection ','extras' => array('safe_label' => true)));
-        $menu->addChild('Facebook Connect', array('uri' => '/'.$options['locale'].'/connect/facebook','label' => '<i class="fa fa-facebook"></i> Connect with Facebook ','extras' => array('safe_label' => true)));
-        $menu->addChild('Register', array('route' => 'fos_user_registration_register','label' => '<i class="fa fa-plus"></i> Register ','extras' => array('safe_label' => true)));
+        $menu->addChild('Login', array('route' => 'fos_user_security_login', 'label' => '<i class="fa fa-user"></i> Connection ', 'extras' => array('safe_label' => true)));
+        $menu->addChild('Facebook Connect', array('uri' => '/' . $options['locale'] . '/connect/facebook', 'label' => '<i class="fa fa-facebook"></i> Connect with Facebook ', 'extras' => array('safe_label' => true)));
+        $menu->addChild('Register', array('route' => 'fos_user_registration_register', 'label' => '<i class="fa fa-plus"></i> Register ', 'extras' => array('safe_label' => true)));
         return $menu;
     }
 
@@ -24,7 +24,7 @@ class Builder implements ContainerAwareInterface
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');
 
-        $menu->addChild('User', array('route' => 'fos_user_profile_edit','label' => 'Hello '.$options['username'].'  <img src="'.$options['avatar'].'" class="img-circle avatar_top" alt="User Image" />','extras' => array('safe_label' => true)))
+        $menu->addChild('User', array('route' => 'fos_user_profile_edit', 'label' => 'Hello ' . $options['username'] . '  <img src="' . $options['avatar'] . '" class="img-circle avatar_top" alt="User Image" />', 'extras' => array('safe_label' => true)))
             ->setAttribute('dropdown', true)
             ->setAttribute('icon', 'fa fa-user')
             ->setChildrenAttribute('class', 'dropdown-menu');
@@ -44,18 +44,18 @@ class Builder implements ContainerAwareInterface
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
 
-        $menu->addChild('Overview', array('route' => 'project_access','routeParameters' => array('slug' => $options['project_slug'])))
+        $menu->addChild('Overview', array('route' => 'project_access', 'routeParameters' => array('slug' => $options['project_slug'])))
             ->setAttribute('icon', 'fa fa-edit');
 
-        $menu->addChild('Users', array('route' => 'project_view','routeParameters' => array('slug' => $options['project_slug'], 'view' => 'users-list')))
+        $menu->addChild('Users', array('route' => 'project_view', 'routeParameters' => array('slug' => $options['project_slug'], 'view' => 'users-list')))
             ->setAttribute('icon', 'fa fa-edit');
 
-        $menu->addChild('Create issue', array('route' => 'project_view','routeParameters' => array('slug' => $options['project_slug'], 'view' => 'ticket-create')))
+        $menu->addChild('Create issue', array('route' => 'project_view', 'routeParameters' => array('slug' => $options['project_slug'], 'view' => 'ticket-create')))
             ->setAttribute('icon', 'fa fa-edit');
 
         return $menu;
     }
-<<<<<<< HEAD
+
     public function UserDashboardMenu(FactoryInterface $factory, array $options)
     {
         $menu = $factory->createItem('root');
@@ -66,6 +66,4 @@ class Builder implements ContainerAwareInterface
 
         return $menu;
     }
-=======
->>>>>>> 001f67bbc45d26abf82c92127ab54b3791b990ea
 }
