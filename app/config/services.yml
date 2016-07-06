@@ -25,3 +25,7 @@ services:
         class: BrainStrategist\KernelBundle\Twig\TwigExtension
         tags:
             - { name: twig.extension }
+    app.project.twig.extension:
+        class: BrainStrategist\ProjectBundle\Twig\TwigExtension
+        tags:
+            - { name: twig.extension }

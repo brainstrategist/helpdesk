@@ -10,4 +10,89 @@ namespace BrainStrategist\ProjectBundle\Repository;
  */
 class TicketRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findAllTicketByProjectId($params=array('limit'=>100,'offset'=>0))
+    {
+        extract($params);
+
+        if (!is_null($projectID)) {
+            $q = $this->createQueryBuilder('t')
+                ->leftJoin('t.projet', 'tp')
+                ->leftJoin('t.creator', 'tc')
+                ->leftJoin('t.assigned_users', 'tau')
+                ->leftJoin('t.category', 'tca')
+                ->leftJoin('t.severity', 'ts')
+                ->addSelect('tp')
+                ->addSelect('tau')
+                ->addSelect('tca')
+                ->addSelect('ts')
+                ->addSelect('tc')
+                ->andWhere('tp.id = :projet_id')
+                ->setParameter('projet_id',$projectID)
+                ->setMaxResults($limit)
+                ->setFirstResult($offset);
+
+            $query = $q->getQuery();
+            return $query->getArrayResult();
+
+        }else{
+            return false;
+        }
+
+    }
+
+    public function findAllTicketByUser($params=array('limit'=>100,'offset'=>0))
+    {
+        extract($params);
+
+        if (!is_null($userID)) {
+            $q = $this->createQueryBuilder('t')
+                ->leftJoin('t.projet', 'tp')
+                ->leftJoin('t.creator', 'tc')
+                ->leftJoin('t.assigned_users', 'tau')
+                ->leftJoin('t.category', 'tca')
+                ->leftJoin('t.severity', 'ts')
+                ->addSelect('tp')
+                ->addSelect('tau')
+                ->addSelect('tca')
+                ->addSelect('ts')
+                ->addSelect('tc')
+                ->andWhere('tau.id = :user_id')
+                ->setParameter('user_id',$userID)
+                ->setMaxResults($limit)
+                ->setFirstResult($offset);
+
+            $query = $q->getQuery();
+            return $query->getArrayResult();
+
+        }else{
+            return false;
+        }
+
+    }
+    public function findOneById($id)
+    {
+        if (!is_null($id)) {
+            $q = $this->createQueryBuilder('t')
+                ->leftJoin('t.projet', 'tp')
+                ->leftJoin('t.creator', 'tc')
+                ->leftJoin('t.assigned_users', 'tau')
+                ->leftJoin('t.category', 'tca')
+                ->leftJoin('t.severity', 'ts')
+                ->addSelect('tp')
+                ->addSelect('tau')
+                ->addSelect('tca')
+                ->addSelect('ts')
+                ->addSelect('tc')
+                ->andWhere('t.id = :ticket_id')
+                ->setParameter('ticket_id',$id);
+
+            $query = $q->getQuery();
+            return $query->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+        }else{
+            return false;
+        }
+
+    }
 }

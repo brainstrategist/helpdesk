@@ -43,6 +43,12 @@ class Ticket
      */
     private $browser;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Date_creation", type="datetime")
+     */
+    private $dateCreation;
 
     /**
      * @var int
@@ -88,7 +94,13 @@ class Ticket
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity="BrainStrategist\KernelBundle\Entity\User", inversedBy="user_tickets")
+     * @ORM\OneToMany(targetEntity="Ticket_Log", mappedBy="ticket",cascade={"persist"})
+     */
+    private $logs;
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity="BrainStrategist\KernelBundle\Entity\User", inversedBy="user_tickets",cascade={"persist"}, indexBy="ticket_id")
      * @ORM\JoinTable(name="users_tickets")
      */
     private $assigned_users;
@@ -174,9 +186,6 @@ class Ticket
     {
         return $this->browser;
     }
-
-
-
 
 
     /**
@@ -306,6 +315,7 @@ class Ticket
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->assigned_users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->severity = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dateCreation = new \DateTime();
 
 
     }
@@ -400,5 +410,63 @@ class Ticket
     public function getAssignedUsers()
     {
         return $this->assigned_users;
+    }
+
+    /**
+     * Set dateCreation
+     *
+     * @param \DateTime $dateCreation
+     *
+     * @return Ticket
+     */
+    public function setDateCreation($dateCreation)
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCreation
+     *
+     * @return \DateTime
+     */
+    public function getDateCreation()
+    {
+        return $this->dateCreation;
+    }
+
+    /**
+     * Add log
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket_Log $log
+     *
+     * @return Ticket
+     */
+    public function addLog(\BrainStrategist\ProjectBundle\Entity\Ticket_Log $log)
+    {
+        $this->logs[] = $log;
+
+        return $this;
+    }
+
+    /**
+     * Remove log
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket_Log $log
+     */
+    public function removeLog(\BrainStrategist\ProjectBundle\Entity\Ticket_Log $log)
+    {
+        $this->logs->removeElement($log);
+    }
+
+    /**
+     * Get logs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLogs()
+    {
+        return $this->logs;
     }
 }

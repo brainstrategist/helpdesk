@@ -31,8 +31,38 @@ class Builder implements ContainerAwareInterface
         $menu['User']->addChild('Edit profile', array('route' => 'fos_user_profile_edit'))
             ->setAttribute('icon', 'fa fa-edit');
 
+        $menu->addChild('Dashboard', array('route' => 'dashboard_access'))
+            ->setAttribute('icon', 'fa fa-edit');
+
         $menu->addChild('Disconnect', array('route' => 'fos_user_security_logout'))
             ->setAttribute('icon', 'fa fa-edit');
+        return $menu;
+    }
+
+    public function ProjectDashboardMenu(FactoryInterface $factory, array $options)
+    {
+        $menu = $factory->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
+
+        $menu->addChild('Overview', array('route' => 'project_access','routeParameters' => array('slug' => $options['project_slug'])))
+            ->setAttribute('icon', 'fa fa-edit');
+
+        $menu->addChild('Users', array('route' => 'project_view','routeParameters' => array('slug' => $options['project_slug'], 'view' => 'users-list')))
+            ->setAttribute('icon', 'fa fa-edit');
+
+        $menu->addChild('Create issue', array('route' => 'project_view','routeParameters' => array('slug' => $options['project_slug'], 'view' => 'ticket-create')))
+            ->setAttribute('icon', 'fa fa-edit');
+
+        return $menu;
+    }
+    public function UserDashboardMenu(FactoryInterface $factory, array $options)
+    {
+        $menu = $factory->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
+
+        $menu->addChild('Backlog', array('route' => 'dashboard_access'))
+            ->setAttribute('icon', 'fa fa-edit');
+
         return $menu;
     }
 }

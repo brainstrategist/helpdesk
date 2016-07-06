@@ -3,12 +3,7 @@
     <table class="table table-striped">
         <thead class="dark-head-thead">
         <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Slug</th>
-            <th>Active</th>
-            <th>Date creation</th>
-            <th>Creator</th>
+            <th></th>
             <th>Action</th>
         </tr>
         </thead>
@@ -30,7 +25,7 @@
                         {% endif %}
                     </small>
                     <br>
-                    <small>{{ project.usersOrganization|length }} member(s) in this project</small>
+                    <small>{{ project.usersProject|length }} member(s) in this project</small>
                     <br/>
                     <a href={{ path('project_edit', { 'id': project.id, 'slug':organization.slug }) }} class="btn btn-primary btn-sm" >Edit</a>
             </td>

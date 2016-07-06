@@ -42,8 +42,9 @@ class TicketForm extends AbstractType
             ->add('description',TextareaType::class,
                 array(
                     'attr' => array(
-                        'class' => 'form-control tinymce'
+                        'class' => 'form-control tinymce',
                     ),
+                    'required' => false,
                     'label' => 'Description'
                 ))
             ->add('browser', ChoiceType::class, array(

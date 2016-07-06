@@ -35,6 +35,11 @@ class Ticket_Log
      */
     private $contentLog;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Ticket", inversedBy="logs")
+     * @ORM\JoinColumn(name="ticket_id", referencedColumnName="id")
+     */
+    private $ticket;
 
     /**
      * Get id
@@ -92,5 +97,40 @@ class Ticket_Log
     public function getContentLog()
     {
         return $this->contentLog;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+
+        $this->dateLog = new \DateTime();
+
+
+    }
+
+    /**
+     * Set ticket
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket $ticket
+     *
+     * @return Ticket_Log
+     */
+    public function setTicket(\BrainStrategist\ProjectBundle\Entity\Ticket $ticket = null)
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Get ticket
+     *
+     * @return \BrainStrategist\ProjectBundle\Entity\Ticket
+     */
+    public function getTicket()
+    {
+        return $this->ticket;
     }
 }

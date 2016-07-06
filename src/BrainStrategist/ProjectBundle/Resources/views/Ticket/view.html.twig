@@ -1,0 +1,52 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}
+{% block additionnalScripts %}
+    <script src="{{ asset('extensions/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '.tinymce',
+            min_height: 400,
+            plugins: 'code codesample',
+            toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code codesample',
+        });
+    </script>
+{% endblock %}
+{% block stylesheets %}
+{% endblock %}
+{% block body %}
+    {{ dump(ticket) }}
+
+    <h1 class="name">
+        {{ ticket.summary}}
+    </h1>
+    <div>
+        <b>Project :</b> {{ ticket.projet.name }}
+    </div>
+    <div class="description">
+        <b>Description of the issue</b>
+        {{ ticket.description|raw  }}
+    </div>
+    <div class="additional_informations">
+        <ul>
+            <li class="browser"> <b>Browser :</b> {{ ticket.browser }}</li>
+            <li class="creation_date"> <b>Date Creation :</b>  {{ ticket.dateCreation|date('d/m/y') }}</li>
+            <li class="creator"> <b>Creator :</b>  @{{ ticket.creator.username }}</li>
+            <li class="severity"> <b>Severity :</b>  {{ ticket.severity.name }}</li>
+            <li class="category"> <b>Category :</b>  {{ ticket.category.name }}</li>
+        </ul>
+        <div class="assigned_to">
+            <ul>
+                {% for user in ticket.assigned_users %}
+                    <li>
+                        {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}
+                    </li>
+                {% endfor  %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>
+
+{% endblock %}
