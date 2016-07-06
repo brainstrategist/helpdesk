@@ -55,6 +55,7 @@ class Builder implements ContainerAwareInterface
 
         return $menu;
     }
+<<<<<<< HEAD
     public function UserDashboardMenu(FactoryInterface $factory, array $options)
     {
         $menu = $factory->createItem('root');
@@ -65,4 +66,6 @@ class Builder implements ContainerAwareInterface
 
         return $menu;
     }
+=======
+>>>>>>> 001f67bbc45d26abf82c92127ab54b3791b990ea
 }
