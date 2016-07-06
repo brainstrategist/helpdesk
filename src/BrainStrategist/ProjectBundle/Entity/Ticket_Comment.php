@@ -47,8 +47,14 @@ class Ticket_Comment
      */
     private $user_comment;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->dateComment = new \DateTime();
 
-
+    }
 
     /**
      * Get id

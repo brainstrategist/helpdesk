@@ -3,6 +3,9 @@ body{
   	a{
 	  color:color('primary');
 	}
+	.full-page-layout{
+	  margin-bottom: 100px;
+	}
 	.btn-primary{
 	  background:color('primary');
 	  border-color: color('secondary');
@@ -97,20 +100,37 @@ body{
   .cover-picture-form{
 	margin-bottom: 10px;
   }
-
+  .user_tiny_block{
+	b{
+	  display: block;
+	  text-align: center;
+	}
+  }
   .picture-cover{
-	width: 90px;
-	height: 90px;
-	border-radius: 90px;
+	width: 70px;
+	height: 70px;
+	border-radius: 70px;
 	-webkit-border-radius: 90px;
 	-moz-border-radius: 90px;
 	overflow: hidden;
-
 	&.bg-grey{
 	  background: #bdbdbd;
 	  background-repeat: no-repeat;
 	  background-position: center center;
 	  background-size: 40%;
+	}
+  }
+  .resolving_policy{
+	li{
+	  background-color: #ececec;
+	  border-radius: 4px;
+	  -webkit-border-radius: 4px;
+	  -moz-border-radius: 4px;
+	}
+  }
+  .comments_feed{
+	.even{
+	  background: #ececec;
 	}
   }
   &.project_access{
@@ -137,6 +157,7 @@ body{
 		}
 	  }
 	}
+
 	.left-bar{
 	  h5{
 		text-align: center;

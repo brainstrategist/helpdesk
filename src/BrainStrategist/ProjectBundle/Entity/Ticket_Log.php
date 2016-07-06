@@ -42,6 +42,12 @@ class Ticket_Log
     private $ticket;
 
     /**
+     * @ORM\ManyToOne(targetEntity="BrainStrategist\KernelBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * Get id
      *
      * @return int
@@ -132,5 +138,29 @@ class Ticket_Log
     public function getTicket()
     {
         return $this->ticket;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $user
+     *
+     * @return Ticket_Log
+     */
+    public function setUser(\BrainStrategist\KernelBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \BrainStrategist\KernelBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

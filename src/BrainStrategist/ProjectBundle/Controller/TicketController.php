@@ -5,11 +5,13 @@ namespace BrainStrategist\ProjectBundle\Controller;
 use BrainStrategist\KernelBundle\Entity\Organization;
 use BrainStrategist\ProjectBundle\Entity\Project;
 use BrainStrategist\ProjectBundle\Entity\Ticket;
+use BrainStrategist\ProjectBundle\Entity\Ticket_Comment;
 use BrainStrategist\ProjectBundle\Entity\Ticket_Log;
 use BrainStrategist\ProjectBundle\Form\ProjectForm;
 use BrainStrategist\KernelBundle\Entity\User;
 
 use BrainStrategist\ProjectBundle\Form\TicketForm;
+use BrainStrategist\ProjectBundle\Form\CommentForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -163,6 +165,7 @@ class TicketController extends Controller
 
             $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
             $ticketEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
+            $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_Status");
 
             if(isset($slug) && isset($id)) {
 
@@ -170,7 +173,32 @@ class TicketController extends Controller
 
                     $params['project'] = $projectEntity->findOneBySlug($slug);
                     $params['ticket'] = $ticketEntity->findOneById($id);
+                    $params['status_list'] = $statusEntity->findAllByProjectId($params['project']->getId());
 
+                    $ticket_comment = new Ticket_Comment();
+                    $form = $this->createForm(CommentForm::class,$ticket_comment,  array('attr'=> array('ticket_id' => $id)));
+                    $params = array_merge($params,
+                        array(
+                            "form" => $form->createView(),
+                        ));
+
+                }
+            }
+            if ('POST' == $request->getMethod()) {
+
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+
+                    $response = $form->getData();
+
+                    $ticket_comment->setUserComment($currentUser);
+                    $ticket_comment->setTicket($ticketEntity->find($id));
+
+                    $em->persist($ticket_comment);
+                    $em->persist($response);
+                    $em->flush();
+
+                    return $this->redirectToRoute("ticket_view",array("id"=>$id,"slug"=>$slug));
                 }
             }
 

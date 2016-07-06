@@ -1,6 +1,6 @@
 <div class="col-md-10">
     <h5>Users of this project</h5>
-    <ul class="users_projects">
+    <ul class="users_projects  list-inline">
         {% for user in project.usersProject %}
             <li>
                 {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}

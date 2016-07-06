@@ -83,6 +83,12 @@ class Ticket
     private $projet;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Ticket_Status")
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
+     */
+    private $status;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Ticket_Category", inversedBy="ticketsCategory")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
