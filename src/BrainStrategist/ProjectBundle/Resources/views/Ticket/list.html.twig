@@ -1,0 +1,64 @@
+{% if  tickets|length > 0 %}
+    <table class="table table-striped">
+        <thead class="dark-head-thead">
+        <tr>
+            <th>Name</th>
+            <th>Users</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Severity</th>
+            <th>Time left <br/>answer before</th>
+            <th>Time left <br/>resolve before</th>
+        </tr>
+        </thead>
+        {% for ticket in tickets %}
+        <tbody>
+        <tr>
+            <td>
+                <div class="col-md-12">
+                    <b><a href={{ path('ticket_view', { 'id': ticket.id, 'slug':ticket.projet.slug }) }}> {{ ticket.summary }}</a></b>
+                    <br/>
+                    <small>Created the
+                        {{ ticket.dateCreation|date("m/d/Y")}}
+                        {% if ticket.creator|length > 0 %}
+                            by @{{ ticket.creator.username }}
+                        {% endif %}
+                    </small>
+                </div>
+            </td>
+            <td>
+                {#{{ dump(ticket) }}#}
+                {% if ticket.assigned_users %}
+                    <ul>
+                        {% for user in ticket.assigned_users %}
+                            <li>
+                                {{ user.username }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+            <td>
+                {{ ticket.category.name }}
+            </td>
+            <td>
+                {{ ticket.priority }}
+            </td>
+            <td>
+                {{ ticket.severity.name }}
+            </td>
+            <td>
+                {% set timeToAnswer = ticket.dateCreation|date_modify("+"~ticket.severity.responseTimeDays~" day")|date_modify(ticket.severity.responseTime|date("H:i:s"))   %}
+                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToAnswer|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+            </td>
+            <td>
+                {%  set timeToResolve =  ticket.dateCreation|date_modify("+"~ticket.severity.resolutionTimeDays~" day")|date_modify(ticket.severity.resolutionTime|date("H:i:s")) %}
+                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToResolve|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You don't create any issues for this project.</p>
+{% endif %}

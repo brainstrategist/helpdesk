@@ -1,0 +1,22 @@
+<div  class="col-md-10 ">
+    {{ form_start(form, {'method': 'post','action': path('ticket_create', {'slug': project.slug}) }) }}
+    {{ form_errors(form) }}
+    <div {{ block('widget_container_attributes') }}>
+        {% for child in form %}
+            <fieldset class="form-group">
+                {% if  child.vars.name != "_token" %}
+                    {{ form_label(child) }}
+                {% endif %}
+                {{ form_widget(child) }}
+            </fieldset>
+        {% endfor %}
+        <div>
+            &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'Create a ticket'|trans }}" />
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+    {{ form_end(form) }}
+</div>

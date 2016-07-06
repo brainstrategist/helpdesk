@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block body %}
+    <div class="col-md-12">
+                <table>
+                    <tr>
+                        <td width="100">
+                            {% if file_exists(asset(full_organization_directory~'/'~organization.picture)) %}
+                                <div class="picture-cover"><img src="{{ asset(organization_directory~'/'~organization.picture)| imagine_filter('my_thumb') }}" /></div><br/>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <h1> My organization Projects</h1>
+                            <h3>{{ organization.name }} </h3>
+                        </td>
+                    </tr>
+                </table>
+           {{ include('BrainStrategistProjectBundle:Project:list.html.twig', { 'listProjects': projects }) }}
+        <hr/>
+        <a href={{ path('project_create', { 'id': organization.id, 'slug' : organization.slug }) }} class="btn btn-primary" >Create a new project</a>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>
+{% endblock %}

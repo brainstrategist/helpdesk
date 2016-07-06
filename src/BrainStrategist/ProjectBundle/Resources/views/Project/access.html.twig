@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}
+{% block additionnalScripts %}
+    <script src="{{ asset('extensions/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '.tinymce',
+            min_height: 400,
+            plugins: 'code codesample',
+            toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code codesample',
+        });
+    </script>
+{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block body %}
+
+    <div class="col-md-12">
+        <table>
+            <tr>
+                <td width="100">
+                    {% if file_exists(asset(full_project_directory~'/'~project.picture)) %}
+                        <div class="picture-cover"><img src="{{ asset(project_directory~'/'~project.picture)| imagine_filter('my_thumb') }}" /></div><br/>
+                    {% endif %}
+                </td>
+                <td>
+                    <h1>{{ project.organization.name }}/{{ project.name }}</h1>
+                </td>
+            </tr>
+        </table>
+        <div class="clearfix"></div>
+        <hr/>
+        {{ include('BrainStrategistProjectBundle:Project:nav.html.twig') }}
+        <div  class="col-md-10 ">
+            <div class="col-md-12 ">
+                <h5>Users of this project</h5>
+                <ul class="users_projects">
+                    {% for user in project.usersProject %}
+                        <li>
+                            {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}
+                        </li>
+                    {% endfor  %}
+                </ul>
+            </div>
+             <div class="col-md-12 ">
+                 {{ render(controller('BrainStrategistProjectBundle:Ticket:create', { 'slug': project.slug })) }}
+             </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>
+
+{% endblock %}

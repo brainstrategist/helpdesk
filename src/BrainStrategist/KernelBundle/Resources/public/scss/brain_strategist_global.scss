@@ -1,10 +1,32 @@
 @import "variables_colors";
 body{
+  	a{
+	  color:color('primary');
+	}
+	.full-page-layout{
+	  margin-bottom: 100px;
+	}
+	.btn-primary{
+	  background:color('primary');
+	  border-color: color('secondary');
+	  &:hover,&:active{
+		background:light_color('primary');
+		border: 1px solid light_color('secondary');
+	  }
+	}
+	.btn-secondary{
+	  border: 1px solid color('secondary');
+	}
 	.navbar-inverse{
-		background: #3e88d6;
+		background:color('primary');
 	  	border-bottom: #91bef1;
 	  .connexion_box{
 		float: right;
+	  }
+	  .navbar-brand{
+		background: url(/assets/images/brain-logo-small.png) no-repeat left center;
+		background-size: 25px auto;
+		padding-left: 30px;
 	  }
 	  .navbar-right{
 		color: #fff;
@@ -38,7 +60,7 @@ body{
 	}
   #carousel-home{
 	margin-top: 50px;
-	height: 750px;
+	height: 700px;
 	overflow: hidden;
 	.carousel-caption {
 	  top: 15%;
@@ -56,15 +78,104 @@ body{
 	  pointer-events: none;
 	}
   }
-  .starter-template {
+  .template {
 	padding: 0px 15px;
-	margin-top: 30px;
-	text-align: center;
+	margin-top: 70px;
+  }
+  .dark-head-thead{
+	background:color('primary');
+	color: #fff;
   }
   .footer.navbar-fixed-bottom{
 	height: 60px;
 	padding-top: 20px;
 	background-color: #f5f5f5;
+  }
+  .brainstrategist_logo{
+	opacity: 0.1;
+	position: absolute;
+	top: -400px;
+	left: 0;
+  }
+  .cover-picture-form{
+	margin-bottom: 10px;
+  }
+  .user_tiny_block{
+	b{
+	  display: block;
+	  text-align: center;
+	}
+  }
+  .picture-cover{
+	width: 70px;
+	height: 70px;
+	border-radius: 70px;
+	-webkit-border-radius: 90px;
+	-moz-border-radius: 90px;
+	overflow: hidden;
+	&.bg-grey{
+	  background: #bdbdbd;
+	  background-repeat: no-repeat;
+	  background-position: center center;
+	  background-size: 40%;
+	}
+  }
+  .resolving_policy{
+	li{
+	  background-color: #ececec;
+	  border-radius: 4px;
+	  -webkit-border-radius: 4px;
+	  -moz-border-radius: 4px;
+	}
+  }
+  .comments_feed{
+	.even{
+	  background: #ececec;
+	}
+  }
+  &.project_access{
+
+	h1{
+	  margin:0;
+	  font-size: 22px;
+	}
+	table{
+	  tr{
+		td{
+		  .picture-cover{
+			width: 60px;
+			height: 60px;
+			border-radius: 60px;
+			-webkit-border-radius: 60px;
+			-moz-border-radius: 60px;
+
+			img{
+			  width: auto;
+			  height: 60px;
+			}
+		  }
+		}
+	  }
+	}
+
+	.left-bar{
+	  h5{
+		text-align: center;
+	  }
+	  .users_projects{
+		list-style-type: none;
+		li{
+		  display: inline-block;
+		  max-width: 100px;
+		  b{
+			display: block;
+			width: 100%;
+			text-align: center;
+		  }
+		}
+	  }
+
+	}
   }
 }
 

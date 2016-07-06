@@ -7,6 +7,20 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    web_path: '%kernel.root_dir%/../web'
+    organization_directory: '/uploads/organization'
+    full_organization_directory: '%kernel.root_dir%/../web%organization_directory%'
+    project_directory: '/uploads/project'
+    full_project_directory: '%kernel.root_dir%/../web%project_directory%'
+
+twig:
+    globals:
+        web_path: '%web_path%'
+        organization_directory: '%organization_directory%'
+        full_organization_directory: '%full_organization_directory%'
+        project_directory: '%project_directory%'
+        full_project_directory: '%full_project_directory%'
+
 
 assetic:
     debug:          '%kernel.debug%'
@@ -43,6 +57,7 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes: [bootstrap_3_layout.html.twig]
 
 # Doctrine Configuration
 doctrine:
@@ -173,4 +188,4 @@ liip_imagine:
         my_thumb:
             quality: 75
             filters:
-                thumbnail: { size: [120, 90], mode: outbound }
+                thumbnail: { size: [90, 70], mode: outbound }

@@ -1,0 +1,108 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}
+{% block additionnalScripts %}
+    <script src="{{ asset('extensions/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '.tinymce',
+            min_height: 400,
+            plugins: 'code codesample',
+            toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code codesample',
+        });
+    </script>
+{% endblock %}
+{% block stylesheets %}
+{% endblock %}
+{% block body %}
+    <h2 class="name">
+        {{ ticket.summary}}
+    </h2>
+    <h4>
+        <b>Project :</b> <a href={{ path('project_access', { 'slug': ticket.projet.slug }) }}>{{ ticket.projet.name }}</a>
+    </h4>
+    <div class="row">
+        <div class="col-md-8">
+            <ul class="resolving_policy list-inline">
+                <li class="timeToAnswer">
+                    {% set timeToAnswer = ticket.dateCreation|date_modify("+"~ticket.severity.responseTimeDays~" day")|date_modify(ticket.severity.responseTime|date("H:i:s"))   %}
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> <b>Time to answer :</b> {{ sub_date(timeToAnswer|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+                </li>
+                <li class="timeToResolve">
+                    {%  set timeToResolve =  ticket.dateCreation|date_modify("+"~ticket.severity.resolutionTimeDays~" day")|date_modify(ticket.severity.resolutionTime|date("H:i:s")) %}
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> <b>Time to resolve :</b>{{ sub_date(timeToResolve|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+                </li>
+            </ul>
+            <div class="additional_informations">
+                <ul class="list-inline">
+                    <li class="Date"> <b>Date :</b>  {{ dateCreation|date('d-m-y H:s') }}</li>
+                    <li class="browser"> <b>Browser :</b> {{ ticket.browser }}</li>
+                    <li class="creation_date"> <b>Date Creation :</b>  {{ ticket.dateCreation|date('d/m/y') }}</li>
+                    <li class="creator"> <b>Creator :</b>  @{{ ticket.creator.username }}</li>
+                    <li class="severity"> <b>Severity :</b>  {{ ticket.severity.name }}</li>
+                    <li class="category"> <b>Category :</b>  {{ ticket.category.name }}</li>
+                    <li class="Status"> <b>Status :</b>  {{ ticket.status.name }}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="assigned_to">
+                <b class="pull-left" >Assigned to</b>
+                <ul  class="list-inline">
+                    {% for user in ticket.assigned_users %}
+                        <li>
+                            {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}
+                        </li>
+                    {% endfor  %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div class="description">
+        <b>Description of the issue</b>
+        {{ ticket.description|raw  }}
+    </div>
+    <hr/>
+    <dl class="comments_feed">
+        <h4>Feed</h4>
+        {% if ticket.comments|length > 0 %}
+            <dl class="dl-horizontal">
+            {% for comment in ticket.comments %}
+                    <div class="row {{ cycle(['even','odd'],loop.index) }}">
+                        <dt>{{ comment.dateComment|date('d-m-y H:s') }} by @{{ comment.user_comment.username }}</dt>
+                        <dd>{{ comment.contentComment|raw }}</dd>
+                    </div>
+            {% endfor  %}
+            </dl>
+        {% else %}
+            No comments for this issue yet.
+        {% endif %}
+    </div>
+    <hr/>
+    <div class="comment_editor">
+        <div class="form-group ">
+            <h4>Leave a comment</h4>
+        </div>
+        {{ form_start(form, {'method': 'post' }) }}
+        {{ form_errors(form) }}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                <fieldset class="form-group">
+                    {% if  child.vars.name != "_token" %}
+                        {{ form_label(child) }}
+                    {% endif %}
+                    {{ form_widget(child) }}
+                </fieldset>
+            {% endfor %}
+            <div>
+                <a href={{ path('dashboard_access') }} class="btn btn-secondary" >Cancel</a>  &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'submit'|trans }}" />
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>
+
+{% endblock %}
