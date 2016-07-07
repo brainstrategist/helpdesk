@@ -475,4 +475,28 @@ class Ticket
     {
         return $this->logs;
     }
+
+    /**
+     * Set status
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket_Status $status
+     *
+     * @return Ticket
+     */
+    public function setStatus(\BrainStrategist\ProjectBundle\Entity\Ticket_Status $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \BrainStrategist\ProjectBundle\Entity\Ticket_Status
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 }

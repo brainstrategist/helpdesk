@@ -42,6 +42,11 @@ class Ticket_Comment
     private $ticket;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Ticket_Status")
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
+     */
+    private $ticket_status;
+    /**
      * @ORM\ManyToOne(targetEntity="BrainStrategist\KernelBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -56,10 +61,11 @@ class Ticket_Comment
 
     }
 
+
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -160,5 +166,29 @@ class Ticket_Comment
     public function getUserComment()
     {
         return $this->user_comment;
+    }
+
+    /**
+     * Set ticketStatus
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket_Status $ticketStatus
+     *
+     * @return Ticket_Comment
+     */
+    public function setTicketStatus(\BrainStrategist\ProjectBundle\Entity\Ticket_Status $ticketStatus = null)
+    {
+        $this->ticket_status = $ticketStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get ticketStatus
+     *
+     * @return \BrainStrategist\ProjectBundle\Entity\Ticket_Status
+     */
+    public function getTicketStatus()
+    {
+        return $this->ticket_status;
     }
 }

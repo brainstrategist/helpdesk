@@ -2,22 +2,18 @@
 
 namespace BrainStrategist\ProjectBundle\Form;
 
-use BrainStrategist\ProjectBundle\Repository\SeverityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use BrainStrategist\KernelBundle\Entity\Ticket;
-
+use BrainStrategist\ProjectBundle\Repository\SeverityRepository;
 
 class TicketForm extends AbstractType
 {

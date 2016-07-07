@@ -7,14 +7,14 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 use BrainStrategist\ProjectBundle\Entity\Ticket_Comment;
-
+use BrainStrategist\ProjectBundle\Repository\Ticket_StatusRepository;
 
 class CommentForm extends AbstractType
 {
@@ -25,6 +25,16 @@ class CommentForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('ticket_status', EntityType::class, array(
+                'class' => 'BrainStrategistProjectBundle:Ticket_status',
+                'choice_label' => function ($status) {
+                    return $status->getName();
+                },
+                'query_builder' => function (EntityRepository $er)  use ($options)
+                {
+                    return $er->findAllByProjectId($options['attr']['project_id']);
+                },
+            ))
             ->add('contentComment',TextareaType::class,
                 array(
                     'attr' => array(
@@ -53,4 +63,6 @@ class CommentForm extends AbstractType
     {
         return 'BrainStrategistProjectBundle_Ticket_Comment';
     }
+
+
 }

@@ -171,12 +171,15 @@ class TicketController extends Controller
 
                 if ($projectEntity->isMyProject($slug, $currentUser->getId())) {
 
-                    $params['project'] = $projectEntity->findOneBySlug($slug);
-                    $params['ticket'] = $ticketEntity->findOneById($id);
+                    $project = $projectEntity->findOneBySlug($slug);
+                    $ticket = $ticketEntity->findOneById($id);
+                    $params['project'] = $project;
+                    $params['ticket'] = $ticket;
                     $params['status_list'] = $statusEntity->findAllByProjectId($params['project']->getId());
 
                     $ticket_comment = new Ticket_Comment();
-                    $form = $this->createForm(CommentForm::class,$ticket_comment,  array('attr'=> array('ticket_id' => $id)));
+                    $form = $this->createForm(CommentForm::class,$ticket_comment,  array('attr'=> array('project_id' => $project->getId())));
+
                     $params = array_merge($params,
                         array(
                             "form" => $form->createView(),
@@ -190,12 +193,18 @@ class TicketController extends Controller
                 if ($form->isSubmitted() && $form->isValid()) {
 
                     $response = $form->getData();
+                    $ticket = $ticketEntity->find($id);
 
-                    $ticket_comment->setUserComment($currentUser);
-                    $ticket_comment->setTicket($ticketEntity->find($id));
+                    if(!is_null($response->getContentComment())){
+                        $ticket_comment->setUserComment($currentUser);
+                        $ticket_comment->setTicket($ticket);
+                        $em->persist($ticket_comment);
+                        $em->persist($response);
+                    }
 
-                    $em->persist($ticket_comment);
-                    $em->persist($response);
+
+                    $ticket->setStatus($response->getTicketStatus());
+                    $em->persist($ticket);
                     $em->flush();
 
                     return $this->redirectToRoute("ticket_view",array("id"=>$id,"slug"=>$slug));
