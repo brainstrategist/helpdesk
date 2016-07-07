@@ -42,7 +42,7 @@ class Builder implements ContainerAwareInterface
     public function ProjectDashboardMenu(FactoryInterface $factory, array $options)
     {
         $menu = $factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
+        $menu->setChildrenAttribute('class', 'nav nav-tabs');
 
         $menu->addChild('Overview', array('route' => 'project_access', 'routeParameters' => array('slug' => $options['project_slug'])))
             ->setAttribute('icon', 'fa fa-edit');

@@ -1,17 +1,26 @@
-<div  class="col-md-10 ">
+<div  class="col-md-12 ">
     {{ form_start(form, {'method': 'post','action': path('ticket_create', {'slug': project.slug}) }) }}
     {{ form_errors(form) }}
     <div {{ block('widget_container_attributes') }}>
         {% for child in form %}
+            {% if child.vars.name in [ 'browser', 'priority', 'severity','category'] %}
+              <div class="col-md-3">
+            {% endif %}
+          {% if child.vars.name == 'assigned_users' or  child.vars.name == 'picture' %}
+          <div class="col-md-12 ">
+              {% endif %}
             <fieldset class="form-group">
                 {% if  child.vars.name != "_token" %}
                     {{ form_label(child) }}
                 {% endif %}
                 {{ form_widget(child) }}
             </fieldset>
+            {% if child.vars.name in [ 'browser', 'priority', 'severity','category','assigned_users','picture']  %}
+                </div>
+            {% endif %}
         {% endfor %}
         <div>
-            &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'Create a ticket'|trans }}" />
+          <input type="submit"  class="btn btn-primary" value="{{ 'Create a ticket'|trans }}" />
         </div>
     </div>
 

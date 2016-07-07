@@ -118,6 +118,7 @@ class TicketController extends Controller
                         $ticket->setProjet($project);
                         $ticket->setCreator($currentUser);
                         $ticket->setSeverity($response->getSeverity());
+                        $ticket->setPriority($response->getPriority());
 
                         $ticket_log = new Ticket_Log();
                         $ticket_log->setContentLog('Creation of the ticket');

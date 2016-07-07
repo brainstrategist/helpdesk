@@ -16,7 +16,7 @@
 {% endblock %}
 {% block body %}
     <h2 class="name">
-        {{ ticket.summary}}
+        [{{ ticket.identifier }}] {{ ticket.summary}}
     </h2>
     <h4>
         <b>Project :</b> <a href={{ path('project_access', { 'slug': ticket.projet.slug }) }}>{{ ticket.projet.name }}</a>
@@ -39,7 +39,16 @@
                     <li class="browser"> <b>Browser :</b> {{ ticket.browser }}</li>
                     <li class="creation_date"> <b>Date Creation :</b>  {{ ticket.dateCreation|date('d/m/y') }}</li>
                     <li class="creator"> <b>Creator :</b>  @{{ ticket.creator.username }}</li>
-                    <li class="severity"> <b>Severity :</b>  {{ ticket.severity.name }}</li>
+                    <li class="severity"> <b>Severity :</b> {% if ticket.severity.level < 3 %}
+                    {% set style = "success" %}
+                    {% elseif ticket.severity.level < 5 %}
+                        {% set style = "info" %}
+                    {% elseif ticket.severity.level < 7 %}
+                        {% set style = "warning" %}
+                    {% else %}
+                        {% set style = "danger" %}
+                    {% endif %}
+                <p href="#" class="btn btn-xs btn-{{ style }}"> {{ ticket.severity.name }}</p></li>
                     <li class="category"> <b>Category :</b>  {{ ticket.category.name }}</li>
                     <li class="Status"> <b>Status :</b>  {{ ticket.status.name }}</li>
                 </ul>
@@ -67,11 +76,14 @@
     <dl class="comments_feed">
         <h4>Feed</h4>
         {% if ticket.comments|length > 0 %}
-            <dl class="dl-horizontal">
+            <dl>
             {% for comment in ticket.comments %}
                     <div class="row {{ cycle(['even','odd'],loop.index) }}">
-                        <dt>{{ comment.dateComment|date('d-m-y H:s') }} by @{{ comment.user_comment.username }}</dt>
-                        <dd>{{ comment.contentComment|raw }}</dd>
+                        <dt {% if app.user.username == comment.user_comment.username %} class="pull-right" {% else %} class="pull-left" {% endif %}>  {{ comment.user_comment.username }}</dt>
+                        <dd {% if app.user.username == comment.user_comment.username %} class="pull-left" {% else %} class="pull-right" {% endif %}>
+                            {{ comment.contentComment|raw }}
+                            <small>Posted the {{ comment.dateComment|date('d-m-y H:s') }}</small>
+                        </dd>
                     </div>
             {% endfor  %}
             </dl>

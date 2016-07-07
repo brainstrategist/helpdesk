@@ -25,6 +25,13 @@ class Ticket
     /**
      * @var string
      *
+     * @ORM\Column(name="Identifier", type="string", length=255)
+     */
+    private $identifier;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="Summary", type="string", length=255)
      */
     private $summary;
@@ -51,9 +58,8 @@ class Ticket
     private $dateCreation;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="Priority", type="integer")
+     * @ORM\ManyToOne(targetEntity="Ticket_Priority")
+     * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
      */
     private $priority;
 
@@ -322,7 +328,7 @@ class Ticket
         $this->assigned_users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->severity = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dateCreation = new \DateTime();
-
+        $this->identifier = substr(strtoupper(md5(uniqid(rand(), true))), 0, 6);
 
     }
 
@@ -498,5 +504,29 @@ class Ticket
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set identifier
+     *
+     * @param string $identifier
+     *
+     * @return Ticket
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    /**
+     * Get identifier
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
     }
 }
