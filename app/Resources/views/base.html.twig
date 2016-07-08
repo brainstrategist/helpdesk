@@ -4,7 +4,8 @@
         <meta charset="UTF-8" />
         <title>{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-        {% block additionnalScripts %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+
         <link rel="stylesheet" href="{{ asset('assets/css/brain_strategist_compiled.min.css') }}" />
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -20,7 +21,7 @@
             {% endif %}
 
             {% block body %}{% endblock %}
-            {% block javascripts %}{% endblock %}
+            {% block additionnalScripts %}{% endblock %}
         </div>
     </div><!-- /.container -->
     {{ include('::footer.html.twig') }}

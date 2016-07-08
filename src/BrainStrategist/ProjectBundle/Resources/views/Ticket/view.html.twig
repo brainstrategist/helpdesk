@@ -72,6 +72,16 @@
         <b>Description of the issue</b>
         {{ ticket.description|raw  }}
     </div>
+    {% if ticket.pictures|length > 0 %}
+     <div class="sceenshoots">
+        <b>Screenshots</b>
+        <ul class="list-inline">
+            {% for picture in ticket.pictures %}
+            <li><a href="{{asset(ticket_directory~'/'~picture.path) }}" target="_blank"><img name="{{ picture.name }}" src="{{ asset(ticket_directory~'/'~picture.path)| imagine_filter('my_thumb') }}" /></a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
     <hr/>
     <dl class="comments_feed">
         <h4>Feed</h4>
@@ -82,6 +92,13 @@
                         <dt {% if app.user.username == comment.user_comment.username %} class="pull-right" {% else %} class="pull-left" {% endif %}>  {{ comment.user_comment.username }}</dt>
                         <dd {% if app.user.username == comment.user_comment.username %} class="pull-left" {% else %} class="pull-right" {% endif %}>
                             {{ comment.contentComment|raw }}
+                            {% if comment.pictures|length > 0 %}
+                             <ul class="list-inline">
+                                {% for picture in comment.pictures %}
+                                    <li><a href="{{asset(ticket_directory~'/'~picture.path) }}" target="_blank"><img name="{{ picture.name }}" src="{{ asset(ticket_directory~'/'~picture.path)| imagine_filter('my_thumb') }}" /></a></li>
+                                {% endfor  %}
+                              </ul>
+                            {% endif %}
                             <small>Posted the {{ comment.dateComment|date('d-m-y H:s') }}</small>
                         </dd>
                     </div>
@@ -100,18 +117,47 @@
         {{ form_errors(form) }}
         <div {{ block('widget_container_attributes') }}>
             {% for child in form %}
+                {% if child.vars.name != 'pictures'  %}
                 <fieldset class="form-group">
                     {% if  child.vars.name != "_token" %}
                         {{ form_label(child) }}
                     {% endif %}
                     {{ form_widget(child) }}
                 </fieldset>
+                {% endif %}
             {% endfor %}
+             <ul id="picture-container" class="form-inline collection-container" data-prototype="{{ form_widget(form.pictures.vars.prototype) | e }}">
+                    {% for pictureField in form.pictures %}
+                        <li>
+                         <fieldset class="form-group">
+                            {{ form_widget(pictureField) }}
+                         </fieldset>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <a href="#" class="collection-add btn btn-primary" data-collection="picture-container">Add Screenshoot</a>
+                <br/> <br/>
+            <div class="clearfix"></div>
             <div>
                 <a href={{ path('dashboard_access') }} class="btn btn-secondary" >Cancel</a>  &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'submit'|trans }}" />
             </div>
         </div>
         {{ form_end(form) }}
+          <script type="text/javascript">
+            var imageCount;
+
+            jQuery(document).ready(function() {
+                $('.collection-add').click(function (event) {
+                    event.preventDefault();
+                    var $collectionContainer = $('#' + $(this).data('collection'));
+                    if(!imageCount){imageCount = $collectionContainer.children().length;}
+                    var prototype = $collectionContainer.attr('data-prototype');
+                    var item = prototype.replace(/__name__/g, imageCount);
+                    $collectionContainer.append(item);
+                    imageCount++;
+                });
+            })
+        </script>
     </div>
 {% endblock %}
 {% block javascripts %}

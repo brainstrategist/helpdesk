@@ -3,20 +3,37 @@
     {{ form_errors(form) }}
     <div {{ block('widget_container_attributes') }}>
         {% for child in form %}
-            {% if child.vars.name in [ 'browser', 'priority', 'severity','category'] %}
-              <div class="col-md-3">
-            {% endif %}
-          {% if child.vars.name == 'assigned_users' or  child.vars.name == 'picture' %}
-          <div class="col-md-12 ">
-              {% endif %}
-            <fieldset class="form-group">
-                {% if  child.vars.name != "_token" %}
-                    {{ form_label(child) }}
-                {% endif %}
-                {{ form_widget(child) }}
-            </fieldset>
-            {% if child.vars.name in [ 'browser', 'priority', 'severity','category','assigned_users','picture']  %}
-                </div>
+            {% if child.vars.name != 'pictures'  %}
+                        {% if child.vars.name in [ 'browser', 'priority', 'severity','category'] %}
+                            <div class="col-md-3">
+                        {% endif %}
+                        {% if child.vars.name in ['assigned_users'] %}
+                            <div class="col-md-12 ">
+                        {% endif %}
+
+                              <fieldset class="form-group">
+                                  {% if  child.vars.name != "_token" %}
+                                      {{ form_label(child) }}
+                                  {% endif %}
+                                  {{ form_widget(child) }}
+                              </fieldset>
+
+                        {% if child.vars.name in [ 'browser', 'priority', 'severity','category','assigned_users','picture']  %}
+                            </div>
+                        {% endif %}
+
+            {% else %}
+                <div class="clearfix"></div>
+                <ul id="picture-container" class="collection-container" data-prototype="{{ form_widget(form.pictures.vars.prototype) | e }}">
+                    {% for pictureField in form.pictures%}
+                        <li>
+                            {{ form_widget(pictureField) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <a href="#" class="collection-add btn btn-primary" data-collection="picture-container">Add Screenshoot</a>
+                <br/>
             {% endif %}
         {% endfor %}
         <div>
@@ -28,4 +45,19 @@
     <br/>
     <br/>
     {{ form_end(form) }}
+        <script type="text/javascript">
+            var imageCount;
+
+            jQuery(document).ready(function() {
+                $('.collection-add').click(function (event) {
+                    event.preventDefault();
+                    var $collectionContainer = $('#' + $(this).data('collection'));
+                    if(!imageCount){imageCount = $collectionContainer.children().length;}
+                    var prototype = $collectionContainer.attr('data-prototype');
+                    var item = prototype.replace(/__name__/g, imageCount);
+                    $collectionContainer.append(item);
+                    imageCount++;
+                });
+            })
+        </script>
 </div>

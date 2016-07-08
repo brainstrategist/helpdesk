@@ -4,6 +4,9 @@ namespace BrainStrategist\ProjectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use BrainStrategist\KernelBundle\Entity\Picture;
 
 /**
  * Ticket
@@ -64,11 +67,10 @@ class Ticket
     private $priority;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
      *
-     * @Assert\File(mimeTypes={ "image/jpeg" })
+     * @ORM\OneToMany(targetEntity="BrainStrategist\KernelBundle\Entity\Picture", mappedBy="ticket", cascade={"persist"})
      */
-    private $picture;
+    private $pictures;
 
     /**
      * @ORM\ManyToOne(targetEntity="BrainStrategist\KernelBundle\Entity\User")
@@ -329,7 +331,7 @@ class Ticket
         $this->severity = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dateCreation = new \DateTime();
         $this->identifier = substr(strtoupper(md5(uniqid(rand(), true))), 0, 6);
-
+        $this->pictures = new ArrayCollection();
     }
 
     /**
@@ -528,5 +530,40 @@ class Ticket
     public function getIdentifier()
     {
         return $this->identifier;
+    }
+
+    /**
+     * Add picture
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Picture $picture
+     *
+     * @return Ticket
+     */
+    public function addPicture(\BrainStrategist\KernelBundle\Entity\Picture $picture)
+    {
+        $this->pictures[] = $picture;
+        $picture->setTicket($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove picture
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Picture $picture
+     */
+    public function removePicture(\BrainStrategist\KernelBundle\Entity\Picture $picture)
+    {
+        $this->pictures->removeElement($picture);
+    }
+
+    /**
+     * Get pictures
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
     }
 }

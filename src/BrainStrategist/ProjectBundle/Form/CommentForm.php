@@ -6,12 +6,15 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use BrainStrategist\ProjectBundle\Form\PictureType;
 
 use BrainStrategist\ProjectBundle\Entity\Ticket_Comment;
 use BrainStrategist\ProjectBundle\Repository\Ticket_StatusRepository;
@@ -34,6 +37,9 @@ class CommentForm extends AbstractType
                 {
                     return $er->findAllByProjectId($options['attr']['project_id']);
                 },
+                'attr' => array(
+                    'class' => 'form-control',
+                )
             ))
             ->add('contentComment',TextareaType::class,
                 array(
@@ -42,7 +48,16 @@ class CommentForm extends AbstractType
                     ),
                     'required' => false,
                     'label' => 'Description'
-                ));
+                ))
+            ->add('pictures', CollectionType::class , array(
+                'entry_type' => PictureType::class,
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'prototype' => true,
+                'label' => 'Add sceenshoots'
+
+            ));
 
     }
 

@@ -7,15 +7,17 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use BrainStrategist\ProjectBundle\Form\PictureType;
 
-use BrainStrategist\KernelBundle\Entity\Ticket;
+use BrainStrategist\ProjectBundle\Entity\Ticket;
 use BrainStrategist\ProjectBundle\Repository\SeverityRepository;
 
 class TicketForm extends AbstractType
@@ -107,16 +109,15 @@ class TicketForm extends AbstractType
                     return $er->getUsersByProjects(array('projectID' => $this->option_id, 'limit' =>  100));
                 }
             ))
+            ->add('pictures', CollectionType::class , array(
+                'entry_type' => PictureType::class,
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'prototype' => true,
+                'label' => 'Add sceenshoots'
 
-            ->add('picture', FileType::class,
-                array(
-                    'label' => 'Screeshoot (Jpeg file)',
-                    'data_class' => null,
-                    'required' => false,
-                    'attr' => array(
-                        'class' => 'form-control'
-                    ),
-                ));
+            ));
 
     }
 
@@ -126,7 +127,7 @@ class TicketForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BrainStrategistProjectBundle\Entity\Ticket'
+            'data_class' => 'BrainStrategist\ProjectBundle\Entity\Ticket'
         ));
     }
 

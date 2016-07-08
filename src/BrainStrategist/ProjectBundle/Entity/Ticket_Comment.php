@@ -3,6 +3,9 @@
 namespace BrainStrategist\ProjectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use BrainStrategist\KernelBundle\Entity\Picture;
 
 /**
  * Ticket_Comment
@@ -53,11 +56,19 @@ class Ticket_Comment
     private $user_comment;
 
     /**
+     *
+     * @ORM\OneToMany(targetEntity="BrainStrategist\KernelBundle\Entity\Picture", mappedBy="comment", cascade={"persist"})
+     */
+    private $pictures;
+
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->dateComment = new \DateTime();
+        $this->pictures = new ArrayCollection();
 
     }
 
@@ -190,5 +201,39 @@ class Ticket_Comment
     public function getTicketStatus()
     {
         return $this->ticket_status;
+    }
+
+    /**
+     * Add picture
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Picture $picture
+     *
+     * @return Ticket_Comment
+     */
+    public function addPicture(\BrainStrategist\KernelBundle\Entity\Picture $picture)
+    {
+        $this->pictures[] = $picture;
+        $picture->setComment($this);
+        return $this;
+    }
+
+    /**
+     * Remove picture
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Picture $picture
+     */
+    public function removePicture(\BrainStrategist\KernelBundle\Entity\Picture $picture)
+    {
+        $this->pictures->removeElement($picture);
+    }
+
+    /**
+     * Get pictures
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
     }
 }

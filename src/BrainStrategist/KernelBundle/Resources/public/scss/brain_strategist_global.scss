@@ -232,8 +232,28 @@ body{
 		line-height: 50px;
 	  }
 	}
-	}
+  }
+  .collection-container{
+	border-radius:10px;
+	padding: 10px;
+	background: #ececec;
 
+	div{
+
+	  div{
+		display: inline-block;
+		margin-bottom: 10px;
+		label{
+		  margin: 0 10px 0 0;
+		  display: inline-block;
+		}
+		input{
+		  margin: 0 10px 0 0;
+		  display: inline-block;
+		}
+	  }
+	}
+  }
 }
 
 /**

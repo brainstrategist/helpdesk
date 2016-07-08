@@ -44,7 +44,7 @@ class Builder implements ContainerAwareInterface
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav nav-tabs');
 
-        $menu->addChild('Overview', array('route' => 'project_access', 'routeParameters' => array('slug' => $options['project_slug'])))
+        $menu->addChild('Issues', array('route' => 'project_access', 'routeParameters' => array('slug' => $options['project_slug'])))
             ->setAttribute('icon', 'fa fa-edit');
 
         $menu->addChild('Users', array('route' => 'project_view', 'routeParameters' => array('slug' => $options['project_slug'], 'view' => 'users-list')))

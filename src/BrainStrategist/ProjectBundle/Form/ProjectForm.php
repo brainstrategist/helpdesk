@@ -60,7 +60,7 @@ class ProjectForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BrainStrategistProjectBundle\Entity\Project'
+            'data_class' => 'BrainStrategist\ProjectBundle\Entity\Project'
         ));
     }
 
