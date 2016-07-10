@@ -11,7 +11,7 @@ namespace BrainStrategist\ProjectBundle\Repository;
 class TicketRepository extends \Doctrine\ORM\EntityRepository
 {
 
-    public function findAllTicketByProjectId($params=array('limit'=>100,'offset'=>0))
+    public function findAllTicketByProjectIdQuery($params)
     {
         extract($params);
 
@@ -30,20 +30,30 @@ class TicketRepository extends \Doctrine\ORM\EntityRepository
                 ->addSelect('ts')
                 ->addSelect('tc')
                 ->andWhere('tp.id = :projet_id')
-                ->setParameter('projet_id',$projectID)
-                ->setMaxResults($limit)
-                ->setFirstResult($offset);
+                ->setParameter('projet_id',$projectID);
 
             $query = $q->getQuery();
-            return $query->getArrayResult();
+            return $query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+        }else{
+            return false;
+        }
+
+}
+    public function findAllTicketByProjectId($params=array('limit'=>100,'offset'=>0))
+    {
+        extract($params);
+
+        if (!is_null($projectID)) {
+        $query = $this->findAllTicketByProjectId($params);
+         return $query->getArrayResult();
 
         }else{
             return false;
         }
 
     }
-
-    public function findAllTicketByUser($params=array('limit'=>100,'offset'=>0))
+    public function findAllTicketByUserQuery($params)
     {
         extract($params);
 
@@ -62,11 +72,23 @@ class TicketRepository extends \Doctrine\ORM\EntityRepository
                 ->addSelect('ts')
                 ->addSelect('tc')
                 ->andWhere('tau.id = :user_id')
-                ->setParameter('user_id',$userID)
-                ->setMaxResults($limit)
-                ->setFirstResult($offset);
+                ->setParameter('user_id',$userID);
 
             $query = $q->getQuery();
+            return $query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+        }else{
+            return false;
+        }
+
+    }
+
+    public function findAllTicketByUser($params)
+    {
+        extract($params);
+
+        if (!is_null($userID)) {
+            $this->findAllTicketByUserQuery($params);
             return $query->getArrayResult();
 
         }else{

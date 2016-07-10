@@ -20,7 +20,6 @@
             <div class="picture-cover"><img src="{{ asset(project_directory~'/'~project.picture)| imagine_filter('my_thumb') }}" /></div><br/>
         {% endif %}
         <h3 class="pull-right">{{ project.organization.name }}/{{ project.name }}</h3>
-        <div class="clearfix"></div>
         {% if notice is defined %}
             {% if type_notice is defined and type_notice == 'alert' %}
                 <div class="col-md-12">
@@ -32,8 +31,10 @@
                 </div>
             {% endif %}
         {% endif %}
+        <div class="clearfix"></div>
+        <div class="col-md-2">
         {{ include('BrainStrategistProjectBundle:Project:nav.html.twig') }}
-         <div class="clearfix"></div>
+        </div>
         {% if view is defined %}
              {{ view|raw }}
         {% else %}

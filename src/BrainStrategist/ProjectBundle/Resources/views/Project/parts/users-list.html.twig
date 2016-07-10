@@ -1,8 +1,10 @@
-<h2>Users of this project</h2>
-<ul class="users_projects  list-inline">
-    {% for user in project.usersProject %}
-        <li>
-            {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}
-        </li>
-    {% endfor  %}
-</ul>
+<div class="col-md-10 ">
+    <h2>Users of this project</h2>
+    <ul class="users_projects  list-inline">
+        {% for user in project.usersProject %}
+            <li>
+                {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}
+            </li>
+        {% endfor  %}
+    </ul>
+</div>

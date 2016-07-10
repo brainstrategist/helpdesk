@@ -115,7 +115,7 @@ class TicketForm extends AbstractType
                 'by_reference' => false,
                 'allow_delete' => true,
                 'prototype' => true,
-                'label' => 'Add sceenshoots'
+                'label' => false
 
             ));
 

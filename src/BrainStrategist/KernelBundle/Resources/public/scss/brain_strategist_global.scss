@@ -1,12 +1,14 @@
 @import "variables_colors";
 body{
-  	a{
+  	a,.pagination a{
 	  color:color('primary');
 	}
 	.full-page-layout{
 	  margin-bottom: 100px;
+	  display: table;
+	  width: 100%;
 	}
-	.btn-primary{
+	.btn-primary,.pagination>.active>span{
 	  background:color('primary');
 	  border-color: color('secondary');
 	  &:hover,&:active{
@@ -85,6 +87,28 @@ body{
   .dark-head-thead{
 	background:color('primary');
 	color: #fff;
+	.sorted{
+	  a:before{
+		position: relative;
+		top: 1px;
+		display: inline-block;
+		font-family: 'Glyphicons Halflings';
+		font-style: normal;
+		font-weight: 400;
+		line-height: 1;
+		-webkit-font-smoothing: antialiased;
+		margin-right: 10px;
+	  }
+	  a.asc:before{
+		content: "\e113";
+	  }
+	  a.desc:before{
+		content: "\e114";;
+	  }
+	}
+	a{
+	  color: #fff;
+	}
   }
   .footer.navbar-fixed-bottom{
 	height: 60px;
@@ -233,10 +257,13 @@ body{
 	  }
 	}
   }
+
+
   .collection-container{
 	border-radius:10px;
 	padding: 10px;
 	background: #ececec;
+
 
 	div{
 
@@ -252,6 +279,19 @@ body{
 		  display: inline-block;
 		}
 	  }
+	}
+  }
+  /**
+  	Ticket View
+  */
+  &.ticket_view{
+	h2{
+	  color:color('primary');
+	}
+	.header-ticket{
+	  background: #f7f7f7;
+	  padding: 10px;
+	  border-radius: 5px;
 	}
   }
 }

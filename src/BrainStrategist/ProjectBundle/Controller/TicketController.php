@@ -23,7 +23,7 @@ class TicketController extends Controller
     /**
      * @Route("/{_locale}/project/{slug}/ticket/list",name="ticket_list")
      */
-    public function listAction(Request $request,$slug=null){
+    public function listAction(Request $request,$slug=null,$page=null,$limit=null){
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
 
         if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
@@ -40,12 +40,23 @@ class TicketController extends Controller
 
                     $ticketsEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
 
-                    $params = array(
-                        "projectID" => $project->getId(),
-                        "limit"=>100,
-                        "offset"=>0 );
+                    $params = array("projectID" => $project->getId());
 
-                    $tickets = $ticketsEntity->findAllTicketByProjectId($params);
+                    if(null !== $request->query->getInt('page') && !isset($page)){
+                        $page = 1;
+                    }
+                    if(null !== $request->query->getInt('limit') && !isset($limit)){
+                        $limit = 10;
+                    }
+
+                    $ticket_query = $ticketsEntity->findAllTicketByProjectIdQuery($params);
+
+                    $paginator  = $this->get('knp_paginator');
+                    $tickets = $paginator->paginate(
+                        $ticket_query,
+                        $page,
+                        $limit
+                    );
                     $params['tickets'] = $tickets;
 
                 }

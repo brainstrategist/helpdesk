@@ -15,13 +15,14 @@
 {% block stylesheets %}
 {% endblock %}
 {% block body %}
+<dl class="col-md-10 col-md-offset-1 col-md-offset-right-1">
     <h2 class="name">
         [{{ ticket.identifier }}] {{ ticket.summary}}
     </h2>
     <h4>
         <b>Project :</b> <a href={{ path('project_access', { 'slug': ticket.projet.slug }) }}>{{ ticket.projet.name }}</a>
     </h4>
-    <div class="row">
+    <div class="row header-ticket">
         <div class="col-md-8">
             <ul class="resolving_policy list-inline">
                 <li class="timeToAnswer">
@@ -107,26 +108,35 @@
         {% else %}
             No comments for this issue yet.
         {% endif %}
-    </div>
+    </dl>
     <hr/>
     <div class="comment_editor">
         <div class="form-group ">
             <h4>Leave a comment</h4>
         </div>
+
+
         {{ form_start(form, {'method': 'post' }) }}
         {{ form_errors(form) }}
         <div {{ block('widget_container_attributes') }}>
-            {% for child in form %}
-                {% if child.vars.name != 'pictures'  %}
-                <fieldset class="form-group">
-                    {% if  child.vars.name != "_token" %}
-                        {{ form_label(child) }}
+         <div class="col-md-8">
+                {% for child in form %}
+                    {% if child.vars.name != 'pictures'  %}
+                    <fieldset class="form-group">
+                        {% if  child.vars.name != "_token" %}
+                            {{ form_label(child) }}
+                        {% endif %}
+                        {{ form_widget(child) }}
+                    </fieldset>
                     {% endif %}
-                    {{ form_widget(child) }}
-                </fieldset>
-                {% endif %}
-            {% endfor %}
-             <ul id="picture-container" class="form-inline collection-container" data-prototype="{{ form_widget(form.pictures.vars.prototype) | e }}">
+                {% endfor %}
+                     <div>
+                    <a href={{ path('dashboard_access') }} class="btn btn-secondary" >Cancel</a>  &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'submit'|trans }}" />
+                </div>
+            </div>
+            <div class="col-md-4">
+              <p>Click on the button to add a screenshoot field</p>
+                 <ul id="picture-container" class="form-inline collection-container" data-prototype="{{ form_widget(form.pictures.vars.prototype) | e }}">
                     {% for pictureField in form.pictures %}
                         <li>
                          <fieldset class="form-group">
@@ -135,17 +145,14 @@
                         </li>
                     {% endfor %}
                 </ul>
-                <a href="#" class="collection-add btn btn-primary" data-collection="picture-container">Add Screenshoot</a>
+                <a href="#" class="collection-add btn btn-primary" data-collection="picture-container">Add [+]</a>
                 <br/> <br/>
-            <div class="clearfix"></div>
-            <div>
-                <a href={{ path('dashboard_access') }} class="btn btn-secondary" >Cancel</a>  &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'submit'|trans }}" />
+                <div class="clearfix"></div>
             </div>
         </div>
         {{ form_end(form) }}
           <script type="text/javascript">
             var imageCount;
-
             jQuery(document).ready(function() {
                 $('.collection-add').click(function (event) {
                     event.preventDefault();
@@ -159,6 +166,7 @@
             })
         </script>
     </div>
+</div>
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>

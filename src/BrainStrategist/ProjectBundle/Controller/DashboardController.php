@@ -39,8 +39,22 @@ class DashboardController extends Controller
                 "offset"=>0 );
 
             $ticketsEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
-            $tickets = $ticketsEntity->findAllTicketByUser($params);
 
+            if(null !== $request->query->getInt('page') && !isset($page)){
+                $page = 1;
+            }
+            if(null !== $request->query->getInt('limit') && !isset($limit)){
+                $limit = 10;
+            }
+
+            $ticket_query = $ticketsEntity->findAllTicketByUserQuery($params);
+
+            $paginator  = $this->get('knp_paginator');
+            $tickets = $paginator->paginate(
+                $ticket_query,
+                $page,
+                $limit
+            );
             $params['tickets'] = $tickets;
            
         }else{

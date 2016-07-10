@@ -1,12 +1,16 @@
 {% if  tickets|length > 0 %}
+
+    <div class="count">
+        {{ pagination.getTotalItemCount }}
+    </div>
     <table class="table table-striped">
         <thead class="dark-head-thead">
         <tr>
             <th>Name</th>
             <th>User(s)</th>
-            <th>Category</th>
-            <th>Priority</th>
-            <th>Severity</th>
+            <th {% if tickets.isSorted('tca.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Category', 'tca.name') }}</th>
+            <th {% if tickets.isSorted('tpr.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Priority', 'tpr.name') }}</th>
+            <th {% if tickets.isSorted('ts.level') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Severity', 'ts.level') }}</th>
             <th>Time left <br/>answer before</th>
             <th>Time left <br/>resolve before</th>
         </tr>
@@ -72,6 +76,9 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="navigation">
+        {{ knp_pagination_render(tickets) }}
+    </div>
 {% else %}
     <p>You don't create any issues for this project.</p>
 {% endif %}

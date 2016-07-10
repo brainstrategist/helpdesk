@@ -1,3 +1,3 @@
-<div  class="col-md-12 ">
-    {{ render(controller('BrainStrategistProjectBundle:Ticket:list', { 'slug': project.slug })) }}
+<div  class="col-md-10 ">
+    {{ render(controller('BrainStrategistProjectBundle:Ticket:list', { 'slug': project.slug,'page' :  app.request.query.get('page') ,'limit' :  app.request.query.get('limit')})) }}
 </div>
