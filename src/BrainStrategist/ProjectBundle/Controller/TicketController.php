@@ -23,7 +23,8 @@ class TicketController extends Controller
     /**
      * @Route("/{_locale}/project/{slug}/ticket/list",name="ticket_list")
      */
-    public function listAction(Request $request,$slug=null,$page=null,$limit=null){
+    public function listAction(Request $request,$slug=null,$page=null,$filters=null,$limit=null){
+
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
 
         if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
@@ -42,9 +43,36 @@ class TicketController extends Controller
 
                     $params = array("projectID" => $project->getId());
 
+                    // Get all severity by project
+                    $severityEntity = $em->getRepository("BrainStrategistProjectBundle:Severity");
+                    $severity = $severityEntity->findAllByProjectId($project->getId());
+                    $severityQuery = $severity->getQuery();
+                    $severityQuery->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+                    $params['severities'] = $severityQuery->getArrayResult();
+
+                    // Get all category by project
+                    $categoryEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_Category");
+                    $categories = $categoryEntity->findAll();
+                    $params['categories'] = $categories;
+
+                    // Get all status by project
+                    $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_status");
+                    $status = $statusEntity->findAllByProjectId($project->getId());
+                    $statusQuery = $status->getQuery();
+                    $statusQuery->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+                    $params['status_list'] = $statusQuery->getArrayResult();
+
+
+                    if(isset($filters))
+                        $params['filters'] = $filters;
+
+                    // pagination
                     if(null !== $request->query->getInt('page') && !isset($page)){
                         $page = 1;
                     }
+                    // nb results per page
                     if(null !== $request->query->getInt('limit') && !isset($limit)){
                         $limit = 10;
                     }

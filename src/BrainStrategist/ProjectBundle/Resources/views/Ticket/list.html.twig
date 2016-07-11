@@ -1,23 +1,76 @@
-{% if  tickets|length > 0 %}
-
-    <div class="count">
-        {{ pagination.getTotalItemCount }}
+{% if app.request.get('slug') is not null  %}
+<div class="filters col-md-9">
+    <form>
+        <ul class="list-inline">
+            <li>
+                <div><strong>Filter by</strong></div>
+            </li>
+            <li>
+                <select class="form-control" name="severity_filter">
+                    <option value="0">Severtity</option>
+                    {% for severity in severities %}
+                        <option {% if filters.severity_filter == severity.id %}selected="selected"{% endif %} value="{{ severity.id }}">{{ severity.name }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+            <li>
+                <select class="form-control" name="category_filter">
+                    <option value="0">Category</option>
+                    {% for category in categories %}
+                        <option {% if filters.category_filter == category.id %}selected="selected"{% endif %} value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+            <li>
+                <select class="form-control" name="status_filter">
+                    <option value="0">Status</option>
+                    {% for status in status_list %}
+                        <option {% if filters.status_filter == status.id %}selected="selected"{% endif %} value="{{ status.id }}">{{ status.name }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+            <li>
+                <input type="submit" value="Filter" class="btn btn-primary">
+            </li>
+        </ul>
+    </form>
+</div>
+<div class="count col-md-1">
+    <div class="form-inline">
+        <form>
+            <input type="submit" value="Clear filters" class="btn btn-primary">
+        </form>
     </div>
+</div>
+{% else %}
+<div class="col-md-10">
+    <strong>All the submitted issues availables in your backlog are listed here</strong>
+</div>
+{% endif %}
+<div class="count col-md-2">
+    <div class="pull-right"><strong> {% if  tickets|length > 0 %}{{ tickets.getTotalItemCount }} {% else %} No {% endif %}results</strong></div>
+</div>
+<div class="clearfix"></div>
+<br/>
+{% if  tickets|length > 0 %}
     <table class="table table-striped">
         <thead class="dark-head-thead">
         <tr>
+            {% if app.request.get('slug') is  null  %}<th {% if tickets.isSorted('tp.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Project', 'tp.name') }}</th>{% endif %}
             <th>Name</th>
             <th>User(s)</th>
+            <th {% if tickets.isSorted('tst.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Status', 'tst.name') }}</th>
             <th {% if tickets.isSorted('tca.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Category', 'tca.name') }}</th>
             <th {% if tickets.isSorted('tpr.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Priority', 'tpr.name') }}</th>
             <th {% if tickets.isSorted('ts.level') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Severity', 'ts.level') }}</th>
-            <th>Time left <br/>answer before</th>
-            <th>Time left <br/>resolve before</th>
+            <th>Time to answer</th>
+            <th>Time to resolve</th>
         </tr>
         </thead>
         {% for ticket in tickets %}
         <tbody>
         <tr>
+            {% if app.request.get('slug') is  null  %}<td><a href={{ path('project_access', { 'slug':ticket.projet.slug }) }}>{{ ticket.projet.name }}</a></td>{% endif %}
             <td>
                 <div class="col-md-12">
                     <b><a href={{ path('ticket_view', { 'id': ticket.id, 'slug':ticket.projet.slug }) }}> [{{ ticket.identifier }}]{{ ticket.summary }}</a></b>
@@ -45,6 +98,9 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
+            </td>
+            <td>
+                {{ ticket.status.name }}
             </td>
             <td>
                 {{ ticket.category.name }}
@@ -80,5 +136,5 @@
         {{ knp_pagination_render(tickets) }}
     </div>
 {% else %}
-    <p>You don't create any issues for this project.</p>
+    <h3>Sorry, there are no issues open for this project.</h3>
 {% endif %}

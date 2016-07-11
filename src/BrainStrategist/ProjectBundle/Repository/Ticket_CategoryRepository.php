@@ -10,4 +10,5 @@ namespace BrainStrategist\ProjectBundle\Repository;
  */
 class Ticket_CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }

@@ -1,3 +1,11 @@
 <div  class="col-md-10 ">
-    {{ render(controller('BrainStrategistProjectBundle:Ticket:list', { 'slug': project.slug,'page' :  app.request.query.get('page') ,'limit' :  app.request.query.get('limit')})) }}
+    {{ render(controller('BrainStrategistProjectBundle:Ticket:list',
+        {   'slug': project.slug,'page' :  app.request.query.get('page') ,
+            'limit' :  app.request.query.get('limit'),
+            'filters' : {
+                            'severity_filter' :  app.request.query.get('severity_filter'),
+                            'category_filter' :  app.request.query.get('category_filter'),
+                            'status_filter' :  app.request.query.get('status_filter')
+                        },
+        })) }}
 </div>

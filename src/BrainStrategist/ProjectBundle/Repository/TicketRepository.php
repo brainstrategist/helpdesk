@@ -22,15 +22,30 @@ class TicketRepository extends \Doctrine\ORM\EntityRepository
                 ->leftJoin('t.assigned_users', 'tau')
                 ->leftJoin('t.category', 'tca')
                 ->leftJoin('t.priority', 'tpr')
+                ->leftJoin('t.status', 'tst')
                 ->leftJoin('t.severity', 'ts')
                 ->addSelect('tp')
                 ->addSelect('tau')
+                ->addSelect('tst')
                 ->addSelect('tca')
                 ->addSelect('tpr')
                 ->addSelect('ts')
                 ->addSelect('tc')
                 ->andWhere('tp.id = :projet_id')
                 ->setParameter('projet_id',$projectID);
+
+            // filter by severity
+            if(isset($filters['severity_filter']) && $filters['severity_filter']!=0){
+                $q->andWhere('ts.id = :severity_id')->setParameter('severity_id',$filters['severity_filter']);
+            }
+            // filter by category
+            if(isset($filters['category_filter']) && $filters['category_filter']!=0){
+                $q->andWhere('tca.id = :category_id')->setParameter('category_id',$filters['category_filter']);
+            }
+            // filter by status
+            if(isset($filters['status_filter']) && $filters['status_filter']!=0){
+                $q->andWhere('tst.id = :status_id')->setParameter('status_id',$filters['status_filter']);
+            }
 
             $query = $q->getQuery();
             return $query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
