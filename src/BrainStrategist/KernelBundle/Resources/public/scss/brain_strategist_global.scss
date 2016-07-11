@@ -24,7 +24,7 @@ body{
 	  	border-bottom: #91bef1;
 	  .connexion_box{
 		float: right;
-		width: 80%;
+		width: 70%;
 	  }
 	  .navbar-brand{
 		background: url(/assets/images/brain-logo-small.png) no-repeat left center;
@@ -34,6 +34,7 @@ body{
 	  .navbar-right{
 		color: #fff;
 		.avatar_top{
+		  height: 18px;
 		  height: 18px;
 		  width: auto;
 		}
@@ -72,7 +73,7 @@ body{
 	height: 700px;
 	overflow: hidden;
 	.carousel-caption {
-	  top: 15%;
+	  top: 6%;
 	  bottom: auto;
 	  z-index: 5000;
 	}
@@ -302,7 +303,8 @@ body{
 	}
   }
   .login-box{
-
+	width: 310px;
+	margin: auto;
 	h4,label{
 	  color: #000;
 	  text-shadow: none;
