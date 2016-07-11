@@ -14,6 +14,8 @@
                 <div class="col-md-2">
                     {% if file_exists(asset(full_project_directory~'/'~project.picture)) %}
                         <div class="picture-cover"><a href={{ path('project_access', { 'slug': project.slug }) }}><img src="{{ asset(project_directory~'/'~project.picture)| imagine_filter('my_thumb') }}" /></a></div><br/>
+                    {% else %}
+                        <div class="picture-cover bg-grey" style="background-image: url({{ asset('assets/images/brain-logo-small.png')| imagine_filter('my_thumb') }});"></div>
                     {% endif %}
                 </div>
                 <div class="col-md-10">

@@ -4,7 +4,8 @@
         <meta charset="UTF-8" />
         <title>{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-        {% block additionnalScripts %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+
         <link rel="stylesheet" href="{{ asset('assets/css/brain_strategist_compiled.min.css') }}" />
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -13,14 +14,14 @@
     {% if app.request.attributes.get('_route') == "default" and not is_granted('IS_AUTHENTICATED_FULLY') %}
         {{ include('BrainStrategistKernelBundle:Default:carousel_home.html.twig') }}
     {% endif %}
-    <div class="container full-page-layout">
+    <div class="full-page-layout">
         <div class="template">
             {% if app.request.attributes.get('_route') != "default" %}
                 {{ wo_render_breadcrumbs() }}
             {% endif %}
 
             {% block body %}{% endblock %}
-            {% block javascripts %}{% endblock %}
+            {% block additionnalScripts %}{% endblock %}
         </div>
     </div><!-- /.container -->
     {{ include('::footer.html.twig') }}

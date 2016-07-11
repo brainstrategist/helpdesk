@@ -1,38 +1,16 @@
-<div id="carousel-home" class="carousel slide" data-ride="carousel" data-interval="10000">
-    <!-- Indicators -->
-    {#<ol class="carousel-indicators">#}
-        {#<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>#}
-    {#</ol>#}
-    <!-- Wrapper for slides -->
+<div id="carousel-home" class="carousel slide">
     <div class="carousel-inner">
         <div class="item active">
             <img src="{{ asset('assets/images/pexels-photo-110854.jpeg') }}" alt="...">
                 <div class="carousel-caption" >
-                    <div class="col-md-4">
-                        <img src="{{ asset('/assets/images/brain-logo-blanc.png') }}" class="brainstrategist_logo" />
-                    </div>
-                    <div class="col-md-8">
-                        <h1 class="text-left">HelpDesk Support Management</h1>
-                        <p class="text-left"> Free Helpdesk management system.<br>
-                            Create a complete support system including:<br>
-                            <ul class="text-left">
-                                <li>A ticketing system fully integrated with your website</li>
-                                <li>A dynamic frequently asked question with a animated step by step answers</li>
-                                <li>An administrable QuickStart Guide to provide to your customers a better experience with your product</li>
-                                <li>Much more to come ... </li>
-                        </ul>
-                     </p>
+                    <img src="{{ asset('/assets/images/brain-logo-blanc.png') }}" class="brainstrategist_logo" />
+                    <div class="col-md-12 text-center">
+                        <h1>Brain Strategist</h1>
+                        <h3>A free Helpdesk management system</h3>
+                        {{  render(url('fos_user_security_login'))  }}
                     </div>
                 </div>
             <div class="overlay"></div>
         </div>
     </div>
-
-    {#<!-- Controls -->#}
-    {#<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">#}
-        {#<span class="glyphicon glyphicon-chevron-left"></span>#}
-    {#</a>#}
-    {#<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">#}
-        {#<span class="glyphicon glyphicon-chevron-right"></span>#}
-    {#</a>#}
 </div> <!-- Carousel -->

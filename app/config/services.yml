@@ -17,15 +17,22 @@ services:
         arguments: ["@request_stack"]
         tags:
             - { name: knp_menu.menu, alias: userMenu }
-    app.form.registration:
+    brain_strategist.form.registration:
         class: BrainStrategist\KernelBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: app_user_registration }
-    app.file.twig.extension:
+    brain_strategist.file.twig.extension:
         class: BrainStrategist\KernelBundle\Twig\TwigExtension
         tags:
             - { name: twig.extension }
-    app.project.twig.extension:
+    brain_strategist.project.twig.extension:
         class: BrainStrategist\ProjectBundle\Twig\TwigExtension
+        arguments:
+            em: "@doctrine.orm.entity_manager"
+            context: "@security.token_storage"
         tags:
             - { name: twig.extension }
+    brain_strategist.listener.preexecute:
+        class: BrainStrategist\KernelBundle\Predispatcher
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

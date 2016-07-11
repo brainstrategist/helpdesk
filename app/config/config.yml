@@ -12,6 +12,7 @@ parameters:
     full_organization_directory: '%kernel.root_dir%/../web%organization_directory%'
     project_directory: '/uploads/project'
     full_project_directory: '%kernel.root_dir%/../web%project_directory%'
+    ticket_directory: '/uploads/ticket'
 
 twig:
     globals:
@@ -20,6 +21,7 @@ twig:
         full_organization_directory: '%full_organization_directory%'
         project_directory: '%project_directory%'
         full_project_directory: '%full_project_directory%'
+        ticket_directory: '%ticket_directory%'
 
 
 assetic:

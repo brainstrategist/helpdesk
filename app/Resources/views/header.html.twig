@@ -12,17 +12,40 @@
         <div id="navbar" class="collapse navbar-collapse">
             <div class="connexion_box">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {% if (app.user.getProfilePicture is not null) %}
-                        {% set avatar=asset(app.user.getProfilePicture) %}
-                    {% else %}
-                        {% set avatar=asset('assets/images/user-icon.svg') %}
-                    {% endif %}
-                    {% set menu = knp_menu_get('BrainStrategistKernelBundle:Builder:userRegisterdMenu', [], {'username': app.user.username,'avatar':avatar} ) %}
-                    {{ knp_menu_render(menu, {'allow_safe_labels': true}) }}
+
+
+                             {% set listProjects = listing_projects() %}
+                            <div class="col-md-3">
+                                <form class="form-inline">
+                                    <select class="project-switcher form-control">
+                                        <option>Jump to</option>
+                                        {% for project in listProjects %}
+                                            <option value="{{ path('project_access',{'slug':project.slug}) }}">{{ project.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                                <script>
+                                    $('.project-switcher').change(function() {
+                                        window.location = $(this).val();
+                                    });
+                                </script>
+                            </div>
+                            <div class="col-md-9">
+                                {% if (app.user.getProfilePicture is not null) %}
+                                    {% set avatar=asset(app.user.getProfilePicture) %}
+                                {% else %}
+                                    {% set avatar=asset('assets/images/user-icon.svg') %}
+                                {% endif %}
+                                {% set menu = knp_menu_get('BrainStrategistKernelBundle:Builder:userRegisterdMenu', [], {'username': app.user.username,'avatar':avatar} ) %}
+                                {{ knp_menu_render(menu, {'allow_safe_labels': true}) }}
+                            </div>
+
+
                 {% else %}
                     {% set menu = knp_menu_get('BrainStrategistKernelBundle:Builder:userUnregisteredMenu', [], {'locale': app.request.getLocale()} ) %}
                     {{ knp_menu_render(menu, {'allow_safe_labels': true}) }}
                 {% endif %}
+
             </div>
         </div><!--/.nav-collapse -->
     </div>

@@ -15,13 +15,14 @@
 {% block stylesheets %}
 {% endblock %}
 {% block body %}
+<dl class="col-md-10 col-md-offset-1 col-md-offset-right-1">
     <h2 class="name">
-        {{ ticket.summary}}
+        [{{ ticket.identifier }}] {{ ticket.summary}}
     </h2>
     <h4>
         <b>Project :</b> <a href={{ path('project_access', { 'slug': ticket.projet.slug }) }}>{{ ticket.projet.name }}</a>
     </h4>
-    <div class="row">
+    <div class="row header-ticket">
         <div class="col-md-8">
             <ul class="resolving_policy list-inline">
                 <li class="timeToAnswer">
@@ -39,7 +40,16 @@
                     <li class="browser"> <b>Browser :</b> {{ ticket.browser }}</li>
                     <li class="creation_date"> <b>Date Creation :</b>  {{ ticket.dateCreation|date('d/m/y') }}</li>
                     <li class="creator"> <b>Creator :</b>  @{{ ticket.creator.username }}</li>
-                    <li class="severity"> <b>Severity :</b>  {{ ticket.severity.name }}</li>
+                    <li class="severity"> <b>Severity :</b> {% if ticket.severity.level < 3 %}
+                    {% set style = "success" %}
+                    {% elseif ticket.severity.level < 5 %}
+                        {% set style = "info" %}
+                    {% elseif ticket.severity.level < 7 %}
+                        {% set style = "warning" %}
+                    {% else %}
+                        {% set style = "danger" %}
+                    {% endif %}
+                <p href="#" class="btn btn-xs btn-{{ style }}"> {{ ticket.severity.name }}</p></li>
                     <li class="category"> <b>Category :</b>  {{ ticket.category.name }}</li>
                     <li class="Status"> <b>Status :</b>  {{ ticket.status.name }}</li>
                 </ul>
@@ -63,44 +73,100 @@
         <b>Description of the issue</b>
         {{ ticket.description|raw  }}
     </div>
+    {% if ticket.pictures|length > 0 %}
+     <div class="sceenshoots">
+        <b>Screenshots</b>
+        <ul class="list-inline">
+            {% for picture in ticket.pictures %}
+            <li><a href="{{asset(ticket_directory~'/'~picture.path) }}" target="_blank"><img name="{{ picture.name }}" src="{{ asset(ticket_directory~'/'~picture.path)| imagine_filter('my_thumb') }}" /></a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
     <hr/>
     <dl class="comments_feed">
         <h4>Feed</h4>
         {% if ticket.comments|length > 0 %}
-            <dl class="dl-horizontal">
+            <dl>
             {% for comment in ticket.comments %}
                     <div class="row {{ cycle(['even','odd'],loop.index) }}">
-                        <dt>{{ comment.dateComment|date('d-m-y H:s') }} by @{{ comment.user_comment.username }}</dt>
-                        <dd>{{ comment.contentComment|raw }}</dd>
+                        <dt {% if app.user.username == comment.user_comment.username %} class="pull-right" {% else %} class="pull-left" {% endif %}>  {{ comment.user_comment.username }}</dt>
+                        <dd {% if app.user.username == comment.user_comment.username %} class="pull-left" {% else %} class="pull-right" {% endif %}>
+                            {{ comment.contentComment|raw }}
+                            {% if comment.pictures|length > 0 %}
+                             <ul class="list-inline">
+                                {% for picture in comment.pictures %}
+                                    <li><a href="{{asset(ticket_directory~'/'~picture.path) }}" target="_blank"><img name="{{ picture.name }}" src="{{ asset(ticket_directory~'/'~picture.path)| imagine_filter('my_thumb') }}" /></a></li>
+                                {% endfor  %}
+                              </ul>
+                            {% endif %}
+                            <small>Posted the {{ comment.dateComment|date('d-m-y H:s') }}</small>
+                        </dd>
                     </div>
             {% endfor  %}
             </dl>
         {% else %}
             No comments for this issue yet.
         {% endif %}
-    </div>
+    </dl>
     <hr/>
     <div class="comment_editor">
         <div class="form-group ">
             <h4>Leave a comment</h4>
         </div>
+
+
         {{ form_start(form, {'method': 'post' }) }}
         {{ form_errors(form) }}
         <div {{ block('widget_container_attributes') }}>
-            {% for child in form %}
-                <fieldset class="form-group">
-                    {% if  child.vars.name != "_token" %}
-                        {{ form_label(child) }}
+         <div class="col-md-8">
+                {% for child in form %}
+                    {% if child.vars.name != 'pictures'  %}
+                    <fieldset class="form-group">
+                        {% if  child.vars.name != "_token" %}
+                            {{ form_label(child) }}
+                        {% endif %}
+                        {{ form_widget(child) }}
+                    </fieldset>
                     {% endif %}
-                    {{ form_widget(child) }}
-                </fieldset>
-            {% endfor %}
-            <div>
-                <a href={{ path('dashboard_access') }} class="btn btn-secondary" >Cancel</a>  &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'submit'|trans }}" />
+                {% endfor %}
+                     <div>
+                    <a href={{ path('dashboard_access') }} class="btn btn-secondary" >Cancel</a>  &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'submit'|trans }}" />
+                </div>
+            </div>
+            <div class="col-md-4">
+              <p>Click on the button to add a screenshoot field</p>
+                 <ul id="picture-container" class="form-inline collection-container" data-prototype="{{ form_widget(form.pictures.vars.prototype) | e }}">
+                    {% for pictureField in form.pictures %}
+                        <li>
+                         <fieldset class="form-group">
+                            {{ form_widget(pictureField) }}
+                         </fieldset>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <a href="#" class="collection-add btn btn-primary" data-collection="picture-container">Add [+]</a>
+                <br/> <br/>
+                <div class="clearfix"></div>
             </div>
         </div>
         {{ form_end(form) }}
+          <script type="text/javascript">
+            var imageCount;
+            jQuery(document).ready(function() {
+                $('.collection-add').click(function (event) {
+                    event.preventDefault();
+                    var $collectionContainer = $('#' + $(this).data('collection'));
+                    if(!imageCount){imageCount = $collectionContainer.children().length;}
+                    var prototype = $collectionContainer.attr('data-prototype');
+                    var item = prototype.replace(/__name__/g, imageCount);
+                    $collectionContainer.append(item);
+                    imageCount++;
+                });
+            })
+        </script>
     </div>
+</div>
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>

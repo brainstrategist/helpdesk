@@ -13,7 +13,6 @@ class Builder implements ContainerAwareInterface
     {
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');
-        $menu->addChild('Login', array('route' => 'fos_user_security_login', 'label' => '<i class="fa fa-user"></i> Connection ', 'extras' => array('safe_label' => true)));
         $menu->addChild('Facebook Connect', array('uri' => '/' . $options['locale'] . '/connect/facebook', 'label' => '<i class="fa fa-facebook"></i> Connect with Facebook ', 'extras' => array('safe_label' => true)));
         $menu->addChild('Register', array('route' => 'fos_user_registration_register', 'label' => '<i class="fa fa-plus"></i> Register ', 'extras' => array('safe_label' => true)));
         return $menu;
@@ -44,7 +43,7 @@ class Builder implements ContainerAwareInterface
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
 
-        $menu->addChild('Overview', array('route' => 'project_access', 'routeParameters' => array('slug' => $options['project_slug'])))
+        $menu->addChild('Issues', array('route' => 'project_access', 'routeParameters' => array('slug' => $options['project_slug'])))
             ->setAttribute('icon', 'fa fa-edit');
 
         $menu->addChild('Users', array('route' => 'project_view', 'routeParameters' => array('slug' => $options['project_slug'], 'view' => 'users-list')))

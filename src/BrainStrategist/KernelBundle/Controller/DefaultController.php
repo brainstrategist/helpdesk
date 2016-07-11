@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class DefaultController extends Controller
 {
+
+
     /**
      * @Route("/{_locale}/", name="kernel")
      * @Route("/", name="default")
@@ -35,8 +37,14 @@ class DefaultController extends Controller
                 ));
 
         }
-
-
         return $this->render('BrainStrategistKernelBundle:Default:index.html.twig');
     }
+    /**
+     * @Route("/{_locale}/liscence", name="liscence")
+     */
+    public function liscenceAction(Request $request)
+    {
+        return $this->render('BrainStrategistKernelBundle:Default:liscence.html.twig');
+    }
+
 }

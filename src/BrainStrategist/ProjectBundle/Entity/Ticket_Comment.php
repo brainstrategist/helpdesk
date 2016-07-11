@@ -3,6 +3,9 @@
 namespace BrainStrategist\ProjectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use BrainStrategist\KernelBundle\Entity\Picture;
 
 /**
  * Ticket_Comment
@@ -42,10 +45,22 @@ class Ticket_Comment
     private $ticket;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Ticket_Status")
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
+     */
+    private $ticket_status;
+    /**
      * @ORM\ManyToOne(targetEntity="BrainStrategist\KernelBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user_comment;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="BrainStrategist\KernelBundle\Entity\Picture", mappedBy="comment", cascade={"persist"})
+     */
+    private $pictures;
+
 
     /**
      * Constructor
@@ -53,13 +68,15 @@ class Ticket_Comment
     public function __construct()
     {
         $this->dateComment = new \DateTime();
+        $this->pictures = new ArrayCollection();
 
     }
+
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -160,5 +177,63 @@ class Ticket_Comment
     public function getUserComment()
     {
         return $this->user_comment;
+    }
+
+    /**
+     * Set ticketStatus
+     *
+     * @param \BrainStrategist\ProjectBundle\Entity\Ticket_Status $ticketStatus
+     *
+     * @return Ticket_Comment
+     */
+    public function setTicketStatus(\BrainStrategist\ProjectBundle\Entity\Ticket_Status $ticketStatus = null)
+    {
+        $this->ticket_status = $ticketStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get ticketStatus
+     *
+     * @return \BrainStrategist\ProjectBundle\Entity\Ticket_Status
+     */
+    public function getTicketStatus()
+    {
+        return $this->ticket_status;
+    }
+
+    /**
+     * Add picture
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Picture $picture
+     *
+     * @return Ticket_Comment
+     */
+    public function addPicture(\BrainStrategist\KernelBundle\Entity\Picture $picture)
+    {
+        $this->pictures[] = $picture;
+        $picture->setComment($this);
+        return $this;
+    }
+
+    /**
+     * Remove picture
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\Picture $picture
+     */
+    public function removePicture(\BrainStrategist\KernelBundle\Entity\Picture $picture)
+    {
+        $this->pictures->removeElement($picture);
+    }
+
+    /**
+     * Get pictures
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
     }
 }

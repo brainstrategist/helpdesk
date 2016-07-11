@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="blog-post-title">Welcome on your Dashboard</h2>
+        <p>Please select an organization</p>
+
+        {% if  listOrganization|length > 0 %}
+            <table class="table table-striped">
+                <thead class="dark-head-thead">
+                <tr>
+                    <th>Name</th>
+                    <th>Active</th>
+                </tr>
+                </thead>
+                {% for organization in listOrganization %}
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="col-md-2">
+                            {% if file_exists(asset(full_organization_directory~'/'~organization.picture)) %}
+                                <div class="picture-cover"><img src="{{ asset(organization_directory~'/'~organization.picture)| imagine_filter('my_thumb') }}" /></div><br/>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-10">
+                            <b><a href={{ path('organize_access', { 'slug': organization.slug }) }}>{{ organization.name }}</a></b>
+                            <br/>
+                            <small>Created the {{ organization.dateCreation|date("m/d/Y")}}
+                                {% if organization.creator|length > 0 %}
+                                    by {{ organization.creator.username }}
+                                {% endif %}
+                            </small>
+                            <br>
+                            <small>{{ organization.usersOrganization|length }} member(s) in this organization</small>
+                            <br/>
+                            <a href={{ path('organize_edit', { 'id': organization.id }) }} class="btn btn-primary btn-sm" >Edit</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="switch">
+                            <input id="cmn-toggle-{{ organization.id}}" class="cmn-toggle cmn-toggle-round" type="checkbox" {% if organization.isActive == 1 %} checked="checked"{% endif %} disabled />
+                            <label for="cmn-toggle-{{ organization.id}}"></label>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You don't have created or being a member of any Organization(s).</p>
+        {% endif %}
+        <a href={{ path('organize_create') }} class="btn btn-primary" >Create an Organization</a>
+    </div>

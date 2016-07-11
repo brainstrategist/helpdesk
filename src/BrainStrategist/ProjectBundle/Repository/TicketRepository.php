@@ -11,7 +11,7 @@ namespace BrainStrategist\ProjectBundle\Repository;
 class TicketRepository extends \Doctrine\ORM\EntityRepository
 {
 
-    public function findAllTicketByProjectId($params=array('limit'=>100,'offset'=>0))
+    public function findAllTicketByProjectIdQuery($params)
     {
         extract($params);
 
@@ -21,27 +21,54 @@ class TicketRepository extends \Doctrine\ORM\EntityRepository
                 ->leftJoin('t.creator', 'tc')
                 ->leftJoin('t.assigned_users', 'tau')
                 ->leftJoin('t.category', 'tca')
+                ->leftJoin('t.priority', 'tpr')
+                ->leftJoin('t.status', 'tst')
                 ->leftJoin('t.severity', 'ts')
                 ->addSelect('tp')
                 ->addSelect('tau')
+                ->addSelect('tst')
                 ->addSelect('tca')
+                ->addSelect('tpr')
                 ->addSelect('ts')
                 ->addSelect('tc')
                 ->andWhere('tp.id = :projet_id')
-                ->setParameter('projet_id',$projectID)
-                ->setMaxResults($limit)
-                ->setFirstResult($offset);
+                ->setParameter('projet_id',$projectID);
+
+            // filter by severity
+            if(isset($filters['severity_filter']) && $filters['severity_filter']!=0){
+                $q->andWhere('ts.id = :severity_id')->setParameter('severity_id',$filters['severity_filter']);
+            }
+            // filter by category
+            if(isset($filters['category_filter']) && $filters['category_filter']!=0){
+                $q->andWhere('tca.id = :category_id')->setParameter('category_id',$filters['category_filter']);
+            }
+            // filter by status
+            if(isset($filters['status_filter']) && $filters['status_filter']!=0){
+                $q->andWhere('tst.id = :status_id')->setParameter('status_id',$filters['status_filter']);
+            }
 
             $query = $q->getQuery();
-            return $query->getArrayResult();
+            return $query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+        }else{
+            return false;
+        }
+
+}
+    public function findAllTicketByProjectId($params=array('limit'=>100,'offset'=>0))
+    {
+        extract($params);
+
+        if (!is_null($projectID)) {
+        $query = $this->findAllTicketByProjectId($params);
+         return $query->getArrayResult();
 
         }else{
             return false;
         }
 
     }
-
-    public function findAllTicketByUser($params=array('limit'=>100,'offset'=>0))
+    public function findAllTicketByUserQuery($params)
     {
         extract($params);
 
@@ -50,19 +77,33 @@ class TicketRepository extends \Doctrine\ORM\EntityRepository
                 ->leftJoin('t.projet', 'tp')
                 ->leftJoin('t.creator', 'tc')
                 ->leftJoin('t.assigned_users', 'tau')
+                ->leftJoin('t.priority', 'tpr')
                 ->leftJoin('t.category', 'tca')
                 ->leftJoin('t.severity', 'ts')
                 ->addSelect('tp')
                 ->addSelect('tau')
                 ->addSelect('tca')
+                ->addSelect('tpr')
                 ->addSelect('ts')
                 ->addSelect('tc')
                 ->andWhere('tau.id = :user_id')
-                ->setParameter('user_id',$userID)
-                ->setMaxResults($limit)
-                ->setFirstResult($offset);
+                ->setParameter('user_id',$userID);
 
             $query = $q->getQuery();
+            return $query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+        }else{
+            return false;
+        }
+
+    }
+
+    public function findAllTicketByUser($params)
+    {
+        extract($params);
+
+        if (!is_null($userID)) {
+            $this->findAllTicketByUserQuery($params);
             return $query->getArrayResult();
 
         }else{
@@ -79,14 +120,20 @@ class TicketRepository extends \Doctrine\ORM\EntityRepository
                 ->leftJoin('t.assigned_users', 'tau')
                 ->leftJoin('t.category', 'tca')
                 ->leftJoin('t.severity', 'ts')
+                ->leftJoin('t.priority', 'tpr')
+                ->leftJoin('t.pictures', 'tpic')
                 ->leftJoin('t.status', 'tst')
                 ->leftJoin('t.comments', 'tco')
                 ->leftJoin('tco.user_comment', 'tco_usr')
+                ->leftJoin('tco.pictures', 'tco_pict')
                 ->leftJoin('t.logs', 'tl')
                 ->addSelect('tp')
                 ->addSelect('tco_usr')
                 ->addSelect('tau')
                 ->addSelect('tco')
+                ->addSelect('tpr')
+                ->addSelect('tco_pict')
+                ->addSelect('tpic')
                 ->addSelect('tca')
                 ->addSelect('tl')
                 ->addSelect('ts')

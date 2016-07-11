@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container text-center" style="margin-top: 150px">
+        <h1>Sorry bro</h1>
+        <h3>The server returned a {{ status_code }} :(</h3>
+        <p>
+            <div class="alert alert-warning" role="alert"> {{ status_text }}</div>
+            <br/>
+            <a href="{{ path('default') }}">return to the homepage</a>.
+        </p>
+    </div>
+{% endblock %}

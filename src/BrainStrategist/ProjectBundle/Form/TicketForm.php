@@ -2,22 +2,23 @@
 
 namespace BrainStrategist\ProjectBundle\Form;
 
-use BrainStrategist\ProjectBundle\Repository\SeverityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use BrainStrategist\ProjectBundle\Form\PictureType;
 
-use BrainStrategist\KernelBundle\Entity\Ticket;
-
+use BrainStrategist\ProjectBundle\Entity\Ticket;
+use BrainStrategist\ProjectBundle\Repository\SeverityRepository;
 
 class TicketForm extends AbstractType
 {
@@ -56,14 +57,21 @@ class TicketForm extends AbstractType
                     'Opera' => '5',
                     'Other' => '6',
                 ),
-                'label' => 'Browser'
-            ))
-            ->add('priority', ChoiceType::class, array(
-                'choices'  => array(
-                    'TODO' => '1',
-                    'This week' => '2',
-                    'ASAP' => '3',
-                    'Now' => '4'
+                'label' => 'Browser',
+                'attr' => array(
+                    'class' => 'form-control ',
+                ),
+            ))->add('priority', EntityType::class, array(
+                'class' => 'BrainStrategistProjectBundle:Ticket_Priority',
+                'choice_label' => function ($priority) {
+                    return $priority->getName();
+                },
+                'query_builder' => function (EntityRepository $er)
+                {
+                    return $er->findAllByProjectId($this->option_id);
+                },
+                'attr' => array(
+                    'class' => 'form-control',
                 ),
                 'label' => 'Priority'
             ))
@@ -76,6 +84,18 @@ class TicketForm extends AbstractType
                 {
                     return $er->findAllByProjectId($this->option_id);
                 },
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('category', EntityType::class, array(
+                'class' => 'BrainStrategistProjectBundle:Ticket_Category',
+                'choice_label' => function ($category) {
+                    return $category->getName();
+                },
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
             ))
             ->add('assigned_users', EntityType::class, array(
                 'class' => 'BrainStrategistKernelBundle:User',
@@ -87,23 +107,17 @@ class TicketForm extends AbstractType
                 'query_builder' => function (EntityRepository $er)
                 {
                     return $er->getUsersByProjects(array('projectID' => $this->option_id, 'limit' =>  100));
-                },
-            ))
-            ->add('category', EntityType::class, array(
-                'class' => 'BrainStrategistProjectBundle:Ticket_Category',
-                'choice_label' => function ($category) {
-                    return $category->getName();
                 }
             ))
-            ->add('picture', FileType::class,
-                array(
-                    'label' => 'Screeshoot (Jpeg file)',
-                    'data_class' => null,
-                    'required' => false,
-                    'attr' => array(
-                        'class' => 'form-control'
-                    ),
-                ));
+            ->add('pictures', CollectionType::class , array(
+                'entry_type' => PictureType::class,
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'prototype' => true,
+                'label' => false
+
+            ));
 
     }
 
@@ -113,7 +127,7 @@ class TicketForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BrainStrategistProjectBundle\Entity\Ticket'
+            'data_class' => 'BrainStrategist\ProjectBundle\Entity\Ticket'
         ));
     }
 

@@ -13,7 +13,7 @@ class TwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new  \Twig_SimpleFunction('file_exists', array($this, 'file_exists')),
+            new  \Twig_SimpleFunction('file_exists', array($this, 'file_exists'))
         );
     }
 
@@ -24,6 +24,7 @@ class TwigExtension extends \Twig_Extension
         }
         return false;
     }
+
     public function getName()
     {
         return 'file_exists';

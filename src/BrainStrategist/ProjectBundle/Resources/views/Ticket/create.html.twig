@@ -1,22 +1,63 @@
-<div  class="col-md-10 ">
-    {{ form_start(form, {'method': 'post','action': path('ticket_create', {'slug': project.slug}) }) }}
+{{ form_start(form, {'method': 'post','action': path('ticket_create', {'slug': project.slug}) }) }}
     {{ form_errors(form) }}
+<div  class="col-md-8 ">
     <div {{ block('widget_container_attributes') }}>
         {% for child in form %}
-            <fieldset class="form-group">
-                {% if  child.vars.name != "_token" %}
-                    {{ form_label(child) }}
-                {% endif %}
-                {{ form_widget(child) }}
-            </fieldset>
+            {% if child.vars.name != 'pictures'  %}
+                        {% if child.vars.name in [ 'browser', 'priority', 'severity','category'] %}
+                            <div class="col-md-3">
+                        {% endif %}
+                        {% if child.vars.name in ['assigned_users'] %}
+                            <div class="col-md-12 ">
+                        {% endif %}
+
+                              <fieldset class="form-group">
+                                  {% if  child.vars.name != "_token" %}
+                                      {{ form_label(child) }}
+                                  {% endif %}
+                                  {{ form_widget(child) }}
+                              </fieldset>
+
+                        {% if child.vars.name in [ 'browser', 'priority', 'severity','category','assigned_users','picture']  %}
+                            </div>
+                        {% endif %}
+
+            {% endif %}
         {% endfor %}
-        <div>
-            &nbsp; <input type="submit"  class="btn btn-primary" value="{{ 'Create a ticket'|trans }}" />
+        <div class="col-md-12">
+          <input type="submit"  class="btn btn-primary" value="{{ 'Create a ticket'|trans }}" />
         </div>
     </div>
-
-    <br/>
-    <br/>
-    <br/>
-    {{ form_end(form) }}
 </div>
+<div class="col-md-4">
+  {% for child in form %}
+    {% if child.vars.name == 'pictures'  %}
+    <p>Click on the button to add a screenshoot field</p>
+    <ul id="picture-container" class="collection-container" data-prototype="{{ form_widget(form.pictures.vars.prototype) | e }}">
+        {% for pictureField in form.pictures%}
+            <li>
+                {{ form_widget(pictureField) }}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="#" class="collection-add btn btn-primary" data-collection="picture-container">Add [+]</a>
+    {% endif %}
+  {% endfor %}
+</div>
+{{ form_end(form) }}
+    <script type="text/javascript">
+        var imageCount;
+
+        jQuery(document).ready(function() {
+            $('.collection-add').click(function (event) {
+                event.preventDefault();
+                var $collectionContainer = $('#' + $(this).data('collection'));
+                if(!imageCount){imageCount = $collectionContainer.children().length;}
+                var prototype = $collectionContainer.attr('data-prototype');
+                var item = prototype.replace(/__name__/g, imageCount);
+                $collectionContainer.append(item);
+                imageCount++;
+            });
+        })
+    </script>
+
