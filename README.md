@@ -72,6 +72,6 @@ parameters:
                     GNU General Public License for more details.
                      <br/>
                     You should have received a copy of the GNU General Public License
-                    along with this program.  If not, see <a href="brainstrategist.fr/en/liscence"> the complete license here</a>
+                    along with this program.  If not, see <a href="http://brainstrategist.fr/en/liscence"> the complete license here</a>
             </p>
           </div>
