@@ -1,7 +1,6 @@
-Brain Strategist : A sowftware providing a free and strong Helpdesk management system.
+Brain Strategist : Helpdesk management system with symfony 3
 ========
-
-<h1>Relax, take a coffee cup and follow the guide</h1>
+<h2>Relax, take a coffee cup and follow the guide</h2>
         <div class="blog-post">
             <h2 class="blog-post-title">Requirements</h2>
             <ul>
