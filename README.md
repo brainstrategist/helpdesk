@@ -52,9 +52,7 @@ parameters:
             <h2 class="blog-post-title">Questions & Support</h2>
             <p>
             If you encountered some troubleshooting during the installation, feel free to <a href="mailto:brunetsebastien33@gmail.com"> leave me a message</a> or open an issue on the Github project page.
-
              Don't forget that you are on a free project, with a free developer behind. I will answer you asap :)
-          
             strong>Remember</strong> This software is free to use and deliver without any guarantee. You are the own responsible for the use of this software. Please, be aware that neither backup system will be deliver with this software, put one in place if you are using this system in production. 
             </p>
           </div>
