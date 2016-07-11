@@ -1,7 +1,6 @@
 Brain Strategist : Helpdesk management system with symfony 3
 ========
 <h2>Relax, take a coffee cup and follow the guide</h2>
-        <div class="blog-post">
             <h2 class="blog-post-title">Requirements</h2>
             <ul>
                 <li>A server based on Linux with Apache/Nginx </li>
@@ -16,8 +15,6 @@ alias composer='/usr/local/bin/composer.phar'</pre>
             </ul>
             <h3>Optionnal</h3>
             If you want to modify your installation, we advise you to install NPM and Rubygems. This software use friendly addons to manage your assets like Grunt, Saas and Bower. Follow the documentation on their dedicated websites for more informations.
-        </div>
-        <div class="blog-post">
             <h2 class="blog-post-title">Setup</h2>
             <ol>
                  <li> Configure your workspace directory to match <b>the web folder</b> as target document root directory. More informations about your web server host setup are available <a href="http://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html" target="_blank">HERE</a></li>
@@ -47,16 +44,12 @@ parameters:
                  <li> <b>Clear your cache</b> <code>sudo -H -u  www-data  php bin/console cache:clear</code> (or just delete it <b>carrefully</b> <code>rm -rf var/cache/*</code>)</li>
                 <li> <b>Enjoy :)</b></li>
             </ol>
-          </div>
-          <div class="blog-post">
             <h2 class="blog-post-title">Questions & Support</h2>
             <p>
             If you encountered some troubleshooting during the installation, feel free to <a href="mailto:brunetsebastien33@gmail.com"> leave me a message</a> or open an issue on the Github project page.
              Don't forget that you are on a free project, with a free developer behind. I will answer you asap :)<br/>
             <strong>Remember</strong> This software is free to use and deliver without any guarantee. You are the own responsible for the use of this software. Please, be aware that neither backup system will be deliver with this software, put one in place if you are using this system in production. 
             </p>
-          </div>
-          <div class="blog-post">
             <h2 class="blog-post-title">Liscence</h2>
             <p>
                     <b>Brain Strategist : A sowftware providing a free and strong Helpdesk management system.</b>
