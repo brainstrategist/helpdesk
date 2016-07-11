@@ -54,9 +54,9 @@ parameters:
             <p>
             If you encountered some troubleshooting during the installation, feel free to <a href="mailto:brunetsebastien33@gmail.com"> leave me a message</a> or open an issue on the Github project page.
 
-             <br/>Don't forget that you are on a free project, with a free developer behind. I will answer you asap :)
-            <br/>
-            <div class="alert alert-info" role="alert"> <strong>Remember</strong> This software is free to use and deliver without any guarantee. You are the own responsible for the use of this software. Please, be aware that neither backup system will be deliver with this software, put one in place if you are using this system in production. </div>
+             Don't forget that you are on a free project, with a free developer behind. I will answer you asap :)
+          
+            strong>Remember</strong> This software is free to use and deliver without any guarantee. You are the own responsible for the use of this software. Please, be aware that neither backup system will be deliver with this software, put one in place if you are using this system in production. 
             </p>
           </div>
           <div class="blog-post">
@@ -75,6 +75,6 @@ parameters:
                     GNU General Public License for more details.
                      <br/>
                     You should have received a copy of the GNU General Public License
-                    along with this program.  If not, see <a href={{ path('liscence') }}> the complete license here</a>
+                    along with this program.  If not, see <a href="brainstrategist.fr/en/liscence"> the complete license here</a>
             </p>
           </div>
