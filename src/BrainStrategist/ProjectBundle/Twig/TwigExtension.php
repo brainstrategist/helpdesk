@@ -1,9 +1,23 @@
 <?php
 
 namespace BrainStrategist\ProjectBundle\Twig;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TwigExtension extends \Twig_Extension
 {
+    protected $em;
+    private $context;
+
+    public function __construct($em,TokenStorageInterface $context)
+    {
+        $this->em = $em;
+        $this->context = $context;
+    }
+
+    public function getUser()
+    {
+        return $this->context->getToken()->getUser();
+    }
 
     /**
      * Return the functions registered as twig extensions
@@ -14,7 +28,14 @@ class TwigExtension extends \Twig_Extension
     {
         return array(
             new  \Twig_SimpleFunction('sub_date', array($this, 'sub_date')),
+            new  \Twig_SimpleFunction('listing_projects', array($this, 'listing_projects')),
         );
+    }
+
+    public function listing_projects()
+    {
+        $repository = $this->em->getRepository('BrainStrategistProjectBundle:Project');
+        return $repository->findMyProjects(array("userID" => $this->getUser()->getId(),'limit'=>100,'offset'=>0));
     }
 
     public function sub_date($dateStart, $dateEnd)

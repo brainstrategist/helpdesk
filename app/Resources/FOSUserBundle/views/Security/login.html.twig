@@ -1,4 +1,4 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+
 
 {% trans_default_domain 'FOSUserBundle' %}
 
@@ -6,22 +6,42 @@
 {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
-<form action="{{ path("fos_user_security_check") }}" method="post" class="form-inline">
-    <fieldset class="form-group">
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-    <label for="username">{{ 'security.login.username'|trans }}</label>
-    <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" required="required" />
-    </fieldset>
-    <fieldset class="form-group">
-    <label for="password">{{ 'security.login.password'|trans }}</label>
-    <input type="password" id="password"  class="form-control" name="_password" required="required" />
-    </fieldset>
-    <fieldset class="form-group">
-    <input type="checkbox" id="remember_me"  class="form-control" name="_remember_me" value="on" />
-    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+    <div class="login-box">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Login via site</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="{{ path("fos_user_security_check") }}" method="post"  accept-charset="UTF-8" role="form">
+                            <fieldset>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-    <input type="submit" id="_submit" class="btn btn-primary" name="_submit"  value="{{ 'security.login.submit'|trans }}" />
-    </fieldset>
-</form>
+                                <label for="username">{{ 'security.login.username'|trans }}</label>
+                                <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" required="required" />
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label for="password">{{ 'security.login.password'|trans }}</label>
+                                <input type="password" id="password"  class="form-control" name="_password" required="required" />
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <input type="checkbox" id="remember_me"  name="_remember_me"  checked="checked" value="on" />
+                                <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+
+                                <input type="submit" id="_submit" class="btn btn-primary" name="_submit"  value="{{ 'security.login.submit'|trans }}" />
+                            </fieldset>
+                        </form>
+                        <hr/>
+                        <center><h4>OR</h4></center>
+                        <form action="/login/connect/facebook">
+                            <input class="btn btn-lg btn-facebook btn-block" type="submit" value="Login via facebook">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock fos_user_content %}

@@ -2,6 +2,11 @@
 
 namespace BrainStrategist\ProjectBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 use BrainStrategist\KernelBundle\Entity\Organization;
 use BrainStrategist\ProjectBundle\Entity\Project;
 use BrainStrategist\ProjectBundle\Entity\Ticket;
@@ -12,177 +17,187 @@ use BrainStrategist\KernelBundle\Entity\User;
 
 use BrainStrategist\ProjectBundle\Form\TicketForm;
 use BrainStrategist\ProjectBundle\Form\CommentForm;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\File\File;
 use BrainStrategist\KernelBundle\Entity;
 
+
 class TicketController extends Controller
 {
+
+    private $currentUser;
+
+    /**
+     *
+     * Pre dispatcher event to check the security access of the current user
+     *
+     */
+    public function preExecute(){
+
+        if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
+            $this->currentUser = $this->get('security.token_storage')->getToken()->getUser();
+        }else{
+            throw new HttpException(400, "You are not allowed to access ticket. Please register or login first");
+        }
+    }
+
+
     /**
      * @Route("/{_locale}/project/{slug}/ticket/list",name="ticket_list")
      */
     public function listAction(Request $request,$slug=null,$page=null,$filters=null,$limit=null){
 
-        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+        $this->preExecute();
 
-        if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
-            $params=array();
-            $request = $this->container->get('request_stack')->getCurrentRequest();
-            $em = $this->getDoctrine()->getEntityManager();
+        $params=array();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $em = $this->getDoctrine()->getEntityManager();
 
-            $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+        $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
 
-            if(isset($slug)) {
+        if(isset($slug)) {
 
-                if ($projectEntity->isMyProject($slug, $currentUser->getId())) {
-                    $project = $projectEntity->findOneBySlug($slug);
+            if ($projectEntity->isMyProject($slug, $this->currentUser->getId())) {
+                $project = $projectEntity->findOneBySlug($slug);
 
-                    $ticketsEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
+                $ticketsEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
 
-                    $params = array("projectID" => $project->getId());
+                $params = array("projectID" => $project->getId());
 
-                    // Get all severity by project
-                    $severityEntity = $em->getRepository("BrainStrategistProjectBundle:Severity");
-                    $severity = $severityEntity->findAllByProjectId($project->getId());
-                    $severityQuery = $severity->getQuery();
-                    $severityQuery->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+                // Get all severity by project
+                $severityEntity = $em->getRepository("BrainStrategistProjectBundle:Severity");
+                $severity = $severityEntity->findAllByProjectId($project->getId());
+                $severityQuery = $severity->getQuery();
+                $severityQuery->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-                    $params['severities'] = $severityQuery->getArrayResult();
+                $params['severities'] = $severityQuery->getArrayResult();
 
-                    // Get all category by project
-                    $categoryEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_Category");
-                    $categories = $categoryEntity->findAll();
-                    $params['categories'] = $categories;
+                // Get all category by project
+                $categoryEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_Category");
+                $categories = $categoryEntity->findAll();
+                $params['categories'] = $categories;
 
-                    // Get all status by project
-                    $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_status");
-                    $status = $statusEntity->findAllByProjectId($project->getId());
-                    $statusQuery = $status->getQuery();
-                    $statusQuery->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+                // Get all status by project
+                $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_status");
+                $status = $statusEntity->findAllByProjectId($project->getId());
+                $statusQuery = $status->getQuery();
+                $statusQuery->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-                    $params['status_list'] = $statusQuery->getArrayResult();
+                $params['status_list'] = $statusQuery->getArrayResult();
 
 
-                    if(isset($filters))
-                        $params['filters'] = $filters;
+                if(isset($filters))
+                    $params['filters'] = $filters;
 
-                    // pagination
-                    if(null !== $request->query->getInt('page') && !isset($page)){
-                        $page = 1;
-                    }
-                    // nb results per page
-                    if(null !== $request->query->getInt('limit') && !isset($limit)){
-                        $limit = 10;
-                    }
-
-                    $ticket_query = $ticketsEntity->findAllTicketByProjectIdQuery($params);
-
-                    $paginator  = $this->get('knp_paginator');
-                    $tickets = $paginator->paginate(
-                        $ticket_query,
-                        $page,
-                        $limit
-                    );
-                    $params['tickets'] = $tickets;
-
+                // pagination
+                if(null !== $request->query->getInt('page') && !isset($page)){
+                    $page = 1;
+                }
+                // nb results per page
+                if(null !== $request->query->getInt('limit') && !isset($limit)){
+                    $limit = 10;
                 }
 
+                $ticket_query = $ticketsEntity->findAllTicketByProjectIdQuery($params);
+
+                $paginator  = $this->get('knp_paginator');
+                $tickets = $paginator->paginate(
+                    $ticket_query,
+                    $page,
+                    $limit
+                );
+                $params['tickets'] = $tickets;
+
             }
-            return $this->render(
-                'BrainStrategistProjectBundle:Ticket:list.html.twig',
-                $params
-            );
+
         }
+        return $this->render(
+            'BrainStrategistProjectBundle:Ticket:list.html.twig',
+            $params
+        );
+
 
     }
 
 
     /**
- * @Route("/{_locale}/project/{slug}/ticket/create",name="ticket_create")
- */
+     * @Route("/{_locale}/project/{slug}/ticket/create",name="ticket_create")
+     */
     public function createAction(Request $request,$slug=null){
 
+        $this->preExecute();
 
-        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
-        if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
+        $params=array();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $em = $this->getDoctrine()->getEntityManager();
 
-            $params=array();
-            $request = $this->container->get('request_stack')->getCurrentRequest();
-            $em = $this->getDoctrine()->getEntityManager();
+        $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
 
-            $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+        if(isset($slug)) {
 
-            if(isset($slug)) {
+            if ($projectEntity->isMyProject($slug, $this->currentUser->getId())) {
+                $project = $projectEntity->findOneBySlug($slug);
+                $params['project'] = $project;
+                $organizationEntity = $em->getRepository("BrainStrategistKernelBundle:Organization");
+                $organization = $organizationEntity->find($project->getOrganization()->getId());
+                $params['organization'] = $organization;
 
-                if ($projectEntity->isMyProject($slug, $currentUser->getId())) {
-                    $project = $projectEntity->findOneBySlug($slug);
-                    $params['project'] = $project;
-                    $organizationEntity = $em->getRepository("BrainStrategistKernelBundle:Organization");
-                    $organization = $organizationEntity->find($project->getOrganization()->getId());
-                    $params['organization'] = $organization;
-
-                    $ticket= new Ticket();
-                    $form = $this->createForm(TicketForm::class,$ticket,  array('attr'=> array('project_id' => $project->getId())));
-                    $params = array_merge($params,
-                        array(
-                            "form" => $form->createView(),
-                        ));
-                }
+                $ticket= new Ticket();
+                $form = $this->createForm(TicketForm::class,$ticket,  array('attr'=> array('project_id' => $project->getId())));
+                $params = array_merge($params,
+                    array(
+                        "form" => $form->createView(),
+                    ));
             }
+        }
 
-            if ('POST' == $request->getMethod()) {
+        if ('POST' == $request->getMethod()) {
 
-                $form->handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $response = $form->getData();
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $response = $form->getData();
 
-                    /**
-                     * Check ticket before sending
-                     */
-                    $valid = true;
-                    $notice = null;
-                    $type_notice = null;
+                /**
+                 * Check ticket before sending
+                 */
+                $valid = true;
+                $notice = null;
+                $type_notice = null;
 
-                    if($response->getDescription() == null){
-                        $valid = false;
-                        $notice =  'The description is empty';
-                        $type_notice =  'alert';
-                    }
+                if($response->getDescription() == null){
+                    $valid = false;
+                    $notice =  'The description is empty';
+                    $type_notice =  'alert';
+                }
 
-                    if($valid){
+                if($valid){
 
-                        $project->addProjectTicket($ticket);
-                        $ticket->setProjet($project);
-                        $ticket->setCreator($currentUser);
-                        $ticket->setSeverity($response->getSeverity());
-                        $ticket->setPriority($response->getPriority());
+                    $project->addProjectTicket($ticket);
+                    $ticket->setProjet($project);
+                    $ticket->setCreator($this->currentUser);
+                    $ticket->setSeverity($response->getSeverity());
+                    $ticket->setPriority($response->getPriority());
 
-                        $ticket_log = new Ticket_Log();
-                        $ticket_log->setContentLog('Creation of the ticket');
-                        $ticket_log->setTicket($ticket);
-                        $ticket->addLog($ticket_log);
+                    $ticket_log = new Ticket_Log();
+                    $ticket_log->setContentLog('Creation of the ticket');
+                    $ticket_log->setTicket($ticket);
+                    $ticket->addLog($ticket_log);
 
-                        $em->persist($ticket);
-                        $em->persist($ticket_log);
-                        $em->persist($project);
-                        $em->persist($response);
+                    $em->persist($ticket);
+                    $em->persist($ticket_log);
+                    $em->persist($project);
+                    $em->persist($response);
+                    $em->flush();
+
+                    foreach($response->getAssignedUsers() as $user){
+
+                        $user->addUserTicket($ticket);
+                        $em->persist($user);
                         $em->flush();
-
-                        foreach($response->getAssignedUsers() as $user){
-
-                            $user->addUserTicket($ticket);
-                            $em->persist($user);
-                            $em->flush();
-                        }
-
                     }
+
                 }
-                return $this->forward("BrainStrategistProjectBundle:Project:access",array('slug'=>$slug,'view' => 'ticket-create','notice'=>$notice,'type_notice'=>$type_notice));
             }
-        }else{
-            return $this->redirectToRoute("fos_user_security_login",array("type"=>"all"));
+            return $this->forward("BrainStrategistProjectBundle:Project:access",array('slug'=>$slug,'view' => 'ticket-create','notice'=>$notice,'type_notice'=>$type_notice));
         }
 
         return $this->render(
@@ -195,10 +210,6 @@ class TicketController extends Controller
      */
     public function viewAction(Request $request,$slug=null,$id=null){
 
-
-        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
-        if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
-
             $params=array();
             $request = $this->container->get('request_stack')->getCurrentRequest();
             $em = $this->getDoctrine()->getEntityManager();
@@ -209,7 +220,7 @@ class TicketController extends Controller
 
             if(isset($slug) && isset($id)) {
 
-                if ($projectEntity->isMyProject($slug, $currentUser->getId())) {
+                if ($projectEntity->isMyProject($slug, $this->currentUser->getId())) {
 
                     $project = $projectEntity->findOneBySlug($slug);
                     $ticket = $ticketEntity->findOneById($id);
@@ -236,7 +247,7 @@ class TicketController extends Controller
                     $ticket = $ticketEntity->find($id);
 
                     if(!is_null($response->getContentComment())){
-                        $ticket_comment->setUserComment($currentUser);
+                        $ticket_comment->setUserComment($this->currentUser);
                         $ticket_comment->setTicket($ticket);
                         $em->persist($ticket_comment);
                         $em->persist($response);
@@ -250,10 +261,6 @@ class TicketController extends Controller
                     return $this->redirectToRoute("ticket_view",array("id"=>$id,"slug"=>$slug));
                 }
             }
-
-        }else{
-            return $this->redirectToRoute("fos_user_security_login",array("type"=>"all"));
-        }
 
         return $this->render(
             'BrainStrategistProjectBundle:Ticket:view.html.twig',
