@@ -54,7 +54,43 @@ class TicketRepository extends \Doctrine\ORM\EntityRepository
             return false;
         }
 
-}
+    }
+
+    public function searchTicketBySearchField($params)
+    {
+        extract($params);
+
+        if (!is_null($search_field)) {
+            $q = $this->createQueryBuilder('t')
+                ->leftJoin('t.projet', 'tp')
+                ->leftJoin('t.creator', 'tc')
+                ->leftJoin('t.assigned_users', 'tau')
+                ->leftJoin('t.category', 'tca')
+                ->leftJoin('t.priority', 'tpr')
+                ->leftJoin('t.status', 'tst')
+                ->leftJoin('t.severity', 'ts')
+                ->addSelect('tp')
+                ->addSelect('tau')
+                ->addSelect('tst')
+                ->addSelect('tca')
+                ->addSelect('tpr')
+                ->addSelect('ts')
+                ->addSelect('tc')
+                ->andWhere('t.identifier LIKE :search_field')
+                ->orWhere('t.summary LIKE :search_field')
+                ->andWhere('tau.id = :user_id')
+                ->setParameter('user_id',$userID)
+                ->setParameter('search_field','%'.$search_field.'%');
+
+            $query = $q->getQuery();
+            $query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            return $query;
+
+        }else{
+            return false;
+        }
+
+    }
     public function findAllTicketByProjectId($params=array('limit'=>100,'offset'=>0))
     {
         extract($params);
