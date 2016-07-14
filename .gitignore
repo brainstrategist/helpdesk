@@ -48,6 +48,11 @@
 # Backup entities generated with doctrine:generate:entities command
 */Entity/*~
 
+*.scss
+bower.json
+Gruntfile.js
+npm-debug.log
+.bowerrc
 /web/.htaccess
 /.sass-cache/*
 /node_modules/*
