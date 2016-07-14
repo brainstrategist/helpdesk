@@ -24,7 +24,11 @@
         </div>
         <div  class="col-md-10 ">
             {% if tickets is defined %}
-                {{ include('BrainStrategistProjectBundle:Ticket:list.html.twig', { 'tickets': tickets }) }}
+                {% if viewtype is defined %}
+                    {{ include('BrainStrategistProjectBundle:Ticket:'~viewtype~'.html.twig', { 'tickets': tickets }) }}
+                {% else %}
+                        {{ include('BrainStrategistProjectBundle:Ticket:list.html.twig', { 'tickets': tickets }) }}
+                {% endif %}
             {% endif %}
         </div>
 {% endblock %}

@@ -35,8 +35,9 @@ class DashboardController extends Controller
 
     /**
      * @Route("/{_locale}/user/dashboard",name="dashboard_access")
+     * @Route("/{_locale}/user/dashboard/{viewtype}",name="dashboard_kanban")
      */
-    public function accessAction(Request $request){
+    public function accessAction(Request $request,$viewtype=null){
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
         $breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
@@ -69,7 +70,7 @@ class DashboardController extends Controller
             $limit
         );
         $params['tickets'] = $tickets;
-
+        $params['viewtype'] = $viewtype;
 
         return $this->render(
             'BrainStrategistProjectBundle:Dashboard:overview.html.twig',

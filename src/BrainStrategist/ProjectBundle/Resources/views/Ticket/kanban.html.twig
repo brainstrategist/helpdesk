@@ -1,9 +1,12 @@
+{{ include('BrainStrategistProjectBundle:Ticket:filters.html.twig') }}
 <div class="count col-md-2">
     <div class="pull-right"><strong> {% if  tickets|length > 0 %}{{ tickets.getTotalItemCount }} {% else %} No {% endif %}results</strong></div>
 </div>
 <div class="clearfix"></div>
 <br/>
 {% if  tickets|length > 0 %}
+
+
     <table class="table table-striped">
         <thead class="dark-head-thead">
         <tr>

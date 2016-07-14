@@ -28,12 +28,22 @@ module.exports = function (grunt) {
             scripts: {
                 files: {
                     'js/jquery.js': 'jquery/dist/jquery.js',
+                    'js/jquery-ui.js':  [
+                        'jquery-ui/ui/core.js',
+                        'jquery-ui/ui/widget.js',
+                        'jquery-ui/ui/widgets/mouse.js',
+                        'jquery-ui/ui/widgets/sortable.js'
+                    ],
                     'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js'
                 }
             },
             stylesheets: {
                 files: {
                     'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
+                    'css/jquery-ui.css': [
+                        'jquery-ui/themes/base/theme.css',
+                        'jquery-ui/themes/base/jquery-ui.css'
+                    ],
                     'css/font-awesome.css': 'font-awesome/css/font-awesome.css'
                 }
             },
@@ -47,6 +57,7 @@ module.exports = function (grunt) {
             js: {
                 files: {
                     'web/assets/js/jquery.min.js': ['web/assets/js/jquery.js'],
+                    'web/assets/js/jquery-ui.min.js': ['web/assets/js/jquery-ui.js'],
                     'web/assets/js/bootstrap.min.js': ['web/assets/js/bootstrap.js'],
                     'web/assets/js/brain_strategist.min.js': ['src/BrainStrategist/KernelBundle/Resources/public/js/*.js']
                 }
@@ -60,6 +71,7 @@ module.exports = function (grunt) {
                 src: [
                     'web/assets/css/bootstrap.css',
                     'web/assets/css/font-awesome.css',
+                    'web/assets/css/jquery-ui.css',
                     'src/BrainStrategist/KernelBundle/Resources/public/css/*.css'
                 ],
                 dest: 'web/assets/css/brain_strategist_compiled.css'
@@ -67,6 +79,7 @@ module.exports = function (grunt) {
             js : {
                 src : [
                     'web/assets/js/jquery.min.js',
+                    'web/assets/js/jquery-ui.js',
                     'web/assets/js/bootstrap.min.js',
                     'web/assets/js/brain_strategist.min.js'
                 ],
