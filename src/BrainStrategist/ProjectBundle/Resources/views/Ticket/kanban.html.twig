@@ -1,94 +1,129 @@
 {{ include('BrainStrategistProjectBundle:Ticket:filters.html.twig') }}
 <div class="count col-md-2">
-    <div class="pull-right"><strong> {% if  tickets|length > 0 %}{{ tickets.getTotalItemCount }} {% else %} No {% endif %}results</strong></div>
+    <div class="pull-right"><strong> {% if  total_tickets > 0 %}{{ total_tickets }} {% else %} No {% endif %}results</strong></div>
 </div>
 <div class="clearfix"></div>
 <br/>
-{% if  tickets|length > 0 %}
+<div class="container-fluid">
+    <div id="sortableKanbanBoards" class="row">
+        {% if  tickets|length > 0 %}
+            {% for key,tickets_project in tickets %}
+                <h3><a href={{ path('project_access', { 'slug':key }) }}>{{ key }}</a></h3>
 
+                   {% for key2,tickets_list in tickets_project %}
 
-    <table class="table table-striped">
-        <thead class="dark-head-thead">
-        <tr>
-            {% if app.request.get('slug') is  null  %}<th {% if tickets.isSorted('tp.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Project', 'tp.name') }}</th>{% endif %}
-            <th>Name</th>
-            <th>User(s)</th>
-            <th {% if tickets.isSorted('tst.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Status', 'tst.name') }}</th>
-            <th {% if tickets.isSorted('tca.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Category', 'tca.name') }}</th>
-            <th {% if tickets.isSorted('tpr.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Priority', 'tpr.name') }}</th>
-            <th {% if tickets.isSorted('ts.level') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Severity', 'ts.level') }}</th>
-            <th>Time to answer</th>
-            <th>Time to resolve</th>
-        </tr>
-        </thead>
-        {% for ticket in tickets %}
-        <tbody>
-        <tr>
-            {% if app.request.get('slug') is  null  %}<td><a href={{ path('project_access', { 'slug':ticket.projet.slug }) }}>{{ ticket.projet.name }}</a></td>{% endif %}
-            <td>
-                <div class="col-md-12">
-                    <b><a href={{ path('ticket_view', { 'id': ticket.id, 'slug':ticket.projet.slug }) }}> [{{ ticket.identifier }}]{{ ticket.summary }}</a></b>
-                    <br/>
-                    <small>Created the
-                        {{ ticket.dateCreation|date("m/d/Y")}}
-                        {% if ticket.creator|length > 0 %}
-                            by @{{ ticket.creator.username }}
-                        {% endif %}
+                        <div class="panel panel-primary kanban-col">
+                         <div class="panel-heading">
+                             {{ key2 }}
+                             <i class="fa fa-2x fa-plus-circle pull-right"></i>
+                         </div>
+                         <div class="panel-body">
+                             <div id="DONE" class="kanban-centered">
+                              <ul class="list-group">
+                                  <li></li>
+                                 {% for ticket in tickets_list %}
+                                  <li>
+                                 <article class="kanban-entry grab" id="item5" draggable="true">
+                                     <div class="kanban-entry-inner">
+                                         <div class="kanban-label">
+                                             <ul class="list-inline">
+                                                 <li>
+                                                     <div>
+                                                         {% set timeToAnswer = ticket.dateCreation|date_modify("+"~ticket.severity.responseTimeDays~" day")|date_modify(ticket.severity.responseTime|date("H:i:s"))   %}
+                                                         <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToAnswer|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+                                                     </div>
+                                                 </li>
+                                                 <li>
+                                                     <div>
+                                                         {%  set timeToResolve =  ticket.dateCreation|date_modify("+"~ticket.severity.resolutionTimeDays~" day")|date_modify(ticket.severity.resolutionTime|date("H:i:s")) %}
+                                                         <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToResolve|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+                                                     </div>
+                                                 </li>
+                                             </ul>
+                                             <h2><a href={{ path('ticket_view', { 'id': ticket.id, 'slug':ticket.projet.slug }) }}> [{{ ticket.identifier }}]{{ ticket.summary }}</a> <span>  {{ ticket.category.name }}</span></h2>
+                                             <small>Created the
+                                             {{ ticket.dateCreation|date("m/d/Y")}}
+                                             {% if ticket.creator|length > 0 %}
+                                             by @{{ ticket.creator.username }}
+                                             {% endif %}
 
-                        {% if "now"|date('Ymd')  <  ticket.dateCreation|date_modify("+5 day")|date("Ymd") %}
-                            <p href="#" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-info-sign"></span> New</p>
-                        {% endif %}
-                    </small>
-                </div>
-            </td>
-            <td>
-                {#{{ dump(ticket) }}#}
-                {% if ticket.assigned_users %}
-                    <ul class="list-inline">
-                        {% for user in ticket.assigned_users %}
-                            <li>
-                                @{{ user.username }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-            <td>
-                {{ ticket.status.name }}
-            </td>
-            <td>
-                {{ ticket.category.name }}
-            </td>
-            <td>
-                {{ ticket.priority.name }}
-            </td>
-            <td>
-                {% if ticket.severity.level < 3 %}
-                    {% set style = "success" %}
-                {% elseif ticket.severity.level < 5 %}
-                    {% set style = "info" %}
-                {% elseif ticket.severity.level < 7 %}
-                    {% set style = "warning" %}
-                {% else %}
-                    {% set style = "danger" %}
-                {% endif %}
-                <p href="#" class="btn btn-xs btn-{{ style }}"> {{ ticket.severity.name }}</p>
-            </td>
-            <td>
-                {% set timeToAnswer = ticket.dateCreation|date_modify("+"~ticket.severity.responseTimeDays~" day")|date_modify(ticket.severity.responseTime|date("H:i:s"))   %}
-                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToAnswer|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
-            </td>
-            <td>
-                {%  set timeToResolve =  ticket.dateCreation|date_modify("+"~ticket.severity.resolutionTimeDays~" day")|date_modify(ticket.severity.resolutionTime|date("H:i:s")) %}
-                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToResolve|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <div class="navigation">
-        {{ knp_pagination_render(tickets) }}
+                                             {% if "now"|date('Ymd')  <  ticket.dateCreation|date_modify("+5 day")|date("Ymd") %}
+                                             <p href="#" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-info-sign"></span> New</p>
+                                             {% endif %}
+                                             </small>
+                                             {% if ticket.assigned_users %}
+
+                                                 <ul class="list-inline">
+                                                     <li>
+                                                         <b>Users : </b>
+                                                     </li>
+                                                     {% for user in ticket.assigned_users %}
+                                                         <li>
+                                                             @{{ user.username }}
+                                                         </li>
+                                                     {% endfor %}
+                                                 </ul>
+                                             {% endif %}
+                                             {% if ticket.severity.level < 3 %}
+                                                 {% set style = "success" %}
+                                             {% elseif ticket.severity.level < 5 %}
+                                                 {% set style = "info" %}
+                                             {% elseif ticket.severity.level < 7 %}
+                                                 {% set style = "warning" %}
+                                             {% else %}
+                                                 {% set style = "danger" %}
+                                             {% endif %}
+                                             <p  class="btn btn-xs btn-{{ style }}"> {{ ticket.severity.name }}</p>
+                                             {% if ticket.priority.name is defined %}
+                                             <p class="btn btn-xs pull-right btn-info">  {{ ticket.priority.name }}</p>
+                                             {% endif %}
+
+                                         </div>
+                                     </div>
+                                 </article>
+                                  </li>
+                                 {% endfor %}
+                              </ul>
+                             </div>
+                         </div>
+                         <div class="panel-footer">
+                             <a href="#">Load More...</a>
+                         </div>
+                     </div>
+
+                 {% endfor %}
+
+            {% endfor %}
+        {% else %}
+            <h3>Sorry, there are no issues for you at the moment.</h3>
+        {% endif %}
     </div>
-{% else %}
-    <h3>Sorry, there are no issues open for this project.</h3>
-{% endif %}
+</div>
+<!-- Static Modal -->
+    <div class="modal modal-static fade" id="processing-modal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="fa fa-refresh fa-5x fa-spin"></i>
+                        <h4>Processing...</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function(){
+        $("#sortableKanbanBoards ul.list-group").sortable({
+            connectWith: "ul.list-group"
+        });
+
+        $('.panel-heading i').click(function(){
+            $(this).toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
+            $(this).parents('.kanban-col').find('.panel-body').slideToggle();
+            var toggleWidth = $(this).parents('.kanban-col').width() >= 290 ?  "120px" : "300px";
+            console.log($(this).parents('.kanban-col').width());
+            $(this).parents('.kanban-col').animate({ width: toggleWidth });
+        }) ;
+    });
+</script>

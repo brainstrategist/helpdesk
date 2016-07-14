@@ -54,23 +54,45 @@ class DashboardController extends Controller
 
         $ticketsEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
 
-        if(null !== $request->query->getInt('page') && !isset($page)){
-            $page = 1;
-        }
-        if(null !== $request->query->getInt('limit') && !isset($limit)){
-            $limit = 10;
-        }
 
-        $ticket_query = $ticketsEntity->findAllTicketByUserQuery($params);
+        if(!is_null($viewtype)){
 
-        $paginator  = $this->get('knp_paginator');
-        $tickets = $paginator->paginate(
-            $ticket_query,
-            $page,
-            $limit
-        );
+            $params['viewtype'] = $viewtype;
+
+            /**
+             * Kanban Mode
+             */
+            $ticket_query = $ticketsEntity->findAllTicketByUserQuery($params);
+            $ticket_query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            $ticket_results = $ticket_query->getArrayResult();
+
+            $tickets=array();
+            foreach($ticket_results as $ticket){
+                $tickets[$ticket['projet']['name']][$ticket["status"]["name"]][] = $ticket;
+            }
+            $params['total_tickets']=sizeof($ticket_results);
+
+
+        }else{
+            /**
+             * Classical listing view
+             */
+            if(null !== $request->query->getInt('page') && !isset($page)){
+                $page = 1;
+            }
+            if(null !== $request->query->getInt('limit') && !isset($limit)){
+                $limit = 10;
+            }
+            $ticket_query = $ticketsEntity->findAllTicketByUserQuery($params);
+
+            $paginator  = $this->get('knp_paginator');
+            $tickets = $paginator->paginate(
+                $ticket_query,
+                $page,
+                $limit
+            );
+        }
         $params['tickets'] = $tickets;
-        $params['viewtype'] = $viewtype;
 
         return $this->render(
             'BrainStrategistProjectBundle:Dashboard:overview.html.twig',

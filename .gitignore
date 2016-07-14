@@ -58,6 +58,5 @@ npm-debug.log
 /node_modules/*
 /bower_components/*
 /web/media/*
-/web/.htaccess
 /web/uploads/organization/*
 /web/uploads/project/*

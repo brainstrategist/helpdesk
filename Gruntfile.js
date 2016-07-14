@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                     style: 'expanded'
                 },
                 files: {                         // Dictionary of files
-                    'src/BrainStrategist/KernelBundle/Resources/public/css/brain_strategist.css': 'src/BrainStrategist/KernelBundle/Resources/public/scss/*.scss'      // 'destination': 'source'
+                    'src/BrainStrategist/KernelBundle/Resources/public/css/brain_strategist.css': 'src/BrainStrategist/KernelBundle/Resources/public/scss/global.scss'      // 'destination': 'source'
                 }
             }
         },
@@ -28,22 +28,18 @@ module.exports = function (grunt) {
             scripts: {
                 files: {
                     'js/jquery.js': 'jquery/dist/jquery.js',
-                    'js/jquery-ui.js':  [
-                        'jquery-ui/ui/core.js',
-                        'jquery-ui/ui/widget.js',
-                        'jquery-ui/ui/widgets/mouse.js',
-                        'jquery-ui/ui/widgets/sortable.js'
-                    ],
+                    'js/jquery-ui.js': 'jquery-ui/jquery-ui.js',
                     'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js'
+                }
+            },
+            folders: {
+                files: {
+                    'js/themes/base': 'jquery-ui/themes/base'
                 }
             },
             stylesheets: {
                 files: {
                     'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
-                    'css/jquery-ui.css': [
-                        'jquery-ui/themes/base/theme.css',
-                        'jquery-ui/themes/base/jquery-ui.css'
-                    ],
                     'css/font-awesome.css': 'font-awesome/css/font-awesome.css'
                 }
             },
@@ -71,7 +67,6 @@ module.exports = function (grunt) {
                 src: [
                     'web/assets/css/bootstrap.css',
                     'web/assets/css/font-awesome.css',
-                    'web/assets/css/jquery-ui.css',
                     'src/BrainStrategist/KernelBundle/Resources/public/css/*.css'
                 ],
                 dest: 'web/assets/css/brain_strategist_compiled.css'

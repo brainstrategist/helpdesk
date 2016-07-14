@@ -84,7 +84,6 @@ class TicketController extends Controller
 
                 $params['status_list'] = $statusQuery->getArrayResult();
 
-
                 if(isset($filters))
                     $params['filters'] = $filters;
 
