@@ -1,8 +1,11 @@
-<div class="count col-md-2">
-    <div class="pull-right"><strong> {% if  tickets|length > 0 %}{{ tickets.getTotalItemCount }} {% else %} No {% endif %}results</strong></div>
+<div class="alert alert-warning alert-dismissible fade in col-md-2" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong> {% if  tickets|length > 0 %}{{ tickets.getTotalItemCount }} {% else %} No {% endif %}results</strong>
 </div>
+{{ include('BrainStrategistProjectBundle:Ticket:filters.html.twig') }}
 <div class="clearfix"></div>
-<br/>
 {% if  tickets|length > 0 %}
     <table class="table table-striped">
         <thead class="dark-head-thead">
@@ -51,13 +54,14 @@
                 {% endif %}
             </td>
             <td>
-                {{ ticket.status.name }}
+                <p class="btn btn-primary">{{ ticket.status.name }}</p>
             </td>
             <td>
                 {{ ticket.category.name }}
             </td>
-            <td>
-                {{ ticket.priority.name }}
+            <td>{% if ticket.priority.name is defined %}
+                <p class="btn btn-xs pull-right btn-info">  {{ ticket.priority.name }} </p>
+                {% endif %}
             </td>
             <td>
                 {% if ticket.severity.level < 3 %}
@@ -69,7 +73,7 @@
                 {% else %}
                     {% set style = "danger" %}
                 {% endif %}
-                <p href="#" class="btn btn-xs btn-{{ style }}"> {{ ticket.severity.name }}</p>
+                <p class="btn btn-xs btn-{{ style }}"> {{ ticket.severity.name }}</p>
             </td>
             <td>
                 {% set timeToAnswer = ticket.dateCreation|date_modify("+"~ticket.severity.responseTimeDays~" day")|date_modify(ticket.severity.responseTime|date("H:i:s"))   %}

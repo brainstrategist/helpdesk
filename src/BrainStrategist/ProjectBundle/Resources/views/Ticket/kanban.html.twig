@@ -1,18 +1,18 @@
-{{ include('BrainStrategistProjectBundle:Ticket:filters.html.twig') }}
-<div class="count col-md-2">
-    <div class="pull-right"><strong> {% if  total_tickets > 0 %}{{ total_tickets }} {% else %} No {% endif %}results</strong></div>
+<div class="alert alert-warning alert-dismissible fade in col-md-2" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong> {% if  total_tickets > 0 %}{{ total_tickets }} {% else %} No {% endif %}results</strong>
 </div>
+{{ include('BrainStrategistProjectBundle:Ticket:filters.html.twig') }}
 <div class="clearfix"></div>
-<br/>
 <div class="container-fluid">
     <div id="sortableKanbanBoards" class="row">
         {% if  tickets|length > 0 %}
             {% for key,tickets_project in tickets %}
                 <h3><a href={{ path('project_access', { 'slug':key }) }}>{{ key }}</a></h3>
-
                    {% for key2,tickets_list in tickets_project %}
-
-                        <div class="panel panel-primary kanban-col">
+                        <div class="panel panel-primary kanban-col" data-id="{{ tickets_list.status_id }}">
                          <div class="panel-heading">
                              {{ key2 }}
                              <i class="fa fa-2x fa-plus-circle pull-right"></i>
@@ -21,8 +21,8 @@
                              <div id="DONE" class="kanban-centered">
                               <ul class="list-group">
                                   <li></li>
-                                 {% for ticket in tickets_list %}
-                                  <li>
+                                 {% for ticket in tickets_list.tickets %}
+                                  <li data-id="{{ ticket.id }}">
                                  <article class="kanban-entry grab" id="item5" draggable="true">
                                      <div class="kanban-entry-inner">
                                          <div class="kanban-label">
@@ -39,18 +39,21 @@
                                                          <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToResolve|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
                                                      </div>
                                                  </li>
-                                             </ul>
-                                             <h2><a href={{ path('ticket_view', { 'id': ticket.id, 'slug':ticket.projet.slug }) }}> [{{ ticket.identifier }}]{{ ticket.summary }}</a> <span>  {{ ticket.category.name }}</span></h2>
-                                             <small>Created the
-                                             {{ ticket.dateCreation|date("m/d/Y")}}
-                                             {% if ticket.creator|length > 0 %}
-                                             by @{{ ticket.creator.username }}
-                                             {% endif %}
+                                                 <li>
+                                                     <small>
+                                                         {{ ticket.dateCreation|date("m/d/y")}}
+                                                         {% if ticket.creator|length > 0 %}
+                                                             by @{{ ticket.creator.username }}
+                                                         {% endif %}
 
-                                             {% if "now"|date('Ymd')  <  ticket.dateCreation|date_modify("+5 day")|date("Ymd") %}
-                                             <p href="#" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-info-sign"></span> New</p>
-                                             {% endif %}
-                                             </small>
+                                                         {% if "now"|date('Ymd')  <  ticket.dateCreation|date_modify("+5 day")|date("Ymd") %}
+                                                             <p href="#" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-info-sign"></span> New</p>
+                                                         {% endif %}
+                                                     </small>
+                                                 </li>
+                                             </ul>
+                                             <h2><a href={{ path('ticket_view_popup', { 'id': ticket.id, 'slug':ticket.projet.slug,'mode':'popup' }) }} class="zoombox w700 h700"> [{{ ticket.identifier }}]{{ ticket.summary }}</a> <span class="pull-right">  {{ ticket.category.name }}</span></h2>
+
                                              {% if ticket.assigned_users %}
 
                                                  <ul class="list-inline">
@@ -87,7 +90,6 @@
                              </div>
                          </div>
                          <div class="panel-footer">
-                             <a href="#">Load More...</a>
                          </div>
                      </div>
 
@@ -99,23 +101,35 @@
         {% endif %}
     </div>
 </div>
-<!-- Static Modal -->
-    <div class="modal modal-static fade" id="processing-modal" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="text-center">
-                        <i class="fa fa-refresh fa-5x fa-spin"></i>
-                        <h4>Processing...</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 <script>
     $(document).ready(function(){
+        $('a.zoombox').zoombox();
         $("#sortableKanbanBoards ul.list-group").sortable({
-            connectWith: "ul.list-group"
+            connectWith: "ul.list-group",
+            update: function( event, ui ) {
+               var ticket_id = $(ui.item).data('id');
+               var status_id =$(ui.item).parents('.kanban-col').data('id');
+
+                // store the new list order
+                // TODO store a personnal ticket order for each user instead of the ticket
+
+                var orderArr = [];
+                $(ui.item).parents('.list-group').find('> li').each( function(e) {
+                    if($(this).data('id') !== undefined){
+                        orderArr.push({ticket_id: $(this).data('id'), new_order: $(this).index()});
+                    }
+
+                });
+
+
+                $.ajax({
+                    data: {ticket :ticket_id, status : status_id, order : orderArr },
+                    type: 'POST',
+                    url: "{{ path('ticket_status_ajax') }}"
+                }).done(function(response) {
+                    console.log(response);
+                });;
+            }
         });
 
         $('.panel-heading i').click(function(){

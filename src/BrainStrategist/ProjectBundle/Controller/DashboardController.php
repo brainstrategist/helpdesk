@@ -54,10 +54,10 @@ class DashboardController extends Controller
 
         $ticketsEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
 
-
         if(!is_null($viewtype)){
 
             $params['viewtype'] = $viewtype;
+            $params['kanban'] = true;
 
             /**
              * Kanban Mode
@@ -66,12 +66,32 @@ class DashboardController extends Controller
             $ticket_query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
             $ticket_results = $ticket_query->getArrayResult();
 
+            // Get all status by project
+            $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_status");
+            $status_results = $statusEntity->findAllProjectStatusByUserID($this->currentUser->getId());
+
+            $status=array();
+            foreach($status_results as $status_row){
+                $status[$status_row['project']['name']][$status_row["name"]] = $status_row;
+            }
+
             $tickets=array();
             foreach($ticket_results as $ticket){
-                $tickets[$ticket['projet']['name']][$ticket["status"]["name"]][] = $ticket;
+                $tickets[$ticket['projet']['name']][$ticket["status"]["name"]]['status_id'] = $ticket["status"]['id'];
+                $tickets[$ticket['projet']['name']][$ticket["status"]["name"]]['tickets'][] = $ticket;
             }
-            $params['total_tickets']=sizeof($ticket_results);
+            /**
+             *  check if a status haven't any tickets and add a blank column in the kanban
+             */
+            foreach($status as $key => $project){
+                foreach($project as $key2 =>$status_project){
+                    if(!isset($tickets[$key][$key2])){
+                        $tickets[$key][$key2]['status_id']=$status_project['id'];
+                    }
+                }
+            }
 
+            $params['total_tickets']=sizeof($ticket_results);
 
         }else{
             /**

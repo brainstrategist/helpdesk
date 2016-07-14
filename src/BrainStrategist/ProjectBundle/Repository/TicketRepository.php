@@ -127,7 +127,11 @@ class TicketRepository extends \Doctrine\ORM\EntityRepository
                 ->andWhere('tau.id = :user_id')
                 ->setParameter('user_id',$userID);
 
+            if(isset($kanban)){
+                $q->orderBy('t.status','ASC')->addOrderBy('t.order','ASC');
+            }
             $query = $q->getQuery();
+
             return $query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
         }else{
@@ -187,5 +191,28 @@ class TicketRepository extends \Doctrine\ORM\EntityRepository
             return false;
         }
 
+    }
+
+    /* check if current shooting is mine */
+    public function isMyTicket($obj=null,$currentUser=null){
+
+        $q= $this->createQueryBuilder('t')
+            ->leftJoin('t.assigned_users', 'ta')
+            ->addSelect('ta')
+            ->where('t.id = :id')->setParameter('id', $obj);
+
+        $req =  $q->getQuery();
+        $res = $req->getArrayResult();
+
+        if(isset($currentUser) && sizeof($res)>0){
+            foreach($res[0]["assigned_users"] as $r){
+
+                if($r['id']==$currentUser)
+                    return true;
+
+            }
+
+        }
+        return false;
     }
 }

@@ -18,9 +18,8 @@ class Ticket_StatusRepository extends \Doctrine\ORM\EntityRepository
         return $qb;
     }
 
-    public function findAllProjectStatusByUserID($params)
+    public function findAllProjectStatusByUserID($userID)
     {
-        extract($params);
 
         if (!is_null($userID)) {
             $q = $this->createQueryBuilder('ts')

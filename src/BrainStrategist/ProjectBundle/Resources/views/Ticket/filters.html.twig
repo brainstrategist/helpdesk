@@ -1,6 +1,14 @@
+<div class="col-md-10">
+    <div class="alert alert-info fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Welcome back {{ app.user.username }}</strong> All the submitted issues availables in your backlog are listed here.
+    </div>
+</div>
 {% if app.request.get('slug') is not null  %}
-    <div class="filters col-md-9">
-        <form>
+    <div class="filters col-md-12">
+        <form class="pull-left">
             <ul class="list-inline">
                 <li>
                     <div><strong>Filter by</strong></div>
@@ -34,16 +42,11 @@
                 </li>
             </ul>
         </form>
-    </div>
-    <div class="count col-md-1">
-        <div class="form-inline">
+        <div class="form-inline pull-right">
             <form>
                 <input type="submit" value="Clear filters" class="btn btn-primary">
             </form>
         </div>
-    </div>
-{% else %}
-    <div class="col-md-10">
-        <strong>All the submitted issues availables in your backlog are listed here</strong>
+
     </div>
 {% endif %}

@@ -22,13 +22,13 @@ class Builder implements ContainerAwareInterface
     {
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');
-        $menu->addChild('User', array('route' => 'fos_user_profile_edit', 'label' => 'Hello ' . $options['username'] . '  <img src="' . $options['avatar'] . '" class="img-circle avatar_top" alt="User Image" />', 'extras' => array('safe_label' => true)))
+        $menu->addChild('User', array('route' => 'fos_user_profile_edit', 'label' => '<span class="expended">Hello ' . $options['username'] . '</span>  <img src="' . $options['avatar'] . '" class="img-circle avatar_top" alt="User Image" />', 'extras' => array('safe_label' => true)))
             ->setAttribute('dropdown', true)
             ->setAttribute('icon', 'fa fa-user')
             ->setChildrenAttribute('class', 'dropdown-menu');
         $menu['User']->addChild('Edit profile', array('route' => 'fos_user_profile_edit'));
-        $menu->addChild('Dashboard', array('route' => 'dashboard_access','label' => '<i class="fa fa-tachometer"></i> Dashboard ','extras' => array('safe_label' => true)));
-        $menu->addChild('Disconnect', array('route' => 'fos_user_security_logout','label' => '<i class="fa fa-sign-out"></i> Sign out ','extras' => array('safe_label' => true)));
+        $menu->addChild('Dashboard', array('route' => 'dashboard_access','label' => '<i class="fa fa-tachometer"></i> <span class="expended">Dashboard</span>','extras' => array('safe_label' => true)));
+        $menu->addChild('Disconnect', array('route' => 'fos_user_security_logout','label' => '<i class="fa fa-sign-out"></i> <span class="expended">Sign out</span>','extras' => array('safe_label' => true)));
         return $menu;
     }
 
