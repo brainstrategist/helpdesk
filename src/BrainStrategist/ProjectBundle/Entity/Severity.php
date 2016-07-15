@@ -13,6 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Severity
 {
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->responseTime = new \DateTime();
+        $this->responseTimeDays = 1;
+        $this->resolutionTime = new \DateTime();
+        $this->resolutionTimeDays = 1;
+    }
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
