@@ -7,26 +7,27 @@
 {{ include('BrainStrategistProjectBundle:Ticket:filters.html.twig') }}
 <div class="clearfix"></div>
 {% if  tickets|length > 0 %}
-    <table class="table table-striped">
-        <thead class="dark-head-thead">
-        <tr>
-            {% if app.request.get('slug') is  null  %}<th {% if tickets.isSorted('tp.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Project', 'tp.name') }}</th>{% endif %}
-            <th>Name</th>
-            <th>User(s)</th>
-            <th {% if tickets.isSorted('tst.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Status', 'tst.name') }}</th>
-            <th {% if tickets.isSorted('tca.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Category', 'tca.name') }}</th>
-            <th {% if tickets.isSorted('tpr.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Priority', 'tpr.name') }}</th>
-            <th {% if tickets.isSorted('ts.level') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Severity', 'ts.level') }}</th>
-            <th>Time to answer</th>
-            <th>Time to resolve</th>
-        </tr>
-        </thead>
-        {% for ticket in tickets %}
-        <tbody>
-        <tr>
-            {% if app.request.get('slug') is  null  %}<td><a href={{ path('project_access', { 'slug':ticket.projet.slug }) }}>{{ ticket.projet.name }}</a></td>{% endif %}
-            <td>
-                <div class="col-md-12">
+    <div class="row">
+        <table class="table table-striped responsive">
+            <thead class="dark-head-thead">
+            <tr>
+                {% if app.request.get('slug') is  null  %}<th {% if tickets.isSorted('tp.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Project', 'tp.name') }}</th>{% endif %}
+                <th>Name</th>
+                <th>User(s)</th>
+                <th {% if tickets.isSorted('tst.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Status', 'tst.name') }}</th>
+                <th {% if tickets.isSorted('tca.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Category', 'tca.name') }}</th>
+                <th {% if tickets.isSorted('tpr.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Priority', 'tpr.name') }}</th>
+                <th {% if tickets.isSorted('ts.level') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(tickets, 'Severity', 'ts.level') }}</th>
+                <th>Time to answer</th>
+                <th>Time to resolve</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ticket in tickets %}
+
+            <tr>
+                {% if app.request.get('slug') is  null  %}<td><a href={{ path('project_access', { 'slug':ticket.projet.slug }) }}>{{ ticket.projet.name }}</a></td>{% endif %}
+                <td>
                     <b><a href={{ path('ticket_view', { 'id': ticket.id, 'slug':ticket.projet.slug }) }}> [{{ ticket.identifier }}]{{ ticket.summary }}</a></b>
                     <br/>
                     <small>Created the
@@ -39,57 +40,63 @@
                             <p href="#" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-info-sign"></span> New</p>
                         {% endif %}
                     </small>
-                </div>
-            </td>
-            <td>
-                {#{{ dump(ticket) }}#}
-                {% if ticket.assigned_users %}
-                    <ul class="list-inline">
-                        {% for user in ticket.assigned_users %}
-                            <li>
-                                @{{ user.username }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-            <td>
-                <p class="btn btn-primary">{{ ticket.status.name }}</p>
-            </td>
-            <td>
-                {{ ticket.category.name }}
-            </td>
-            <td>{% if ticket.priority.name is defined %}
-                <p class="btn btn-xs pull-right btn-info">  {{ ticket.priority.name }} </p>
-                {% endif %}
-            </td>
-            <td>
-                {% if ticket.severity.level < 3 %}
-                    {% set style = "success" %}
-                {% elseif ticket.severity.level < 5 %}
-                    {% set style = "info" %}
-                {% elseif ticket.severity.level < 7 %}
-                    {% set style = "warning" %}
-                {% else %}
-                    {% set style = "danger" %}
-                {% endif %}
-                <p class="btn btn-xs btn-{{ style }}"> {{ ticket.severity.name }}</p>
-            </td>
-            <td>
-                {% set timeToAnswer = ticket.dateCreation|date_modify("+"~ticket.severity.responseTimeDays~" day")|date_modify(ticket.severity.responseTime|date("H:i:s"))   %}
-                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToAnswer|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
-            </td>
-            <td>
-                {%  set timeToResolve =  ticket.dateCreation|date_modify("+"~ticket.severity.resolutionTimeDays~" day")|date_modify(ticket.severity.resolutionTime|date("H:i:s")) %}
-                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToResolve|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <div class="navigation">
+                </td>
+                <td>
+                    {#{{ dump(ticket) }}#}
+                    {% if ticket.assigned_users %}
+                        <ul class="list-inline">
+                            {% for user in ticket.assigned_users %}
+                                <li>
+                                    @{{ user.username }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+                <td>{% if ticket.status.name is defined %}
+                    <p class="btn btn-primary">{{ ticket.status.name }}</p>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ ticket.category.name }}
+                </td>
+                <td>{% if ticket.priority.name is defined %}
+                    <p class="btn btn-xs pull-right btn-info">  {{ ticket.priority.name }} </p>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if ticket.severity.level < 3 %}
+                        {% set style = "success" %}
+                    {% elseif ticket.severity.level < 5 %}
+                        {% set style = "info" %}
+                    {% elseif ticket.severity.level < 7 %}
+                        {% set style = "warning" %}
+                    {% else %}
+                        {% set style = "danger" %}
+                    {% endif %}
+                    <p class="btn btn-xs btn-{{ style }}"> {{ ticket.severity.name }}</p>
+                </td>
+                <td>
+                    {% set timeToAnswer = ticket.dateCreation|date_modify("+"~ticket.severity.responseTimeDays~" day")|date_modify(ticket.severity.responseTime|date("H:i:s"))   %}
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToAnswer|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+                </td>
+                <td>
+                    {%  set timeToResolve =  ticket.dateCreation|date_modify("+"~ticket.severity.resolutionTimeDays~" day")|date_modify(ticket.severity.resolutionTime|date("H:i:s")) %}
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToResolve|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="navigation col-xs-12">
         {{ knp_pagination_render(tickets) }}
     </div>
+    <script language="JavaScript">
+        $(document).ready(function(){
+            $('table.responsive').stacktable();
+        })
+    </script>
 {% else %}
     <h3>Sorry, there are no issues open for this project.</h3>
 {% endif %}

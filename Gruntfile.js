@@ -30,6 +30,7 @@ module.exports = function (grunt) {
                     'js/jquery.js': 'jquery/dist/jquery.js',
                     'js/jquery-ui.js': 'jquery-ui/jquery-ui.js',
                     'js/zoombox.js': 'zoombox-master/zoombox.js',
+                    'js/stacktable.js': 'responsive-table/stacktable.js',
                     'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js'
                 }
             },
@@ -43,6 +44,7 @@ module.exports = function (grunt) {
                 files: {
                     'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
                     'css/zoombox.css': 'zoombox-master/zoombox.css',
+                    'css/stacktable.css': 'responsive-table/stacktable.css',
                     'css/font-awesome.css': 'font-awesome/css/font-awesome.css'
                 }
             },
@@ -58,6 +60,7 @@ module.exports = function (grunt) {
                     'web/assets/js/jquery.min.js': ['web/assets/js/jquery.js'],
                     'web/assets/js/jquery-ui.min.js': ['web/assets/js/jquery-ui.js'],
                     'web/assets/js/bootstrap.min.js': ['web/assets/js/bootstrap.js'],
+                    'web/assets/js/stacktable.min.js': ['web/assets/js/stacktable.js'],
                     'web/assets/js/zoombox.min.js': ['web/assets/js/zoombox.js'],
                     'web/assets/js/brain_strategist.min.js': ['src/BrainStrategist/KernelBundle/Resources/public/js/*.js']
                 }
@@ -71,6 +74,7 @@ module.exports = function (grunt) {
                 src: [
                     'web/assets/css/bootstrap.css',
                     'web/assets/css/font-awesome.css',
+                    'web/assets/css/stacktable.css',
                     'web/assets/css/zoombox.css',
                     'src/BrainStrategist/KernelBundle/Resources/public/css/*.css'
                 ],
@@ -81,6 +85,7 @@ module.exports = function (grunt) {
                     'web/assets/js/jquery.min.js',
                     'web/assets/js/jquery-ui.min.js',
                     'web/assets/js/bootstrap.min.js',
+                    'web/assets/js/stacktable.min.js',
                     'web/assets/js/zoombox.min.js',
                     'web/assets/js/brain_strategist.min.js'
                 ],

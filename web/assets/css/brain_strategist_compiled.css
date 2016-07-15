@@ -8326,6 +8326,23 @@ button.close {
   content: "\f1e2";
 }
 
+.stacktable { width: 100%; }
+.st-head-row { padding-top: 1em; }
+.st-head-row.st-head-row-main { font-size: 1.5em; padding-top: 0; }
+.st-key { width: 49%; text-align: right; padding-right: 1%; }
+.st-val { width: 49%; padding-left: 1%; }
+
+
+
+/* RESPONSIVE EXAMPLE */
+
+.stacktable.large-only { display: table; }
+.stacktable.small-only { display: none; }
+
+@media (max-width: 800px) {
+  .stacktable.large-only { display: none; }
+  .stacktable.small-only { display: table; }
+}
 #zoombox iframe,#zoombox img{
 	border:none;
 }
@@ -8892,14 +8909,19 @@ button.close {
   background: #593590;
   border-bottom: #91bef1;
 }
+.navbar-inverse .layout-header {
+  max-width: 1280px;
+  margin: auto;
+}
 .navbar-inverse .connexion_box {
   float: right;
-  width: 77%;
+  width: 68%;
 }
 .navbar-inverse .navbar-brand {
   background: url(/assets/images/brain-logo-small.png) no-repeat left center;
   background-size: 25px auto;
   padding-left: 30px;
+  margin-left: 30px;
 }
 .navbar-inverse .navbar-right {
   color: #fff;
@@ -8917,7 +8939,8 @@ button.close {
 }
 .navbar-inverse ul.navbar-nav li a {
   color: #fff;
-  padding: 10px 15px 0;
+  padding: 7px 15px 0;
+  line-height: 15px;
 }
 .navbar-inverse ul.navbar-nav li ul li a {
   color: #150838;
@@ -9483,6 +9506,26 @@ a, .pagination a {
    IMPORT RESPONSIVE DESIGN SCSS DIRECTIVES
 */
 @media only screen and (min-width: 320px) and (max-width: 768px) {
+  body .navbar-inverse .connexion_box {
+    width: 100%;
+  }
+  body .navbar-inverse .connexion_box > div > ul {
+    float: inherit !important;
+    margin-bottom: 0px;
+  }
+  body .navbar-inverse .connexion_box > div > ul > li {
+    border-top: 1px solid #674b8a;
+    border-bottom: 1px solid #3a2373;
+    display: block;
+    width: 100%;
+    padding: 5px 0;
+  }
+  body .navbar-inverse .connexion_box > div > ul > li ul li {
+    display: inline-block;
+  }
+  body .navbar-inverse .connexion_box > div > ul > li ul li:hover ul.dropdown-menu {
+    top: -1000px;
+  }
   body ul.main-navigation li:hover ul {
     display: none;
   }
@@ -9494,6 +9537,33 @@ a, .pagination a {
     margin-right: -20px;
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  .table-wrapper tbody td {
+    height: 51px;
+  }
+  .table-wrapper tbody td small {
+    display: none;
+  }
+
+  .project_access .template div.col-xs-12 {
+    padding: 0;
+  }
+  .project_access .filters form {
+    width: 100%;
+  }
+  .project_access .filters form .list-inline {
+    width: 100%;
+  }
+  .project_access .filters form .list-inline li {
+    padding: 5px 0;
+    display: block;
+    width: 100%;
+  }
+  .project_access .filters .form-inline.pull-right {
+    float: inherit !important;
+    margin-left: -5px;
+    padding: 0 0 10px 0;
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 1200px) {
