@@ -21,6 +21,7 @@ class ProjectSeverityController extends Controller
 {
 
     private $currentUser;
+    private $breadcrumbs;
 
     /**
      *
@@ -31,6 +32,11 @@ class ProjectSeverityController extends Controller
 
         if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
             $this->currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+            $this->breadcrumbs = $this->get("white_october_breadcrumbs");
+            $this->breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
+            $this->breadcrumbs->addItem( $this->get('translator')->trans("Organizations"), $this->get("router")->generate("kernel"));
+
         }else{
             throw new HttpException(400, "You are not allowed to access Project. Please register or login first");
         }
@@ -87,7 +93,7 @@ class ProjectSeverityController extends Controller
                 $em->persist($response);
                 $em->flush();
 
-                return $this->redirectToRoute("project_access", array('slug'=>$slug));
+                return $this->redirectToRoute("severity_list", array('slug'=>$slug));
             }
         }
         $params = array_merge($params,
@@ -101,5 +107,46 @@ class ProjectSeverityController extends Controller
 
 
     }
+    /**
+     * @Route("/{_locale}/project/{slug}/severity/list",name="severity_list")
+     */
+    public function listAction(Request $request,$slug=null){
 
+
+        $this->preExecute();
+
+        $params=array();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+
+        if(isset($slug)) {
+
+            if ($projectEntity->isMyProject($slug, $this->currentUser->getId())) {
+
+                $project = $projectEntity->findOneBySlug($slug);
+                $params = array("projectID" => $project->getId());
+
+                // Get all severity by project
+                $severityEntity = $em->getRepository("BrainStrategistProjectBundle:Severity");
+                $severity = $severityEntity->findAllByProjectId($project->getId());
+                $severityQuery = $severity->getQuery();
+                $severityQuery->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+                $params['severities'] = $severityQuery->getArrayResult();
+                $params['slug'] = $slug;
+                $params['projet'] = $project;
+            }
+
+            $this->breadcrumbs->addItem( $this->get('translator')->trans("Projects"), $this->get("router")->generate("organize_access",array("slug"=>$slug)));
+            $this->breadcrumbs->addItem( $project->getName(), $this->get("router")->generate("project_access",array("slug"=>$slug)));
+            $this->breadcrumbs->addItem( $this->get('translator')->trans("Severities"), $this->get("router")->generate("severity_list",array("slug"=>$slug)));
+
+        }
+
+        return $this->render(
+            'BrainStrategistProjectBundle:Severity:list.html.twig',
+            $params
+        );
+    }
 }

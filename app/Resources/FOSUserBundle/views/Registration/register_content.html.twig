@@ -1,7 +1,25 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register '}}) }}
-    {{ form_widget(form) }}
+    <div {{ block('widget_container_attributes') }}>
+        {% for child in form %}
+            <fieldset class="form-group">
+                {% if  child.vars.name != "plainPassword" %}
+                         {% if  child.vars.name != "_token" %}
+                            {{ form_label(child) }}
+                        {% endif %}
+                        {{ form_widget(child, {'attr': {'class': 'form-control'}}) }}
+                    {% else %}
+                        {{ form_label(child) }}
+                        <hr/>
+                        {% for child2 in child %}
+                            {{ form_label(child2) }}
+                            {{ form_widget(child2, {'attr': {'class': 'form-control', 'Placeholder':'Repeat your password'}}) }}
+                        {% endfor %}
+                {% endif %}
+            </fieldset>
+        {% endfor %}
+    </div>
     <div>
         <input type="submit"  class="btn btn-primary" value="{{ 'registration.submit'|trans }}" />
     </div>

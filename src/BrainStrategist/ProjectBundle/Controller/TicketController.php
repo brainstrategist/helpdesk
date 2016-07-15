@@ -50,7 +50,6 @@ class TicketController extends Controller
         $this->preExecute();
 
         $params=array();
-        $request = $this->container->get('request_stack')->getCurrentRequest();
         $em = $this->getDoctrine()->getEntityManager();
 
         $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");

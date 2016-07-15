@@ -38,9 +38,9 @@ class Builder implements ContainerAwareInterface
         $menu->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
         $menu->addChild('Issues', array('route' => 'project_access', 'routeParameters' => array('slug' => $options['project_slug']),'label' => '<i class="fa fa-bug"></i> Issues ','extras' => array('safe_label' => true)));
         $menu->addChild('Users', array('route' => 'project_view', 'routeParameters' => array('slug' => $options['project_slug'], 'view' => 'users-list'),'label' => '<i class="fa fa-users"></i> Members ','extras' => array('safe_label' => true)));
-        $menu->addChild('Create Issue', array('route' => 'project_view', 'routeParameters' => array('slug' => $options['project_slug'], 'view' => 'ticket-create'),'label' => '<i class="fa fa-plus-square"></i> Create Issue ','extras' => array('safe_label' => true)));
-        $menu->addChild('Create Status', array('route' => 'status_create', 'routeParameters' => array('slug' => $options['project_slug']),'label' => '<i class="fa fa-bell"></i> Create Status ','extras' => array('safe_label' => true)));
-        $menu->addChild('Create Severity', array('route' => 'severity_create', 'routeParameters' => array('slug' => $options['project_slug']),'label' => '<i class="fa fa-exclamation-circle"></i> Create Severity ','extras' => array('safe_label' => true)));
+        $menu->addChild('Issue', array('route' => 'project_view', 'routeParameters' => array('slug' => $options['project_slug'], 'view' => 'ticket-create'),'label' => '<i class="fa fa-plus-square"></i> Create Issue ','extras' => array('safe_label' => true)));
+        $menu->addChild('Status', array('route' => 'status_list', 'routeParameters' => array('slug' => $options['project_slug']),'label' => '<i class="fa fa-bell"></i> Issues Status ','extras' => array('safe_label' => true)));
+        $menu->addChild('Severity', array('route' => 'severity_list', 'routeParameters' => array('slug' => $options['project_slug']),'label' => '<i class="fa fa-exclamation-circle"></i> Severity Policy','extras' => array('safe_label' => true)));
 
         return $menu;
     }

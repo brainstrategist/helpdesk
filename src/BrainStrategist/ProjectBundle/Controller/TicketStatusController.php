@@ -21,7 +21,7 @@ class TicketStatusController extends Controller
 {
 
     private $currentUser;
-
+    private $breadcrumbs;
     /**
      *
      * Pre dispatcher event to check the security access of the current user
@@ -31,6 +31,10 @@ class TicketStatusController extends Controller
 
         if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
             $this->currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+            $this->breadcrumbs = $this->get("white_october_breadcrumbs");
+            $this->breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
+            $this->breadcrumbs->addItem( $this->get('translator')->trans("Organizations"), $this->get("router")->generate("kernel"));
         }else{
             throw new HttpException(400, "You are not allowed to access Project. Please register or login first");
         }
@@ -89,7 +93,7 @@ class TicketStatusController extends Controller
                 $em->persist($response);
                 $em->flush();
 
-                return $this->redirectToRoute("project_access", array('slug'=>$slug));
+                return $this->redirectToRoute("status_list", array('slug'=>$slug));
             }
         }
         $params = array_merge($params,
@@ -104,4 +108,46 @@ class TicketStatusController extends Controller
 
     }
 
+    /**
+     * @Route("/{_locale}/project/{slug}/status/list",name="status_list")
+     */
+    public function listAction(Request $request,$slug=null){
+
+
+        $this->preExecute();
+
+        $params=array();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+
+        if(isset($slug)) {
+
+            if ($projectEntity->isMyProject($slug, $this->currentUser->getId())) {
+
+                $project = $projectEntity->findOneBySlug($slug);
+                $params = array("projectID" => $project->getId());
+
+                // Get all severity by project
+                $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_Status");
+                $status = $statusEntity->findAllByProjectId($project->getId());
+                $statusQuery = $status->getQuery();
+                $statusQuery->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+                $params['status_list'] = $statusQuery->getArrayResult();
+                $params['slug'] = $slug;
+                $params['projet'] = $project;
+            }
+
+            $this->breadcrumbs->addItem( $this->get('translator')->trans("Projects"), $this->get("router")->generate("organize_access",array("slug"=>$slug)));
+            $this->breadcrumbs->addItem( $project->getName(), $this->get("router")->generate("project_access",array("slug"=>$slug)));
+            $this->breadcrumbs->addItem( $this->get('translator')->trans("Severities"), $this->get("router")->generate("severity_list",array("slug"=>$slug)));
+
+        }
+
+        return $this->render(
+            'BrainStrategistProjectBundle:Status:list.html.twig',
+            $params
+        );
+    }
 }
