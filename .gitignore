@@ -1,7 +1,4 @@
 /.idea/*
-/web/.htaccess
-/web/uploads/organization/*
-/web/uploads/project/*
 # Cache and logs (Symfony2)
 /app/cache/*
 /app/logs/*
@@ -51,6 +48,15 @@
 # Backup entities generated with doctrine:generate:entities command
 */Entity/*~
 
+*.scss
+bower.json
+Gruntfile.js
+npm-debug.log
+.bowerrc
 /web/.htaccess
 /.sass-cache/*
 /node_modules/*
+/bower_components/*
+/web/media/*
+/web/uploads/organization/*
+/web/uploads/project/*

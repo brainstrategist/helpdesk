@@ -26,6 +26,13 @@ class Ticket
     private $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="order_ticket", type="integer")
+     */
+    private $order;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Identifier", type="string", length=255)
@@ -565,5 +572,29 @@ class Ticket
     public function getPictures()
     {
         return $this->pictures;
+    }
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     *
+     * @return Ticket
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

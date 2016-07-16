@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block body %}
+    <h1>Result of your search</h1>
+    {% if search_result is defined %}
+        {{ include('BrainStrategistProjectBundle:Ticket:list.html.twig', { 'tickets': search_result }) }}
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>
+{% endblock %}

@@ -12,11 +12,10 @@
     </script>
 {% endblock %}
 {% block stylesheets %}
-
 {% endblock %}
 {% block body %}
         <div class="col-md-12">
-        <h1 class="pull-right">My Dashboard</h1>
+        <h1 class="pull-right"><i class="fa fa-tachometer" aria-hidden="true"></i> My Dashboard</h1>
         </div>
         <div class="col-md-2 left-bar">
             {% set menu = knp_menu_get('BrainStrategistKernelBundle:Builder:UserDashboardMenu' ) %}
@@ -24,7 +23,11 @@
         </div>
         <div  class="col-md-10 ">
             {% if tickets is defined %}
-                {{ include('BrainStrategistProjectBundle:Ticket:list.html.twig', { 'tickets': tickets }) }}
+                {% if viewtype is defined %}
+                    {{ include('BrainStrategistProjectBundle:Ticket:'~viewtype~'.html.twig', { 'tickets': tickets }) }}
+                {% else %}
+                        {{ include('BrainStrategistProjectBundle:Ticket:list.html.twig', { 'tickets': tickets }) }}
+                {% endif %}
             {% endif %}
         </div>
 {% endblock %}

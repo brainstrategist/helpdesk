@@ -1,0 +1,143 @@
+<div class="alert alert-warning alert-dismissible fade in col-md-2" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong> {% if  total_tickets > 0 %}{{ total_tickets }} {% else %} No {% endif %}results</strong>
+</div>
+{{ include('BrainStrategistProjectBundle:Ticket:filters.html.twig') }}
+<div class="clearfix"></div>
+<div class="container-fluid">
+    <div id="sortableKanbanBoards" class="row">
+        {% if  tickets|length > 0 %}
+            {% for key,tickets_project in tickets %}
+                <h3><a href={{ path('project_access', { 'slug':key }) }}>{{ key }}</a></h3>
+                   {% for key2,tickets_list in tickets_project %}
+                        <div class="panel panel-primary kanban-col" data-id="{{ tickets_list.status_id }}">
+                         <div class="panel-heading">
+                             {{ key2 }}
+                             <i class="fa fa-2x fa-plus-circle pull-right"></i>
+                         </div>
+                         <div class="panel-body">
+                             <div id="DONE" class="kanban-centered">
+                              <ul class="list-group">
+                                  <li></li>
+                                 {% for ticket in tickets_list.tickets %}
+                                  <li data-id="{{ ticket.id }}">
+                                 <article class="kanban-entry grab" id="item5" draggable="true">
+                                     <div class="kanban-entry-inner">
+                                         <div class="kanban-label">
+                                             <ul class="list-inline">
+                                                 <li>
+                                                     <div>
+                                                         {% set timeToAnswer = ticket.dateCreation|date_modify("+"~ticket.severity.responseTimeDays~" day")|date_modify(ticket.severity.responseTime|date("H:i:s"))   %}
+                                                         <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToAnswer|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+                                                     </div>
+                                                 </li>
+                                                 <li>
+                                                     <div>
+                                                         {%  set timeToResolve =  ticket.dateCreation|date_modify("+"~ticket.severity.resolutionTimeDays~" day")|date_modify(ticket.severity.resolutionTime|date("H:i:s")) %}
+                                                         <i class="fa fa-clock-o" aria-hidden="true"></i> {{ sub_date(timeToResolve|date("d-m-Y H:i:s"),"now"|date("d-m-Y H:i:s")) }}
+                                                     </div>
+                                                 </li>
+                                                 <li>
+                                                     <small>
+                                                         {{ ticket.dateCreation|date("m/d/y")}}
+                                                         {% if ticket.creator|length > 0 %}
+                                                             by @{{ ticket.creator.username }}
+                                                         {% endif %}
+
+                                                         {% if "now"|date('Ymd')  <  ticket.dateCreation|date_modify("+5 day")|date("Ymd") %}
+                                                             <p href="#" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-info-sign"></span> New</p>
+                                                         {% endif %}
+                                                     </small>
+                                                 </li>
+                                             </ul>
+                                             <h2><a href={{ path('ticket_view_popup', { 'id': ticket.id, 'slug':ticket.projet.slug,'mode':'popup' }) }} class="zoombox w700 h700"> [{{ ticket.identifier }}]{{ ticket.summary }}</a> <span class="pull-right">  {{ ticket.category.name }}</span></h2>
+
+                                             {% if ticket.assigned_users %}
+
+                                                 <ul class="list-inline">
+                                                     <li>
+                                                         <b>Users : </b>
+                                                     </li>
+                                                     {% for user in ticket.assigned_users %}
+                                                         <li>
+                                                             @{{ user.username }}
+                                                         </li>
+                                                     {% endfor %}
+                                                 </ul>
+                                             {% endif %}
+                                             {% if ticket.severity.level < 3 %}
+                                                 {% set style = "success" %}
+                                             {% elseif ticket.severity.level < 5 %}
+                                                 {% set style = "info" %}
+                                             {% elseif ticket.severity.level < 7 %}
+                                                 {% set style = "warning" %}
+                                             {% else %}
+                                                 {% set style = "danger" %}
+                                             {% endif %}
+                                             <p  class="btn btn-xs btn-{{ style }}"> {{ ticket.severity.name }}</p>
+                                             {% if ticket.priority.name is defined %}
+                                             <p class="btn btn-xs pull-right btn-info">  {{ ticket.priority.name }}</p>
+                                             {% endif %}
+
+                                         </div>
+                                     </div>
+                                 </article>
+                                  </li>
+                                 {% endfor %}
+                              </ul>
+                             </div>
+                         </div>
+                         <div class="panel-footer">
+                         </div>
+                     </div>
+
+                 {% endfor %}
+
+            {% endfor %}
+        {% else %}
+            <h3>Sorry, there are no issues for you at the moment.</h3>
+        {% endif %}
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('a.zoombox').zoombox();
+        $("#sortableKanbanBoards ul.list-group").sortable({
+            connectWith: "ul.list-group",
+            update: function( event, ui ) {
+               var ticket_id = $(ui.item).data('id');
+               var status_id =$(ui.item).parents('.kanban-col').data('id');
+
+                // store the new list order
+                // TODO store a personnal ticket order for each user instead of the ticket
+
+                var orderArr = [];
+                $(ui.item).parents('.list-group').find('> li').each( function(e) {
+                    if($(this).data('id') !== undefined){
+                        orderArr.push({ticket_id: $(this).data('id'), new_order: $(this).index()});
+                    }
+
+                });
+
+
+                $.ajax({
+                    data: {ticket :ticket_id, status : status_id, order : orderArr },
+                    type: 'POST',
+                    url: "{{ path('ticket_status_ajax') }}"
+                }).done(function(response) {
+                    console.log(response);
+                });;
+            }
+        });
+
+        $('.panel-heading i').click(function(){
+            $(this).toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
+            $(this).parents('.kanban-col').find('.panel-body').slideToggle();
+            var toggleWidth = $(this).parents('.kanban-col').width() >= 290 ?  "120px" : "300px";
+            console.log($(this).parents('.kanban-col').width());
+            $(this).parents('.kanban-col').animate({ width: toggleWidth });
+        }) ;
+    });
+</script>

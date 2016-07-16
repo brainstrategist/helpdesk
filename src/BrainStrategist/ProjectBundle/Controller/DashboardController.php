@@ -35,8 +35,9 @@ class DashboardController extends Controller
 
     /**
      * @Route("/{_locale}/user/dashboard",name="dashboard_access")
+     * @Route("/{_locale}/user/dashboard/{viewtype}",name="dashboard_kanban")
      */
-    public function accessAction(Request $request){
+    public function accessAction(Request $request,$viewtype=null){
 
         $breadcrumbs = $this->get("white_october_breadcrumbs");
         $breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
@@ -53,23 +54,65 @@ class DashboardController extends Controller
 
         $ticketsEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
 
-        if(null !== $request->query->getInt('page') && !isset($page)){
-            $page = 1;
-        }
-        if(null !== $request->query->getInt('limit') && !isset($limit)){
-            $limit = 10;
-        }
+        if(!is_null($viewtype)){
 
-        $ticket_query = $ticketsEntity->findAllTicketByUserQuery($params);
+            $params['viewtype'] = $viewtype;
+            $params['kanban'] = true;
 
-        $paginator  = $this->get('knp_paginator');
-        $tickets = $paginator->paginate(
-            $ticket_query,
-            $page,
-            $limit
-        );
+            /**
+             * Kanban Mode
+             */
+            $ticket_query = $ticketsEntity->findAllTicketByUserQuery($params);
+            $ticket_query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            $ticket_results = $ticket_query->getArrayResult();
+
+            // Get all status by project
+            $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_status");
+            $status_results = $statusEntity->findAllProjectStatusByUserID($this->currentUser->getId());
+
+            $status=array();
+            foreach($status_results as $status_row){
+                $status[$status_row['project']['name']][$status_row["name"]] = $status_row;
+            }
+
+            $tickets=array();
+            foreach($ticket_results as $ticket){
+                $tickets[$ticket['projet']['name']][$ticket["status"]["name"]]['status_id'] = $ticket["status"]['id'];
+                $tickets[$ticket['projet']['name']][$ticket["status"]["name"]]['tickets'][] = $ticket;
+            }
+            /**
+             *  check if a status haven't any tickets and add a blank column in the kanban
+             */
+            foreach($status as $key => $project){
+                foreach($project as $key2 =>$status_project){
+                    if(!isset($tickets[$key][$key2])){
+                        $tickets[$key][$key2]['status_id']=$status_project['id'];
+                    }
+                }
+            }
+
+            $params['total_tickets']=sizeof($ticket_results);
+
+        }else{
+            /**
+             * Classical listing view
+             */
+            if(null !== $request->query->getInt('page') && !isset($page)){
+                $page = 1;
+            }
+            if(null !== $request->query->getInt('limit') && !isset($limit)){
+                $limit = 10;
+            }
+            $ticket_query = $ticketsEntity->findAllTicketByUserQuery($params);
+
+            $paginator  = $this->get('knp_paginator');
+            $tickets = $paginator->paginate(
+                $ticket_query,
+                $page,
+                $limit
+            );
+        }
         $params['tickets'] = $tickets;
-
 
         return $this->render(
             'BrainStrategistProjectBundle:Dashboard:overview.html.twig',

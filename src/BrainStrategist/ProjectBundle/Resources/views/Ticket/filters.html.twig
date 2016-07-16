@@ -1,0 +1,52 @@
+<div class="col-md-10 col-xs-12 ">
+    <div class="alert alert-info fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Welcome back {{ app.user.username }}</strong> All the submitted issues availables in your backlog are listed here.
+    </div>
+</div>
+{% if app.request.get('slug') is not null  %}
+    <div class="filters col-md-12">
+        <form class="pull-left">
+            <ul class="list-inline">
+                <li>
+                    <div><strong>Filter by</strong></div>
+                </li>
+                <li>
+                    <select class="form-control" name="severity_filter">
+                        <option value="0">Severtity</option>
+                        {% for severity in severities %}
+                            <option {% if filters.severity_filter == severity.id %}selected="selected"{% endif %} value="{{ severity.id }}">{{ severity.name }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li>
+                    <select class="form-control" name="category_filter">
+                        <option value="0">Category</option>
+                        {% for category in categories %}
+                            <option {% if filters.category_filter == category.id %}selected="selected"{% endif %} value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li>
+                    <select class="form-control" name="status_filter">
+                        <option value="0">Status</option>
+                        {% for status in status_list %}
+                            <option {% if filters.status_filter == status.id %}selected="selected"{% endif %} value="{{ status.id }}">{{ status.name }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li>
+                    <input type="submit" value="Filter" class="btn btn-primary">
+                </li>
+            </ul>
+        </form>
+        <div class="form-inline pull-right">
+            <form>
+                <input type="submit" value="Clear filters" class="btn btn-primary">
+            </form>
+        </div>
+
+    </div>
+{% endif %}

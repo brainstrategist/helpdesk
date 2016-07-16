@@ -1,5 +1,5 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
+    <div class="layout-header">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
@@ -11,26 +11,34 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <div class="connexion_box">
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-
-
-                             {% set listProjects = listing_projects() %}
-                            <div class="col-md-3">
-                                <form class="form-inline">
-                                    <select class="project-switcher form-control">
-                                        <option>Jump to</option>
-                                        {% for project in listProjects %}
-                                            <option value="{{ path('project_access',{'slug':project.slug}) }}">{{ project.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                <div class="col-md-12">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <ul class="pull-right">
+                            <li>
+                                {% set listProjects = listing_projects() %}
+                                {% if listProjects|length > 0 %}
+                                    <form class="form-inline">
+                                        <select class="project-switcher form-control">
+                                            <option>Jump to</option>
+                                            {% for project in listProjects %}
+                                                <option value="{{ path('project_access',{'slug':project.slug}) }}">{{ project.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </form>
+                                    <script>
+                                        $('.project-switcher').change(function() {
+                                            window.location = $(this).val();
+                                        });
+                                    </script>
+                                {% endif %}
+                            </li>
+                            <li>
+                                <form  class="form-inline" method="post" action={{ path('search') }}>
+                                    <input name="search-box" class="form-control" placeholder="Search term or Ticket ID" value="{{ app.request.get('search-box') }}" onclick="this.value=''" />
+                                    <input type="submit" class="form-control btn btn-primary" value="GO" />
                                 </form>
-                                <script>
-                                    $('.project-switcher').change(function() {
-                                        window.location = $(this).val();
-                                    });
-                                </script>
-                            </div>
-                            <div class="col-md-9">
+                            </li>
+                            <li>
                                 {% if (app.user.getProfilePicture is not null) %}
                                     {% set avatar=asset(app.user.getProfilePicture) %}
                                 {% else %}
@@ -38,14 +46,13 @@
                                 {% endif %}
                                 {% set menu = knp_menu_get('BrainStrategistKernelBundle:Builder:userRegisterdMenu', [], {'username': app.user.username,'avatar':avatar} ) %}
                                 {{ knp_menu_render(menu, {'allow_safe_labels': true}) }}
-                            </div>
-
-
-                {% else %}
-                    {% set menu = knp_menu_get('BrainStrategistKernelBundle:Builder:userUnregisteredMenu', [], {'locale': app.request.getLocale()} ) %}
-                    {{ knp_menu_render(menu, {'allow_safe_labels': true}) }}
-                {% endif %}
-
+                            </li>
+                        </ul>
+                    {% else %}
+                        {% set menu = knp_menu_get('BrainStrategistKernelBundle:Builder:userUnregisteredMenu', [], {'locale': app.request.getLocale()} ) %}
+                        {{ knp_menu_render(menu, {'allow_safe_labels': true}) }}
+                    {% endif %}
+                </div>
             </div>
         </div><!--/.nav-collapse -->
     </div>

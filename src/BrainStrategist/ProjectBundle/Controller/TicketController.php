@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use BrainStrategist\KernelBundle\Entity\Organization;
 use BrainStrategist\ProjectBundle\Entity\Project;
@@ -49,7 +50,6 @@ class TicketController extends Controller
         $this->preExecute();
 
         $params=array();
-        $request = $this->container->get('request_stack')->getCurrentRequest();
         $em = $this->getDoctrine()->getEntityManager();
 
         $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
@@ -83,7 +83,6 @@ class TicketController extends Controller
                 $statusQuery->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
                 $params['status_list'] = $statusQuery->getArrayResult();
-
 
                 if(isset($filters))
                     $params['filters'] = $filters;
@@ -205,10 +204,60 @@ class TicketController extends Controller
             $params
         );
     }
+
+    /**
+     * @Route("/{_locale}/ajax/ticket/status",name="ticket_status_ajax")
+     */
+    public function ajaxStatusAction(Request $request){
+
+        $this->preExecute();
+
+        $params=array();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $ticketEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
+        $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_Status");
+
+        if ('POST' == $request->getMethod()) {
+
+            $ticket_id = $request->request->get('ticket');
+            $status_id =  $request->request->get('status');
+
+            if($ticketEntity->isMyTicket($ticket_id,$this->currentUser->getId())){
+
+                // retreive the new order from JS and build a more friendly array for
+                // an easy processing by doctrine
+                $orders =  $request->request->get('order');
+                $ids =array();
+                foreach($orders as  $order){
+                    $ids[$order["new_order"]]=$order["ticket_id"];
+                }
+
+                foreach ($ticketEntity->findById($ids) as $obj) {
+                    $obj->setOrder(array_search($obj->getId(), $ids));
+                }
+
+                $status = $statusEntity->find($status_id);
+                $ticket = $ticketEntity->find($ticket_id);
+                $ticket->setStatus($status);
+                $em->persist($ticket);
+                $em->flush();
+                return new JsonResponse(array('message'=>"Done"));
+
+            }else{
+                return new JsonResponse(array('message'=>"Not my ticket"));
+            }
+
+        }
+
+        return new JsonResponse(array('message'=>"Not a POST request"));
+    }
     /**
      * @Route("/{_locale}/project/{slug}/ticket/view/{id}",name="ticket_view")
+     * @Route("/{_locale}/project/{slug}/ticket/view/{id}/mode/{mode}",name="ticket_view_popup")
      */
-    public function viewAction(Request $request,$slug=null,$id=null){
+    public function viewAction(Request $request,$slug=null,$id=null,$mode=null){
 
             $params=array();
             $request = $this->container->get('request_stack')->getCurrentRequest();
@@ -218,6 +267,9 @@ class TicketController extends Controller
             $ticketEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
             $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_Status");
 
+            if(isset($mode)){
+                $params['mode']=$mode;
+            }
             if(isset($slug) && isset($id)) {
 
                 if ($projectEntity->isMyProject($slug, $this->currentUser->getId())) {

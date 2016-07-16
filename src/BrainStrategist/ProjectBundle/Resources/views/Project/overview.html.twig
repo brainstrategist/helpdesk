@@ -19,7 +19,7 @@
         {% if file_exists(asset(full_project_directory~'/'~project.picture)) %}
             <div class="picture-cover"><img src="{{ asset(project_directory~'/'~project.picture)| imagine_filter('my_thumb') }}" /></div><br/>
         {% endif %}
-        <h3 class="pull-right">{{ project.organization.name }}/{{ project.name }}</h3>
+        <h3 class="pull-right col-xs-12">{{ project.organization.name }}/{{ project.name }}</h3>
         {% if notice is defined %}
             {% if type_notice is defined and type_notice == 'alert' %}
                 <div class="col-md-12">
@@ -32,7 +32,7 @@
             {% endif %}
         {% endif %}
         <div class="clearfix"></div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-12">
         {{ include('BrainStrategistProjectBundle:Project:nav.html.twig') }}
         </div>
         {% if view is defined %}

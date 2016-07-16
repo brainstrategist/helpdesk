@@ -4,33 +4,52 @@
 
 {% endblock %}
 {% block body %}
-    <div class="col-sm-12 blog-main">
+    <div class="blog-main">
         {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-        <div class="container">
-              <h1>Relax, take a coffee cup and follow the guide</h1>
-            <div class="blog-post">
-                <h2 class="blog-post-title">Requirements</h2>
-                <ul>
+          <div class="blog-post">
+              <div class="container">
+                  <ul class="list-inline text-center">
+                      <li><img src="{{ asset('assets/images/Boostrap.png') }}" />
+                          <br/>
+                          <b>Responsive Dashboard</b>
+                      </li>
+                      <li><img src="{{ asset('assets/images/GitHub.png') }}" />
+                          <br/>
+                          <b>Fork the project on GitHub</b>
+                      </li>
+                      <li><img src="{{ asset('assets/images/symfony.png') }}" />
+                          <br/>
+                          <b>Based on the Symfony Stack</b>
+                      </li>
+                  </ul>
+                  <h1  class="text-center"> Relax, take a coffee cup and follow the guide <i class="fa fa-rocket" aria-hidden="true"></i></h1>
+              </div>
+          </div>
+        <div class="blog-post"  style="background-image: url({{ asset('assets/images/pexels-photo-110854.jpeg') }})">
+            <div class="container">
+                <h2 class="blog-post-title"><i class="fa fa-list-alt" aria-hidden="true"></i> Requirements</h2>
                     <li>A server based on Linux with Apache/Nginx </li>
                     <li>A database server using MySQL</li>
                     <li>A PHP version upper or equal to 5.5.9 </li>
                     <li>Composer must be installed
-                       <pre style="margin-top: 20px">
-    curl -sS https://getcomposer.org/installer | php
-    sudo mv composer.phar /usr/local/bin/composer.phar
-    alias composer='/usr/local/bin/composer.phar'</pre>
+                        <br/><br/>
+                        <ul class="list-unstyled">
+                            <li><kbd style="margin-top: 20px">curl -sS https://getcomposer.org/installer | php</kbd></li>
+                            <li><kbd> sudo mv composer.phar /usr/local/bin/composer.phar</kbd></li>
+                            <li><kbd> alias composer='/usr/local/bin/composer.phar'</kbd></li>
+                        </ul>
                      </li>
                 </ul>
-                <h3>Optionnal</h3>
-                If you want to modify your installation, we advise you to install NPM and Rubygems. This software use friendly addons to manage your assets like Grunt, Saas and Bower. Follow the documentation on their dedicated websites for more informations.
             </div>
-            <div class="blog-post">
-                <h2 class="blog-post-title">Setup</h2>
+            <div class="overlay"></div>
+        </div>
+        <div class="blog-post">
+            <div class="container">
+                <h2 class="blog-post-title"> <i class="fa fa-bolt" aria-hidden="true"></i> Setup</h2>
                 <ol>
                      <li> Configure your workspace directory to match <b>the web folder</b> as target document root directory. More informations about your web server host setup are available <a href="http://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html" target="_blank">HERE</a></li>
-                     <li> Checkout the latest version on <a href="https://github.com/sebbrunet334/brainstrategist" target="_blank">Github</a></li>
-                     <li> <b>Clone the repository</b>  on your webserver using ssh&nbsp;<code>git clone git@github.com:sebbrunet334/brainstrategist.git</code></li>
-                     <li> <b>Update your project</b> using composer <code>composer update</code></li>
+                     <li> Checkout the latest version on <a href="https://github.com/brainstrategist/helpdesk" target="_blank" class="btn btn-sm btn-primary">Github</a>. <b>Clone the repository</b>  on your webserver using ssh&nbsp;<code>git clone git@github.com:brainstrategist/helpdesk.git</code></li>
+                     <li> <b>Update your project</b> using composer <code>php composer.phar update</code></li>
                      <li> <b>Create your configuration file</b> parameters.yml under the app/config directory based on the configuration listed below. Modify this sample configuration feet to your needs.
                       <pre style="margin-top: 20px"># This file is auto-generated during the composer install
     parameters:
@@ -49,14 +68,15 @@
         </pre>
                      </li>
                      <li> <b>Install the database schema</b> <code>php bin/console doctrine:schema:update --force</code></li>
-                     <li> <b>Dump your assets on production</b> <code>php bin/console assetic:dump</code></li>
-                     <li> <b>Compile your assets</b> executing the command<code>Grunt</code> (require Grunt installed by the following NPM command <code>npm install -g grunt-cli</code>)</li>
-                     <li> <b>Clear your cache</b> <code>sudo -H -u  www-data  php bin/console cache:clear</code> (or just delete it <b>carrefully</b> <code>rm -rf var/cache/*</code>)</li>
+                     <li> <b>Clear your cache</b> <code>sudo -H -u  www-data  php bin/console cache:clear</code></li>
                     <li> <b>Enjoy :)</b></li>
                 </ol>
               </div>
-              <div class="blog-post">
-                <h2 class="blog-post-title">Questions & Support</h2>
+        </div>
+
+        <div class="blog-post">
+            <div class="container">
+                <h2 class="blog-post-title"><i class="fa fa-life-ring" aria-hidden="true"></i> Questions & Support</h2>
                 <p>
                 If you encountered some troubleshooting during the installation, feel free to <a href="mailto:brunetsebastien33@gmail.com"> leave me a message</a> or open an issue on the Github project page.
 
@@ -64,9 +84,11 @@
                 <br/>
                 <div class="alert alert-info" role="alert"> <strong>Remember</strong> This software is free to use and deliver without any guarantee. You are the own responsible for the use of this software. Please, be aware that neither backup system will be deliver with this software, put one in place if you are using this system in production. </div>
                 </p>
-              </div>
-              <div class="blog-post">
-                <h2 class="blog-post-title">Liscence</h2>
+            </div>
+        </div>
+        <div class="blog-post">
+            <div class="container">
+                <h2 class="blog-post-title"><i class="fa fa-book" aria-hidden="true"></i> Liscence</h2>
                 <p>
                         <b>Brain Strategist : A sowftware providing a free and strong Helpdesk management system.</b>
                        Copyright (C) 2016  Brunet Sebastien
@@ -83,8 +105,8 @@
                         You should have received a copy of the GNU General Public License
                         along with this program.  If not, see <a href={{ path('liscence') }}> the complete license here</a>
                 </p>
-              </div>
-        </div>
+            </div>
+         </div>
         {% else %}
              {{ include('BrainStrategistKernelBundle:Organization:list.html.twig') }}
         {% endif %}

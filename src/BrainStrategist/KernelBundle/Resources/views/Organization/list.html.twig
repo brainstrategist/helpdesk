@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <h2 class="blog-post-title">Welcome on your Dashboard</h2>
+        <h2 class="blog-post-title"><i class="fa fa-coffee" aria-hidden="true"></i> Welcome </h2>
         <p>Please select an organization</p>
 
         {% if  listOrganization|length > 0 %}
@@ -8,7 +8,9 @@
                 <thead class="dark-head-thead">
                 <tr>
                     <th>Name</th>
-                    <th>Active</th>
+                    <th>Stats</th>
+                    <th>Is active ?</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 {% for organization in listOrganization %}
@@ -17,28 +19,35 @@
                     <td>
                         <div class="col-md-2">
                             {% if file_exists(asset(full_organization_directory~'/'~organization.picture)) %}
-                                <div class="picture-cover"><img src="{{ asset(organization_directory~'/'~organization.picture)| imagine_filter('my_thumb') }}" /></div><br/>
+                                <div class="picture-cover"><a href={{ path('organize_access', { 'slug': organization.slug }) }}><img src="{{ asset(organization_directory~'/'~organization.picture)| imagine_filter('my_thumb') }}" /></a></div><br/>
                             {% endif %}
                         </div>
                         <div class="col-md-10">
                             <b><a href={{ path('organize_access', { 'slug': organization.slug }) }}>{{ organization.name }}</a></b>
                             <br/>
-                            <small>Created the {{ organization.dateCreation|date("m/d/Y")}}
+                           Created the {{ organization.dateCreation|date("m/d/Y")}}
                                 {% if organization.creator|length > 0 %}
-                                    by {{ organization.creator.username }}
+                                    by <b>@{{ organization.creator.username }}</b>
                                 {% endif %}
-                            </small>
+
                             <br>
                             <small>{{ organization.usersOrganization|length }} member(s) in this organization</small>
-                            <br/>
-                            <a href={{ path('organize_edit', { 'id': organization.id }) }} class="btn btn-primary btn-sm" >Edit</a>
+
                         </div>
                     </td>
                     <td>
+                       <i>Soon...</i>
+                    </td>
+                    <td>
+
                         <div class="switch">
                             <input id="cmn-toggle-{{ organization.id}}" class="cmn-toggle cmn-toggle-round" type="checkbox" {% if organization.isActive == 1 %} checked="checked"{% endif %} disabled />
                             <label for="cmn-toggle-{{ organization.id}}"></label>
                         </div>
+                    </td>
+                    <td>
+                        <a href={{ path('organize_edit', { 'id': organization.id }) }} class="btn btn-primary btn-sm" ><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit</a>
+                        <a href={{ path('organize_access', { 'slug': organization.slug }) }}  class="btn btn-primary btn-sm" >View</a>
                     </td>
                 </tr>
                 {% endfor %}
