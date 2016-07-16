@@ -8917,6 +8917,16 @@ button.close {
   float: right;
   width: 68%;
 }
+.navbar-inverse .connexion_box > div > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.navbar-inverse .connexion_box > div > ul > li {
+  display: block;
+  float: left;
+  margin: 8px 5px 0;
+}
 .navbar-inverse .navbar-brand {
   background: url(/assets/images/brain-logo-small.png) no-repeat left center;
   background-size: 25px auto;
@@ -8939,7 +8949,7 @@ button.close {
 }
 .navbar-inverse ul.navbar-nav li a {
   color: #fff;
-  padding: 7px 15px 0;
+  padding: 10px 12px 14px;
   line-height: 15px;
 }
 .navbar-inverse ul.navbar-nav li ul li a {
@@ -9036,17 +9046,7 @@ a, .pagination a {
   color: #593590;
 }
 
-#carousel-home {
-  margin-top: 50px;
-  height: 700px;
-  overflow: hidden;
-}
-#carousel-home .carousel-caption {
-  top: 6%;
-  bottom: auto;
-  z-index: 5000;
-}
-#carousel-home .overlay {
+body.default .overlay {
   background: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 0;
@@ -9055,6 +9055,64 @@ a, .pagination a {
   height: 100%;
   z-index: 10;
   pointer-events: none;
+}
+body.default #carousel-home {
+  margin-top: 50px;
+  height: 700px;
+  overflow: hidden;
+}
+body.default #carousel-home .carousel-inner, body.default #carousel-home .item {
+  height: 700px;
+  background-size: cover;
+  background-attachment: fixed;
+}
+body.default #carousel-home .carousel-caption {
+  top: 6%;
+  bottom: auto;
+  z-index: 5000;
+}
+body.default #carousel-home .carousel-caption > div > h3 {
+  margin-bottom: 60px;
+}
+body.default .template {
+  padding: 0;
+}
+body.default .template .blog-main h1 {
+  margin: 100px 0 200px;
+}
+body.default .template .blog-main .blog-post {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 50px;
+  padding: 70px 0;
+}
+body.default .template .blog-main .blog-post .list-inline li {
+  margin: 0 30px;
+}
+body.default .template .blog-main .blog-post .list-inline li b {
+  margin-top: 20px;
+  display: block;
+}
+body.default .template .blog-main .blog-post .list-inline li img {
+  width: 100px;
+  height: auto;
+}
+body.default .template .blog-main .blog-post:nth-child(2) {
+  background-color: #593590;
+  background-size: cover;
+  background-attachment: fixed;
+  color: #fff;
+}
+body.default .template .blog-main .blog-post:nth-child(4) {
+  background: #ecf6ff;
+  color: #9e9e9e;
+}
+body.default .template .blog-main .blog-post:nth-child(4) i {
+  color: #9dd5e8;
+}
+body.default .template .blog-main .blog-post .container {
+  position: relative;
+  z-index: 20;
 }
 
 #sortableKanbanBoards {
@@ -9519,6 +9577,7 @@ a, .pagination a {
     display: block;
     width: 100%;
     padding: 5px 0;
+    margin: 0;
   }
   body .navbar-inverse .connexion_box > div > ul > li ul li {
     display: inline-block;
