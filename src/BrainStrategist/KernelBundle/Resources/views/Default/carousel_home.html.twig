@@ -1,15 +1,16 @@
-<div id="carousel-home" class="carousel slide">
-    <div class="carousel-inner">
-        <div class="item active" style="background-image: url({{ asset('assets/images/pexels-photo-110854.jpeg')| imagine_filter('homepage_cover') }})">
-                <div class="carousel-caption" >
-                    <img src="{{ asset('/assets/images/brain-logo-blanc.png') }}" class="brainstrategist_logo" />
-                    <div class="col-md-12 text-center">
-                        <h1>Brain Strategist</h1>
-                        <h3>A free Helpdesk management system</h3>
-                        {{  render(url('fos_user_security_login'))  }}
+
+    <div id="carousel-home" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="item active" style="background-image: url({{ asset('assets/images/pexels-photo-110854.jpeg')| imagine_filter('homepage_cover') }})">
+                    <div class="carousel-caption" >
+                        <img src="{{ asset('/assets/images/brain-logo-blanc.png') }}" class="brainstrategist_logo" />
+                        <div class="col-md-12 text-center">
+                            <h1>Brain Strategist</h1>
+                            <h3>A free Helpdesk management system</h3>
+                            {{  render(url('fos_user_security_login'))  }}
+                        </div>
                     </div>
-                </div>
-            <div class="overlay"></div>
+                <div class="overlay"></div>
+            </div>
         </div>
-    </div>
-</div> <!-- Carousel -->
+    </div> <!-- Carousel -->
