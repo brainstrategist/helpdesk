@@ -8907,6 +8907,14 @@ button.close {
 
 .navbar-inverse {
   background: #593590;
+  background: -moz-linear-gradient(top, #593590 0%, #71339b 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #593590 0%, #71339b 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #593590 0%, #71339b 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#593590', endColorstr='#71339b',GradientType=0 );
+  /* IE6-9 */
   border-bottom: #91bef1;
 }
 .navbar-inverse .layout-header {
@@ -8973,10 +8981,16 @@ button.close {
   display: inline-block;
 }
 
-.full-page-layout {
+.full-page-layout, .default .blog-main {
   margin-bottom: 100px;
   display: table;
   width: 100%;
+  max-width: 1280px;
+  margin: auto;
+}
+
+.default .full-page-layout {
+  max-width: 100%;
 }
 
 .template {
