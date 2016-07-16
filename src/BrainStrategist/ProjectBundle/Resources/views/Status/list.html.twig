@@ -16,7 +16,7 @@
 {% block body %}
 <div class="container">
     <div class="col-md-12">
-        <h3 class="pull-right">Manage the Ticket's Status - {{ projet.name }}</h3>
+        <h3 class="pull-left">Manage the Ticket's Status - {{ projet.name }}</h3><a  class="pull-right btn btn-success" href="{{ path("status_create",{"slug":slug}) }}"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add a Status</a>
     </div>
     <div class="col-md-2 col-xs-12">
         {{ include('BrainStrategistProjectBundle:Project:nav.html.twig',{'project':{'slug':projet.slug}}) }}
