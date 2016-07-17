@@ -21,13 +21,18 @@ class ProjectController extends Controller
 {
 
     private $currentUser;
-
+    private $breadcrumbs;
     /**
      *
      * Pre dispatcher event to check the security access of the current user
      *
      */
     public function preExecute(){
+
+        $this->breadcrumbs = $this->get("white_october_breadcrumbs");
+        $this->breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
+        $this->breadcrumbs->addItem( $this->get('translator')->trans("Organizations"), $this->get("router")->generate("kernel"));
+
 
         if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
             $this->currentUser = $this->get('security.token_storage')->getToken()->getUser();
@@ -42,11 +47,6 @@ class ProjectController extends Controller
      * @Route("/{_locale}/organization/{slug}/project/edit/{id}",name="project_edit")
      */
     public function manageAction(Request $request,$id=null,$slug=null){
-
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-        $breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
-        $breadcrumbs->addItem( $this->get('translator')->trans("Organizations"), $this->get("router")->generate("kernel"));
-        $breadcrumbs->addItem( $this->get('translator')->trans("Projects"), $this->get("router")->generate("organize_access",array("slug"=>$slug)));
 
         $params=array();
         $request = $this->container->get('request_stack')->getCurrentRequest();
@@ -143,46 +143,148 @@ class ProjectController extends Controller
      */
     public function accessAction(Request $request,$slug=null,$view=null){
 
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-        $breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
-        $breadcrumbs->addItem( $this->get('translator')->trans("Organizations"), $this->get("router")->generate("kernel"));
-        $breadcrumbs->addItem( $this->get('translator')->trans("Projects"), $this->get("router")->generate("organize_access",array("slug"=>$slug)));
+        $this->breadcrumbs->addItem( $this->get('translator')->trans("Projects"), $this->get("router")->generate("organize_access",array("slug"=>$slug)));
 
-            $params=array();
-            $request = $this->container->get('request_stack')->getCurrentRequest();
-            $em = $this->getDoctrine()->getEntityManager();
+        $params=array();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $em = $this->getDoctrine()->getEntityManager();
 
-            $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+        $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
 
-            if(isset($slug)) {
+        if(isset($slug)) {
 
-                if ($projectEntity->isMyProject($slug, $this->currentUser->getId())) {
-                    $project = $projectEntity->findOneBySlug($slug);
-                    $params['project'] = $project;
-                    $organizationEntity = $em->getRepository("BrainStrategistKernelBundle:Organization");
-                    $organization = $organizationEntity->find($project->getOrganization()->getId());
-                    $params['organization'] = $organization;
+            if ($projectEntity->isMyProject($slug, $this->currentUser->getId())) {
+                $project = $projectEntity->findOneBySlug($slug);
+                $params['project'] = $project;
+                $organizationEntity = $em->getRepository("BrainStrategistKernelBundle:Organization");
+                $organization = $organizationEntity->find($project->getOrganization()->getId());
+                $params['organization'] = $organization;
 
-                    $notice = $request->attributes->get('notice');
-                    $type_notice = $request->attributes->get('type_notice');
-                    if(isset($notice)){
-                        $params['notice']=$notice;
-                        $params['type_notice']=$type_notice;
-                    }
+                $notice = $request->attributes->get('notice');
+                $type_notice = $request->attributes->get('type_notice');
+                if(isset($notice)){
+                    $params['notice']=$notice;
+                    $params['type_notice']=$type_notice;
+                }
 
-                    if(isset($view)){
-                        $params['view'] =  $this->renderView(
-                            'BrainStrategistProjectBundle:Project:parts/'.$view.'.html.twig',
-                            $params
-                        );
-                    }
+                if(isset($view)){
+                    $params['view'] =  $this->renderView(
+                        'BrainStrategistProjectBundle:Project:parts/'.$view.'.html.twig',
+                        $params
+                    );
                 }
             }
+        }
 
 
         return $this->render(
             'BrainStrategistProjectBundle:Project:overview.html.twig',
             $params
         );
+    }
+
+    /**
+     * @Route("/{_locale}/project/{slug}/users",name="project_users")
+     */
+    public function usersAction(Request $request,$slug=null){
+
+        $this->breadcrumbs->addItem( $this->get('translator')->trans("Projects"), $this->get("router")->generate("organize_access",array("slug"=>$slug)));
+
+        $params = array();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+
+        if ($projectEntity->isMyProject($slug, $this->currentUser->getId())) {
+            $project = $projectEntity->findOneBySlug($slug);
+            $params['project'] = $project;
+
+
+            $paramsQuery = array("organizationID" => $project->getOrganization()->getId());
+
+            $userEntity = $em->getRepository("BrainStrategistKernelBundle:User");
+            $params['users_organization'] = $userEntity->getUsersByOrganization($paramsQuery);
+
+            $params['view'] =  $this->renderView(
+                'BrainStrategistProjectBundle:Project:parts/users-list.html.twig',
+                $params
+            );
+
+            return $this->render(
+                'BrainStrategistProjectBundle:Project:overview.html.twig',
+                $params
+            );
+        }
+
+    }
+    /**
+     * @Route("/{_locale}/project/{slug}/users/add/{id}",name="project_users_add")
+     */
+    public function usersAddAction(Request $request,$slug=null,$id=null){
+
+        $this->breadcrumbs->addItem( $this->get('translator')->trans("Projects"), $this->get("router")->generate("organize_access",array("slug"=>$slug)));
+
+        $params = array();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+
+        if (isset($id) && $projectEntity->isMyProject($slug, $this->currentUser->getId()) && !$projectEntity->isMyProject($slug, $id)) {
+
+            $userEntity = $em->getRepository("BrainStrategistKernelBundle:User");
+
+            $user_to_add = $userEntity->find($id);
+            $project = $projectEntity->findOneBySlug($slug);
+
+            $user_to_add->addProject($project);
+            $project->addUsersProject($user_to_add);
+            $em->persist($project);
+            $em->persist($user_to_add);
+            $em->flush();
+
+            return $this->redirectToRoute("project_users",array('slug'=>$slug));
+        }else{
+            throw new HttpException(400, "Unable to manage the users of this project");
+        }
+
+    }
+
+    /**
+     * @Route("/{_locale}/project/{slug}/users/remove/{id}",name="project_users_remove")
+     */
+    public function usersRemoveAction(Request $request,$slug=null,$id=null){
+
+        $this->breadcrumbs->addItem( $this->get('translator')->trans("Projects"), $this->get("router")->generate("organize_access",array("slug"=>$slug)));
+
+        $params = array();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
+
+        if (isset($id) && $projectEntity->isMyProject($slug, $this->currentUser->getId()) && $projectEntity->isMyProject($slug, $id)) {
+
+            $userEntity = $em->getRepository("BrainStrategistKernelBundle:User");
+
+            $user_to_add = $userEntity->find($id);
+            $project = $projectEntity->findOneBySlug($slug);
+
+            $user_to_add->removeProject($project);
+            $project->removeUsersProject($user_to_add);
+            $em->persist($project);
+            $em->persist($user_to_add);
+            $em->flush();
+
+            if($this->currentUser->getId()==$id){
+                return $this->redirectToRoute("organize_access",array('slug'=>$project->getOrganization()->getSlug()));
+            }
+
+            return $this->redirectToRoute("project_users",array('slug'=>$slug));
+        }else{
+            throw new HttpException(400, "Unable to manage the users of this project");
+        }
+
     }
 }

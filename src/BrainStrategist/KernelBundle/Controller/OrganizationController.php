@@ -42,7 +42,6 @@ class OrganizationController extends Controller
         $breadcrumbs->addItem( $this->get('translator')->trans("Home"), $this->get("router")->generate("kernel"));
         $breadcrumbs->addItem( $this->get('translator')->trans("Organizations"), $this->get("router")->generate("kernel"));
 
-
         $params=array();
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $em = $this->getDoctrine()->getEntityManager();

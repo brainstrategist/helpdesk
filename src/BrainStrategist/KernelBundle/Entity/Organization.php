@@ -193,73 +193,6 @@ class Organization
         $this->dateCreation = new \DateTime();
     }
 
-    /**
-     * Add userOrganization
-     *
-     * @param \BrainStrategist\KernelBundle\Entity\User $userOrganization
-     *
-     * @return Organization
-     */
-    public function addUserOrganization(\BrainStrategist\KernelBundle\Entity\User $userOrganization)
-    {
-        $this->userOrganization[] = $userOrganization;
-
-        return $this;
-    }
-
-    /**
-     * Remove userOrganization
-     *
-     * @param \BrainStrategist\KernelBundle\Entity\User $userOrganization
-     */
-    public function removeUserOrganization(\BrainStrategist\KernelBundle\Entity\User $userOrganization)
-    {
-        $this->userOrganization->removeElement($userOrganization);
-    }
-
-    /**
-     * Get userOrganization
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUserOrganization()
-    {
-        return $this->userOrganization;
-    }
-
-    /**
-     * Add usersOrganization
-     *
-     * @param \BrainStrategist\KernelBundle\Entity\User $usersOrganization
-     *
-     * @return Organization
-     */
-    public function addUsersOrganization(\BrainStrategist\KernelBundle\Entity\User $usersOrganization)
-    {
-        $this->usersOrganization[] = $usersOrganization;
-
-        return $this;
-    }
-
-    /**
-     * Remove usersOrganization
-     *
-     * @param \BrainStrategist\KernelBundle\Entity\User $usersOrganization
-     */
-    public function removeUsersOrganization(\BrainStrategist\KernelBundle\Entity\User $usersOrganization)
-    {
-        $this->usersOrganization->removeElement($usersOrganization);
-    }
-
-    /**
-     * Get usersOrganization
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUsersOrganization()
-    {
-        return $this->usersOrganization;
-    }
 
     /**
      * Set creator
@@ -345,5 +278,39 @@ class Organization
     public function removeProjectsOrganization(\BrainStrategist\ProjectBundle\Entity\Project $projectsOrganization)
     {
         $this->projectsOrganization->removeElement($projectsOrganization);
+    }
+
+    /**
+     * Add usersOrganization
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $usersOrganization
+     *
+     * @return Organization
+     */
+    public function addUsersOrganization(\BrainStrategist\KernelBundle\Entity\User $usersOrganization)
+    {
+        $this->usersOrganization[] = $usersOrganization;
+
+        return $this;
+    }
+
+    /**
+     * Remove usersOrganization
+     *
+     * @param \BrainStrategist\KernelBundle\Entity\User $usersOrganization
+     */
+    public function removeUsersOrganization(\BrainStrategist\KernelBundle\Entity\User $usersOrganization)
+    {
+        $this->usersOrganization->removeElement($usersOrganization);
+    }
+
+    /**
+     * Get usersOrganization
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsersOrganization()
+    {
+        return $this->usersOrganization;
     }
 }

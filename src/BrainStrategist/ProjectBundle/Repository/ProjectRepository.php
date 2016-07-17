@@ -32,8 +32,7 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
         }
         return false;
     }
-    
-    public function getProjectsByOrganization($params=array('limit'=>100,'offset'=>0)){
+    public function getProjectsByOrganizationQuery($params){
         extract($params);
 
         if (!is_null($organizationID) && !is_null($userID)) {
@@ -51,8 +50,29 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
                 ->setFirstResult($offset);
 
 
-            $query = $q->getQuery();
+            return $q->getQuery();
+
+        }
+        return false;
+    }
+    
+    public function getProjectsByOrganization($params=array('limit'=>100,'offset'=>0)){
+        extract($params);
+
+        if (!is_null($organizationID) && !is_null($userID)) {
+
+            $query = $this->getProjectsByOrganizationQuery($params);
             return $query->getArrayResult();
+        }
+        return false;
+    }
+    public function getProjectsByOrganizationObj($params=array('limit'=>100,'offset'=>0)){
+        extract($params);
+
+        if (!is_null($organizationID) && !is_null($userID)) {
+
+            $query = $this->getProjectsByOrganizationQuery($params);
+            return $query->getResult();
         }
         return false;
     }

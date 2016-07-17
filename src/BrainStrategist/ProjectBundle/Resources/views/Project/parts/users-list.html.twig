@@ -1,10 +1,60 @@
 <div class="col-md-10 ">
     <h2>Users of this project</h2>
     <ul class="users_projects  list-inline">
+        {% set user_project = {} %}
         {% for user in project.usersProject %}
+            {% set user_project = user_project|merge({('_'~user.id):user.username}) %}
             <li>
                 {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}
             </li>
         {% endfor  %}
     </ul>
+    {% if users_organization is defined %}
+        <div class="panel panel-default">
+            <div class="panel-heading">Grant/Revoke access to a user from the {{ project.organization.name }} Organization</div>
+            <div class="panel-body">
+                <ul class="users_projects  list-inline">
+                    {% for user in users_organization %}
+                        {% if '_'~user.id in user_project|keys %}
+                            {% if project.creator.id != user.id  %}
+                                    <li class="already_in" >
+                                        <a href="#" data-href="{{ path('project_users_remove',{'slug':project.slug,'id':user.id}) }}" data-toggle="modal" data-target="#confirm-delete" ><i class="fa fa-minus-circle" aria-hidden="true"></i>{{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="already_in" >
+                                       {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }} <small>(owner)</small>
+                                    </li>
+                                {% endif %}
+                        {% else %}
+                            <li class="not_in" >
+                                <a href="{{ path('project_users_add',{'slug':project.slug,'id':user.id}) }}"><i class="fa fa-plus-circle" aria-hidden="true"></i>{{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor  %}
+                </ul>
+            </div>
+        </div>
+        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Confirmation box
+                    </div>
+                    <div class="modal-body">
+                        Please confirm your choice
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger btn-ok">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script language="JavaScript">
+            $('#confirm-delete').on('show.bs.modal', function(e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            });
+        </script>
+    {% endif %}
 </div>
+

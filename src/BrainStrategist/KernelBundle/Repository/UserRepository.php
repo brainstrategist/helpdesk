@@ -29,4 +29,46 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         }
         return false;
     }
+
+    public function getUsersByOrganization($params=array('limit'=>100))
+    {
+        extract($params);
+
+        if (!is_null($organizationID)) {
+
+            $q = $this->createQueryBuilder('u')
+                ->leftJoin('u.organizations', 'uo')
+                ->addSelect('uo')
+                ->andWhere('uo.id = :organization')
+                ->setParameter('organization',$organizationID);
+
+            $query = $q->getQuery();
+            return $query->getArrayResult();
+
+        }
+        return false;
+    }
+
+    public function findUsers($query=null){
+        if(isset($query)){
+            $q = $this->createQueryBuilder('u')
+                ->andWhere('u.username LIKE :user')
+                ->orWhere('u.email LIKE :user')
+                ->setParameter('user','%'.$query.'%');
+
+            $query = $q->getQuery();
+            $users = $query->getArrayResult();
+            $return = array();
+            if(sizeof($users>0)){
+                foreach($users as $user){
+                    $return[]= array(
+                        "id" => $user['id'],
+                        'label' => $user['username'].'('.$user['email'].')',
+                        'value' => $user['username']);
+                }
+            }
+            return $return;
+        }
+    }
+
 }

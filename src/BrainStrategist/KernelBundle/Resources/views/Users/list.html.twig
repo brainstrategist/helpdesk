@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+{% block title %}BrainStrategist - A free HelpDesk platform using Symfony{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        {% if  organization|length > 0 %}
+            <h2 class="blog-post-title"><i class="fa fa-users" aria-hidden="true"></i> Manage Users for {{ organization.name }} </h2>
+             <form class="form-inline" method="post" action="{{ path('organization_user_add', {'slug':organization.slug}) }}">
+              <div class="form-group">
+                <label for="searchfield">Search an existing user</label>
+                <input type="text" class="form-control" size="60" name="user" id="searchfield" placeholder="Search by username or email">
+              </div>
+              <button type="submit" class="btn btn-primary">Invite</button>
+            </form>
+             <br/>
+             <h3>Members</h3>
+            <ul class="list-inline members">
+           {% for user in users %}
+                 <li>
+                  {% if user.id != organization.creator.id %}
+                     <a href="#" data-href="{{ path('organize_users_remove',{'slug':organization.slug,'id':user.id}) }}" data-toggle="modal" data-target="#confirm-delete" ><i class="fa fa-minus-circle" aria-hidden="true"></i>
+                        {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}
+                     </a>
+                 {% else %}
+                  {{ include('BrainStrategistKernelBundle:Users:tiny-block.html.twig', { 'user': user }) }}
+                     <small>(owner)</small>
+                 {% endif %}
+                 </li>
+           {% endfor %}
+            </ul>
+            <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Confirmation box
+                    </div>
+                    <div class="modal-body">
+                        Please confirm your choice
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger btn-ok">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script language="JavaScript">
+
+        </script>
+        {% endif %}
+    </div>
+    <script>
+  $( function() {
+    $( "#searchfield" ).autocomplete({
+      source: "{{ path('search_user', {'slug':organization.slug}) }}",
+      minLength: 2,
+      select: function( event, ui ) {
+        console.log( ui.item ?
+          "Selected: " + ui.item.value + " aka " + ui.item.id :
+          "Nothing selected, input was " + this.value );
+      }
+    });
+  });
+    $('#confirm-delete').on('show.bs.modal', function(e) {
+      $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    });
+    </script>
+    {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/brain_strategist_compiled.js') }}"></script>
+{% endblock %}

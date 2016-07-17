@@ -47,7 +47,8 @@
                     </td>
                     <td>
                         <a href={{ path('organize_edit', { 'id': organization.id }) }} class="btn btn-primary btn-sm" ><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit</a>
-                        <a href={{ path('organize_access', { 'slug': organization.slug }) }}  class="btn btn-primary btn-sm" >View</a>
+                        <a href={{ path('organize_users', { 'slug': organization.slug }) }}  class="btn btn-primary btn-sm" ><i class="fa fa-users" aria-hidden="true"></i> Manage Users</a>
+                        <a href={{ path('organize_access', { 'slug': organization.slug }) }}  class="btn btn-primary btn-sm" ><i class="fa fa-eye" aria-hidden="true"></i> View</a>
                     </td>
                 </tr>
                 {% endfor %}

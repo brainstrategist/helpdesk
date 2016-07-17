@@ -44,6 +44,8 @@ module.exports = function (grunt) {
                 files: {
                     'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
                     'css/zoombox.css': 'zoombox-master/zoombox.css',
+                    'css/jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
+                    'css/jquery-ui-theme.css': 'jquery-ui/themes/base/theme.css',
                     'css/stacktable.css': 'responsive-table/stacktable.css',
                     'css/font-awesome.css': 'font-awesome/css/font-awesome.css'
                 }
@@ -75,6 +77,8 @@ module.exports = function (grunt) {
                     'web/assets/css/bootstrap.css',
                     'web/assets/css/font-awesome.css',
                     'web/assets/css/stacktable.css',
+                    'web/assets/css/jquery-ui.css',
+                    'web/assets/css/jquery-ui-theme.css',
                     'web/assets/css/zoombox.css',
                     'src/BrainStrategist/KernelBundle/Resources/public/css/*.css'
                 ],
