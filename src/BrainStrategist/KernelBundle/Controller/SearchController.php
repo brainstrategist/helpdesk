@@ -36,7 +36,7 @@ class SearchController extends Controller
 
             if($searchField!=""){
                 $params=array();
-                $em = $this->getDoctrine()->getEntityManager();
+                $em = $this->getDoctrine()->getManager();
                 $ticketEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
 
                 $params = array(

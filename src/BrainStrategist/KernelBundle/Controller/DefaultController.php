@@ -24,7 +24,7 @@ class DefaultController extends Controller
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
         if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ) {
 
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $params = array("userID" => $currentUser->getId(),
                 "limit"=>100,
                 "offset"=>0 );

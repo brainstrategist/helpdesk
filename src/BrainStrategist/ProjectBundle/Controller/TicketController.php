@@ -50,7 +50,7 @@ class TicketController extends Controller
         $this->preExecute();
 
         $params=array();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
 
@@ -127,7 +127,7 @@ class TicketController extends Controller
 
         $params=array();
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
 
@@ -214,7 +214,7 @@ class TicketController extends Controller
 
         $params=array();
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $ticketEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");
         $statusEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket_Status");
@@ -261,7 +261,7 @@ class TicketController extends Controller
 
             $params=array();
             $request = $this->container->get('request_stack')->getCurrentRequest();
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
 
             $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
             $ticketEntity = $em->getRepository("BrainStrategistProjectBundle:Ticket");

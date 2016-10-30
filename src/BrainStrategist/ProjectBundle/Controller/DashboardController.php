@@ -45,7 +45,7 @@ class DashboardController extends Controller
         $breadcrumbs->addItem( $this->get('translator')->trans("Dashboard"), $this->get("router")->generate("dashboard_access"));
 
         $params=array();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $params = array(
             "userID" => $this->currentUser->getId(),

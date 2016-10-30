@@ -45,7 +45,7 @@ class OrganizationController extends Controller
 
         $params=array();
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         if(isset($id)){
 
@@ -143,7 +143,7 @@ class OrganizationController extends Controller
 
         $params=array();
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $params = array();
 

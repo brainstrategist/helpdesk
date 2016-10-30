@@ -54,7 +54,7 @@ class TicketStatusController extends Controller
 
         $params=array();
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $organizationEntity= $em->getRepository("BrainStrategistKernelBundle:Organization");
         $projectEntity= $em->getRepository("BrainStrategistProjectBundle:Project");
         $statusEntity= $em->getRepository("BrainStrategistProjectBundle:Ticket_Status");
@@ -117,7 +117,7 @@ class TicketStatusController extends Controller
         $this->preExecute();
 
         $params=array();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $projectEntity = $em->getRepository("BrainStrategistProjectBundle:Project");
 
