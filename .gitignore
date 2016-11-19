@@ -47,7 +47,7 @@
 
 # Backup entities generated with doctrine:generate:entities command
 */Entity/*~
-
+/logs
 *.scss
 bower.json
 Gruntfile.js
@@ -60,3 +60,4 @@ npm-debug.log
 /web/media/*
 /web/uploads/organization/*
 /web/uploads/project/*
+/web/git.php
