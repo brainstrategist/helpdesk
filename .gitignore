@@ -54,9 +54,9 @@ Gruntfile.js
 npm-debug.log
 .bowerrc
 /web/.htaccess
-/.sass-cache/*
-/node_modules/*
-/bower_components/*
+/.sass-cache/
+/node_modules/
+/bower_components/
 /web/media/*
 /web/uploads/organization/*
 /web/uploads/project/*
