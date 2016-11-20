@@ -21,6 +21,8 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "font-awesome": "4.1.*",
-    "jquery": "1.11.*"
+    "jquery": "1.11.*",
+    "jquery-ui": "*",
+    "stacktable": "*"
   }
 }

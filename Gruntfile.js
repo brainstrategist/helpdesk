@@ -30,7 +30,7 @@ module.exports = function (grunt) {
                     'js/jquery.js': 'jquery/dist/jquery.js',
                     'js/jquery-ui.js': 'jquery-ui/jquery-ui.js',
                     'js/zoombox.js': 'zoombox-master/zoombox.js',
-                    'js/stacktable.js': 'responsive-table/stacktable.js',
+                    'js/stacktable.js': 'stacktable/stacktable.js',
                     'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js'
                 }
             },
@@ -44,7 +44,7 @@ module.exports = function (grunt) {
                 files: {
                     'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
                     'css/zoombox.css': 'zoombox-master/zoombox.css',
-                    'css/stacktable.css': 'responsive-table/stacktable.css',
+                    'css/stacktable.css': 'stacktable/stacktable.css',
                     'css/font-awesome.css': 'font-awesome/css/font-awesome.css'
                 }
             },
