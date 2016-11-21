@@ -1,6 +1,6 @@
 /*!
- * Bootstrap v3.3.6 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
+ * Bootstrap v3.3.7 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
@@ -1106,7 +1106,6 @@ a:focus {
   text-decoration: underline;
 }
 a:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -2537,7 +2536,6 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -3029,7 +3027,6 @@ select[multiple].input-lg {
 .btn.focus,
 .btn:active.focus,
 .btn.active.focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -8940,6 +8937,7 @@ button.close {
   background-size: 25px auto;
   padding-left: 30px;
   margin-left: 30px;
+  font-family: 'Biryani', sans-serif;
 }
 .navbar-inverse .navbar-right {
   color: #fff;
@@ -9075,6 +9073,10 @@ body.default #carousel-home {
   height: 700px;
   overflow: hidden;
 }
+body.default #carousel-home h1 {
+  font-family: 'Biryani', sans-serif;
+  font-weight: normal;
+}
 body.default #carousel-home .carousel-inner, body.default #carousel-home .item {
   height: 700px;
   background-size: cover;
@@ -9087,6 +9089,7 @@ body.default #carousel-home .carousel-caption {
 }
 body.default #carousel-home .carousel-caption > div > h3 {
   margin-bottom: 60px;
+  font-weight: 100;
 }
 body.default .template {
   padding: 0;
@@ -9499,6 +9502,38 @@ body.default .template .blog-main .blog-post .container {
   text-align: center;
 }
 
+.project_users .already_in {
+  vertical-align: top;
+}
+.project_users .already_in i {
+  position: absolute;
+  font-size: 19px;
+  background: #fff;
+  border-radius: 25px;
+  color: #bf1212;
+}
+.project_users .not_in {
+  vertical-align: top;
+}
+.project_users .not_in i {
+  position: absolute;
+  font-size: 19px;
+  background: #fff;
+  border-radius: 25px;
+  color: #4bbf31;
+}
+
+.organize_users .list-inline li {
+  vertical-align: top;
+}
+.organize_users .list-inline li a i {
+  position: absolute;
+  font-size: 19px;
+  background: #fff;
+  border-radius: 25px;
+  color: #bf1212;
+}
+
 /**
       Ticket View
    */
@@ -9577,6 +9612,39 @@ body.default .template .blog-main .blog-post .container {
 /**
    IMPORT RESPONSIVE DESIGN SCSS DIRECTIVES
 */
+@media only screen and (min-device-width: 320px) and (max-device-width: 1024px) {
+  .navbar-inverse .navbar-toggle:hover {
+    background-color: #321c44;
+  }
+
+  body.default .brainstrategist_logo {
+    left: 60px;
+    width: 100%;
+    height: auto;
+    top: 0px;
+  }
+  body.default .carousel-caption {
+    left: 5%;
+    right: 5%;
+  }
+  body.default .carousel-caption .login-box {
+    width: auto;
+  }
+  body.default .full-page-layout {
+    display: inline-block;
+  }
+  body.default .template .blog-main {
+    display: inline-block;
+  }
+  body.default .template .blog-main h1 {
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+    padding-top: 20px;
+  }
+  body.default .template .blog-main .blog-post {
+    padding: 0;
+  }
+}
 @media only screen and (min-width: 320px) and (max-width: 768px) {
   body .navbar-inverse .connexion_box {
     width: 100%;
