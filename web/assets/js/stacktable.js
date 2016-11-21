@@ -38,9 +38,6 @@
       $table.addClass('stacktable large-only');
       $caption = $table.find("caption").clone();
       $topRow = $table.find('tr').eq(0);
-      
-      // avoid duplication when paginating
-      $table.siblings().filter('.small-only').remove();
 
       // using rowIndex and cellIndex in order to reduce ambiguity
       $table.find('tbody tr').each(function() {
