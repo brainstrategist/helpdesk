@@ -42,3 +42,8 @@ hwi_oauth_login:
 
 facebook_login:
     path: /login/check-facebook
+
+api:
+    type:     rest
+    resource: BrainStrategist\KernelBundle\Controller\ApiController
+    prefix: /api/v1

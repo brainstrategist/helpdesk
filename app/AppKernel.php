@@ -23,6 +23,8 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
             new BrainStrategist\KernelBundle\BrainStrategistKernelBundle(),
             new BrainStrategist\ProjectBundle\BrainStrategistProjectBundle(),
         ];
